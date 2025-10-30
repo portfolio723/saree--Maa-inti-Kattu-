@@ -63,11 +63,7 @@ export default function Home() {
   const features = [
     { 
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-          <path d="M12 11.13a2.13 2.13 0 1 0-2.66 2.66"/>
-          <path d="M15.63 7.5a6.5 6.5 0 1 0-8.13 8.13"/>
-        </svg>
+        <Image src="/st1.png" alt="Weavers from across India" width={40} height={40} className="h-10 w-10 text-gray-700" />
       ), 
       text: 'Weavers from across India' 
     },
