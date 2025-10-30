@@ -33,6 +33,12 @@ const nextConfig: NextConfig = {
         hostname: 'miro.medium.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'img.icons8.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
