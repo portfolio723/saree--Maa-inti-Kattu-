@@ -179,7 +179,7 @@ export default function Home() {
                   </div>
                   <div className="text-center md:text-left">
                       <h2 className="text-3xl font-headline text-primary italic">Celebrating</h2>
-                      <h3 className="text-2xl font-bold mt-2 font-headline">Kalamandir Over 20 Years Of Legacy Redefined</h3>
+                      <h3 className="text-2xl font-bold mt-2 font-headline">Maa Inti Kattu Over 20 Years Of Legacy Redefined</h3>
                       <p className="mt-4 text-muted-foreground max-w-lg mx-auto md:mx-0">A journey of artistic excellence and cultural preservation. For two decades, Kalamandir has been a platform for traditional and contemporary arts, fostering talent and inspiring creativity. Here's to two decades of dedication, innovation, and artistic pride!</p>
                       <Button variant="link" asChild className="mt-4 text-primary px-0">
                           <Link href="/about">KNOW MORE &gt;</Link>
