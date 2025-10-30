@@ -3,8 +3,8 @@
     {
       "id": "hero-background",
       "description": "Pay day sale on sarees",
-      "imageUrl": "https://picsum.photos/seed/hero-sale/1920/600",
-      "imageHint": "saree sale"
+      "imageUrl": "https://images.unsplash.com/photo-1594272379361-91a5a54e44b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfGFsbHx8fHx8fHx8fDE3NjE4MjM3NjZ8&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woman dress"
     },
     {
       "id": "product-1",

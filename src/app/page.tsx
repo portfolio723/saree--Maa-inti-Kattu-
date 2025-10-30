@@ -63,20 +63,20 @@ export default function Home() {
   const features = [
     { 
       icon: (
-        <Image src="/st2.png" alt="Certified with Silk Mark" width={40} height={40} className="h-10 w-10 text-gray-700" />
+        <Image src="/st1.png" alt="Certified with Silk Mark" width={40} height={40} className="h-10 w-10 text-gray-700" />
       ),
       text: 'Certified with Silk Mark' 
     },
     { 
-      icon: <Image src="/st3.png" alt="Expert customer support" width={40} height={40} className="h-10 w-10 text-gray-700" />, 
+      icon: <Image src="/st2.png" alt="Expert customer support" width={40} height={40} className="h-10 w-10 text-gray-700" />, 
       text: 'Expert customer support' 
     },
     { 
-      icon: <Image src="/st4.png" alt="Free shipping within India" width={40} height={40} className="h-10 w-10 text-gray-700" />, 
+      icon: <Image src="/st3.png" alt="Free shipping within India" width={40} height={40} className="h-10 w-10 text-gray-700" />, 
       text: 'Free shipping within India' 
     },
     { 
-      icon: <Image src="/st5.png" alt="Authentic Heritage Looms" width={40} height={40} className="h-10 w-10 text-gray-700" />,
+      icon: <Image src="/st4.png" alt="Authentic Heritage Looms" width={40} height={40} className="h-10 w-10 text-gray-700" />,
       text: 'Authentic Heritage Looms' 
     },
   ];
@@ -84,7 +84,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center bg-background">
       {/* Hero Section */}
-      <section className="relative w-full h-screen bg-gray-200">
+      <section className="relative w-full h-[60vh] md:h-screen bg-gray-200">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
@@ -103,7 +103,7 @@ export default function Home() {
       {/* Features Section */}
       <section className="py-12 bg-background w-full">
         <div className="container mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-center">
             {features.map((feature, index) => (
               <div key={index} className="flex flex-col items-center text-center">
                 {feature.icon}
@@ -206,3 +206,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
