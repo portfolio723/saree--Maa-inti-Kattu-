@@ -22,6 +22,7 @@ export default {
       fontFamily: {
         body: ['var(--font-inter)', 'sans-serif'],
         headline: ['var(--font-inter)', 'sans-serif'],
+        handwriting: ['var(--font-corinthia)', 'cursive'],
         code: ['monospace'],
       },
       colors: {

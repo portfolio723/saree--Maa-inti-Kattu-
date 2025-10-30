@@ -4,9 +4,15 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from '@/lib/utils';
-import { Inter } from 'next/font/google';
+import { Inter, Corinthia } from 'next/font/google';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const corinthia = Corinthia({ 
+  subsets: ['latin'], 
+  weight: ['400', '700'],
+  variable: '--font-corinthia' 
+});
+
 
 export const metadata: Metadata = {
   title: 'Maa Inti Kattu - Traditional Wares',
@@ -20,7 +26,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="h-full">
-      <body className={cn("font-body antialiased flex flex-col min-h-screen bg-white", inter.variable)}>
+      <body className={cn("font-body antialiased flex flex-col min-h-screen bg-white", inter.variable, corinthia.variable)}>
         <Header />
         <main className="flex-grow">{children}</main>
         <Footer />
