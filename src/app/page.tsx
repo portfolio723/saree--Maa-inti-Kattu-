@@ -53,30 +53,32 @@ export default function Home() {
   ];
 
   const priceRanges = [
-    { title: 'Below', price: '2000 Rs', bgColor: 'bg-green-900', href: '/products?price=2000' },
-    { title: 'Below', price: '5,000 Rs', bgColor: 'bg-purple-900', href: '/products?price=5000' },
-    { title: 'Below', price: '10,000 Rs', bgColor: 'bg-teal-700', href: '/products?price=10000' },
-    { title: 'Below', price: '15,000 Rs', bgColor: 'bg-red-800', href: '/products?price=15000' },
+    { title: 'Below', price: '₹2000', bgColor: 'bg-green-900', href: '/products?price=2000' },
+    { title: 'Below', price: '₹5,000', bgColor: 'bg-purple-900', href: '/products?price=5000' },
+    { title: 'Below', price: '₹10,000', bgColor: 'bg-teal-700', href: '/products?price=10000' },
+    { title: 'Below', price: '₹15,000', bgColor: 'bg-red-800', href: '/products?price=15000' },
   ];
 
   const features = [
     { 
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12.2,2.2c-0.1-0.2-0.3-0.2-0.4,0l-1,1.9c-2.3,0.9-4.1,2.4-5.5,4.4C5.1,8.8,5,9.1,5,9.3c0.2,1.9,1.1,3.7,2.5,5.1 c1.4,1.4,3.2,2.3,5.1,2.5c0.2,0,0.5-0.1,0.7-0.2c2-1.3,3.5-3.2,4.4-5.5l1.9-1C19,9.8,19.1,9.3,19,9c-0.5-2.1-1.6-4-3.2-5.5 C14.3,2,12.2,2.2,12.2,2.2z M12,14c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2S13.1,14,12,14z" />
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M12 11.13a2.13 2.13 0 1 0-2.66 2.66"/>
+          <path d="M15.63 7.5a6.5 6.5 0 1 0-8.13 8.13"/>
         </svg>
       ), 
       text: 'Weavers from across India' 
     },
     { 
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 48 48" fill="none">
-          <path d="M24,4.2C13.1,4.2,4.2,13.1,4.2,24S13.1,43.8,24,43.8,43.8,34.9,43.8,24S34.9,4.2,24,4.2z M24,40.2 c-9,0-16.2-7.3-16.2-16.2S15,7.8,24,7.8s16.2,7.3,16.2,16.2S33,40.2,24,40.2z" fill="currentColor"/>
-          <path d="M24,11.2c-4.4,0-8,3.6-8,8s3.6,8,8,8s8-3.6,8-8S28.4,11.2,24,11.2z M24,24.2c-2.8,0-5-2.2-5-5s2.2-5,5-5s5,2.2,5,5 S26.8,24.2,24,24.2z" fill="currentColor"/>
-          <path d="M29.8,18.2l2-2c0.2-0.2,0.2-0.5,0-0.7l-1.4-1.4c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.2,0.5,0,0.7l1.4,1.4 C29.3,18.4,29.6,18.4,29.8,18.2z" fill="currentColor"/>
-          <path d="M18.2,29.8l-2,2c-0.2-0.2-0.2-0.5,0,0.7l1.4,1.4c0.2,0.2,0.5,0.2,0.7,0l2-2c0.2-0.2,0.2-0.5,0-0.7l-1.4-1.4 C18.7,29.6,18.4,29.6,18.2,29.8z" fill="currentColor"/>
-          <path d="M18.2,18.2l-2-2c-0.2-0.2-0.5-0.2-0.7,0l-1.4,1.4c-0.2,0.2-0.2,0.5,0,0.7l2,2c0.2,0.2,0.5,0.2,0.7,0l1.4-1.4 C18.4,18.7,18.4,18.4,18.2,18.2z" fill="currentColor"/>
-          <path d="M29.8,29.8l2-2c0.2-0.2,0.5-0.2,0.7,0l1.4,1.4c0.2,0.2,0.2,0.5,0,0.7l-2,2c-0.2,0.2-0.5,0.2-0.7,0l-1.4-1.4 C29.6,30.3,29.6,30,29.8,29.8z" fill="currentColor"/>
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="24" cy="24" r="19.8"/>
+          <circle cx="24" cy="24" r="8"/>
+          <path d="m29.8,18.2 2-2c0.2-0.2 0.2-0.5 0-0.7l-1.4-1.4c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.2,0.5,0,0.7l1.4,1.4c0.2,0.2 0.5,0.2 0.7,0z"/>
+          <path d="m18.2,29.8-2,2c-0.2-0.2-0.2-0.5,0,0.7l1.4,1.4c0.2,0.2,0.5,0.2,0.7,0l2-2c0.2-0.2,0.2-0.5,0-0.7l-1.4-1.4c-0.2-0.2-0.5-0.2-0.7,0z"/>
+          <path d="m18.2,18.2-2-2c-0.2-0.2-0.5-0.2-0.7,0l-1.4,1.4c-0.2,0.2-0.2,0.5,0,0.7l2,2c0.2,0.2,0.5,0.2,0.7,0l1.4-1.4c0.2-0.2 0.2-0.5,0-0.7z"/>
+          <path d="m29.8,29.8 2-2c0.2-0.2,0.5-0.2,0.7,0l1.4,1.4c0.2,0.2,0.2,0.5,0,0.7l-2,2c-0.2,0.2-0.5,0.2-0.7,0l-1.4-1.4c-0.2-0.2-0.2-0.5,0-0.7z"/>
         </svg>
       ),
       text: 'Certified with Silk Mark' 
@@ -85,7 +87,7 @@ export default function Home() {
     { icon: <Truck className="h-10 w-10 text-gray-700" />, text: 'Free shipping within India' },
     { 
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 24 24" fill="currentColor">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
           <path d="M2,2v20h20V2H2z M12,12H4V4h8V12z M20,12h-6V4h6V12z M4,14h8v6H4V14z M14,14h6v6h-6V14z"/>
         </svg>
       ), 
