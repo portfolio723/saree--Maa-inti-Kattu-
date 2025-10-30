@@ -109,7 +109,7 @@ export default function Home() {
       </section>
 
       {/* Best Selling Products Section */}
-      <section className="py-12 md:py-16 w-full">
+      <section className="py-12 md:py-16 w-full bg-secondary">
         <div className="container mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-8">
             Best Selling Products
