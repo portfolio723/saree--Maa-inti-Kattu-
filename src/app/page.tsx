@@ -31,8 +31,8 @@ export default function Home() {
             data-ai-hint={heroImage.imageHint}
           />
         )}
-        <div className="absolute inset-0 bg-black/30" />
-        <div className="relative h-full flex flex-col items-start justify-end text-white p-8 md:p-16">
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative h-full flex flex-col items-center justify-center text-white text-center p-8">
           <div className="max-w-md space-y-4">
              <h1 className="text-4xl md:text-6xl font-bold font-headline leading-tight text-white drop-shadow-lg">
                 Pay Day Sale
@@ -81,28 +81,27 @@ export default function Home() {
         </div>
       </section>
       
-        <section className="py-12 md:py-16">
-            <div className="container">
-                <div className="grid md:grid-cols-2 gap-8 items-center bg-card p-8 rounded-lg">
-                    <div className="grid grid-cols-2 gap-4">
-                        <Image src="https://picsum.photos/seed/legacy-1/400/500" alt="Woman in a white saree" width={400} height={500} className="rounded-lg object-cover w-full h-full aspect-[4/5]" data-ai-hint="woman saree"/>
-                        <div className="grid gap-4">
-                             <Image src="https://picsum.photos/seed/legacy-2/200/245" alt="Close up of a floral saree" width={200} height={245} className="rounded-lg object-cover w-full h-full" data-ai-hint="floral saree"/>
-                             <Image src="https://picsum.photos/seed/legacy-3/200/245" alt="Woman smiling in a saree" width={200} height={245} className="rounded-lg object-cover w-full h-full" data-ai-hint="woman smiling"/>
-                        </div>
-                    </div>
-                    <div className="text-center md:text-left">
-                        <h2 className="text-3xl font-headline text-primary italic">Celebrating</h2>
-                        <h3 className="text-2xl font-bold mt-2">Kalamandir Over 20 Years Of Legacy Redefined</h3>
-                        <p className="mt-4 text-muted-foreground">A journey of artistic excellence and cultural preservation. For two decades, Kalamandir has been a platform for traditional and contemporary arts, fostering talent and inspiring creativity. Here's to two decades of dedication, innovation, and artistic pride!</p>
-                        <Button variant="link" asChild className="mt-4 text-primary">
-                            <Link href="/about">Know More</Link>
-                        </Button>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+      <section className="py-12 md:py-16">
+          <div className="container">
+              <div className="grid md:grid-cols-2 gap-8 items-center bg-card p-8 rounded-lg">
+                  <div className="grid grid-cols-2 gap-4">
+                      <Image src="https://picsum.photos/seed/legacy-1/400/500" alt="Woman in a white saree" width={400} height={500} className="rounded-lg object-cover w-full h-full aspect-[4/5]" data-ai-hint="woman saree"/>
+                      <div className="grid gap-4">
+                           <Image src="https://picsum.photos/seed/legacy-2/200/245" alt="Close up of a floral saree" width={200} height={245} className="rounded-lg object-cover w-full h-full" data-ai-hint="floral saree"/>
+                           <Image src="https://picsum.photos/seed/legacy-3/200/245" alt="Woman smiling in a saree" width={200} height={245} className="rounded-lg object-cover w-full h-full" data-ai-hint="woman smiling"/>
+                      </div>
+                  </div>
+                  <div className="text-center md:text-left">
+                      <h2 className="text-3xl font-headline text-primary italic">Celebrating</h2>
+                      <h3 className="text-2xl font-bold mt-2">Kalamandir Over 20 Years Of Legacy Redefined</h3>
+                      <p className="mt-4 text-muted-foreground">A journey of artistic excellence and cultural preservation. For two decades, Kalamandir has been a platform for traditional and contemporary arts, fostering talent and inspiring creativity. Here's to two decades of dedication, innovation, and artistic pride!</p>
+                      <Button variant="link" asChild className="mt-4 text-primary">
+                          <Link href="/about">Know More</Link>
+                      </Button>
+                  </div>
+              </div>
+          </div>
+      </section>
 
       <section className="py-12 md:py-16">
         <div className="container">
