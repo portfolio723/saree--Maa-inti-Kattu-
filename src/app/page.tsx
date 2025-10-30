@@ -54,8 +54,8 @@ const PriceCard = ({ bgColor, title, price, href }: { bgColor: string; title: st
       {/* Arch shape */}
       <div className={`absolute bottom-0 left-0 right-0 h-[90%] rounded-t-full ${bgColor} flex items-center justify-center`}>
         <div className="text-center text-white">
-          <p className="text-xl md:text-2xl lg:text-3xl font-serif">{title}</p>
-          <p className="text-2xl md:text-3xl lg:text-4xl font-bold font-serif">{price}</p>
+          <p className="text-xl md:text-2xl lg:text-3xl font-headline">{title}</p>
+          <p className="text-2xl md:text-3xl lg:text-4xl font-bold font-headline">{price}</p>
         </div>
       </div>
     </div>
@@ -136,7 +136,7 @@ export default function Home() {
              <h1 className="text-4xl md:text-6xl font-bold font-headline leading-tight text-white drop-shadow-lg">
                 Pay Day Sale
               </h1>
-              <p className="text-lg md:text-xl">From 31st Oct to 2nd Nov</p>
+              <p className="text-lg md:text-xl text-white">From 31st Oct to 2nd Nov</p>
               <Button asChild size="lg" className="bg-white text-black hover:bg-gray-200">
                 <Link href="/products">Shop Now</Link>
               </Button>
@@ -196,7 +196,7 @@ export default function Home() {
             {collections.map((collection) => {
               const image = PlaceHolderImages.find(img => img.id === collection.id);
               return (
-              <Link href={collection.href} key={collection.name} className="group relative block h-64 md:h-96 overflow-hidden">
+              <Link href={collection.href} key={collection.name} className="group relative block h-64 md:h-96 overflow-hidden rounded-none">
                 {image && 
                     <Image src={image.imageUrl} alt={collection.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={image.imageHint} />
                 }
