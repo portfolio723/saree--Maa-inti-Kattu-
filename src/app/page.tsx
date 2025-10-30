@@ -171,7 +171,7 @@ export default function Home() {
           <div className="container mx-auto px-4">
               <div className="grid md:grid-cols-2 gap-8 items-center bg-card p-8 rounded-lg">
                   <div className="grid grid-cols-5 gap-4">
-                      <Image src="https://picsum.photos/seed/legacy-1/400/500" alt="Woman in a white saree" width={400} height={500} className="col-span-3 rounded-lg object-cover w-full h-full" data-ai-hint="woman saree"/>
+                      <Image src="https://images.unsplash.com/photo-1614951841462-92cb7e25f7fb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxJbmRpYW4lMjBzYXJlZXxlbnwwfHx8fDE3NjE4MjA5MTV8MA&ixlib=rb-4.1.0&q=80&w=1080" alt="Woman in a white saree" width={400} height={500} className="col-span-3 rounded-lg object-cover w-full h-full" data-ai-hint="woman saree"/>
                       <div className="col-span-2 grid gap-4">
                            <Image src="https://picsum.photos/seed/legacy-2/200/245" alt="Close up of a floral saree" width={200} height={245} className="rounded-lg object-cover w-full h-full" data-ai-hint="floral saree"/>
                            <Image src="https://picsum.photos/seed/legacy-3/200/245" alt="Woman smiling in a saree" width={200} height={245} className="rounded-lg object-cover w-full h-full" data-ai-hint="woman smiling"/>
