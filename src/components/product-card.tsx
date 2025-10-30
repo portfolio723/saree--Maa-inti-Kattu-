@@ -16,9 +16,9 @@ export function ProductCard({ product }: ProductCardProps) {
   const discountedPrice = product.price * (1 - discountPercentage / 100);
 
   return (
-    <Card className="flex flex-col overflow-hidden h-full transition-shadow hover:shadow-lg group border-none rounded-lg">
+    <Card className="flex flex-col overflow-hidden h-full transition-shadow hover:shadow-lg group border-none">
       <CardHeader className="p-0">
-        <Link href={`/products/${product.id}`} className="block overflow-hidden aspect-[4/5] relative rounded-lg">
+        <Link href={`/products/${product.id}`} className="block overflow-hidden aspect-[4/5] relative">
           <Image
             src={product.images[0].imageUrl}
             alt={product.name}
