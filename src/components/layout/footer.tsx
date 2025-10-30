@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -5,11 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Facebook, Instagram, Youtube, Phone } from "lucide-react";
 
 export function Footer() {
-  const shopLinks = [
-    { href: "/products?category=festive", label: "Festive" },
-    { href: "/products?category=wedding", label: "Wedding" },
-    { href: "/products?category=party", label: "Party" },
-    { href: "/video-call-shopping", label: "Video Call Shopping" },
+  const quickLinks = [
+    { href: "/products", label: "Sarees" },
+    { href: "/products", label: "New Arrivals" },
+    { href: "/combos", label: "Combo Offers" },
+    { href: "/blouses", label: "Blouses" },
+    { href: "/exclusive", label: "Exclusive collections" },
   ];
 
   const getToKnowUsLinks = [
@@ -53,9 +55,9 @@ export function Footer() {
           </div>
           
           <div className="text-left">
-              <h3 className="font-semibold font-headline mb-4 relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-10 after:h-0.5 after:bg-primary">Shop</h3>
+              <h3 className="font-semibold font-headline mb-4 relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-10 after:h-0.5 after:bg-primary">Quick Links</h3>
               <ul className="space-y-2">
-                {shopLinks.map(link => (
+                {quickLinks.map(link => (
                   <li key={link.label}><Link href={link.href} className="text-sm text-muted-foreground hover:text-primary">{link.label}</Link></li>
                 ))}
               </ul>
