@@ -19,18 +19,17 @@ export function Header() {
   const { cart } = useCart();
 
   const navLinks = [
-    { href: "/shirts", label: "Shirts" },
-    { href: "/pants", label: "Pants" },
-    { href: "/shoes", label: "Shoes" },
-    { href: "/caps", label: "Caps" },
-    { href: "/shorts", label: "Shorts" },
-    { href: "/combos", label: "Combos" },
+    { href: "/products", label: "Sarees" },
+    { href: "/products", label: "New Arrivals" },
+    { href: "/combos", label: "Combo Offers" },
+    { href: "/blouses", label: "Blouses" },
+    { href: "/exclusive", label: "Exclusive collections" },
   ];
 
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-6 bg-white text-black shadow-md">
-        <div className="flex items-center flex-1">
+        <div className="flex items-center flex-1 md:flex-initial">
           <Link href="/" className="flex items-center">
             <Image src="https://miro.medium.com/v2/resize:fit:246/format:webp/1*pHF5KzQmHRkpZQ7-ntgZ8w.png" alt="Lazywear India - online store for comfortable and affordable casual wear" width={100} height={40} className="object-contain" />
           </Link>
@@ -44,7 +43,7 @@ export function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center justify-end gap-2 md:gap-4 flex-1">
+        <div className="flex items-center justify-end gap-2 md:gap-4 flex-1 md:flex-initial">
           <Button variant="ghost" size="icon" onClick={() => setSearchOpen(true)} aria-label="Search products">
             <Search className="h-5 w-5" />
             <span className="sr-only">Search</span>
