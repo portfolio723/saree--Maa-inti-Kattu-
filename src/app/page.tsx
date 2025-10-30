@@ -63,12 +63,6 @@ export default function Home() {
   const features = [
     { 
       icon: (
-        <Image src="/st1.png" alt="Weavers from across India" width={40} height={40} className="h-10 w-10 text-gray-700" />
-      ), 
-      text: 'Weavers from across India' 
-    },
-    { 
-      icon: (
         <Image src="/st2.png" alt="Certified with Silk Mark" width={40} height={40} className="h-10 w-10 text-gray-700" />
       ),
       text: 'Certified with Silk Mark' 
@@ -82,7 +76,7 @@ export default function Home() {
       text: 'Free shipping within India' 
     },
     { 
-      icon: <Image src="/st1.png" alt="Authentic Heritage Looms" width={40} height={40} className="h-10 w-10 text-gray-700" />,
+      icon: <Image src="/st5.png" alt="Authentic Heritage Looms" width={40} height={40} className="h-10 w-10 text-gray-700" />,
       text: 'Authentic Heritage Looms' 
     },
   ];
