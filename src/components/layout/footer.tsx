@@ -32,7 +32,7 @@ export function Footer() {
   return (
     <footer className="bg-card border-t">
       <div className="container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           
           <div className="lg:col-span-1 flex flex-col items-start space-y-4 text-left">
             <Link href="/" className="flex items-center space-x-2">
@@ -71,6 +71,15 @@ export function Footer() {
           </div>
 
           <div className="text-left">
+            <h3 className="font-semibold font-headline mb-4 relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-10 after:h-0.5 after:bg-primary">USER POLICY</h3>
+            <ul className="space-y-2">
+              {userPolicyLinks.map(link => (
+                <li key={link.label}><Link href={link.href} className="text-sm text-muted-foreground hover:text-primary">{link.label}</Link></li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="text-left">
              <div className="space-y-6">
                 <div>
                    <h3 className="font-semibold font-headline mb-4 relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-10 after:h-0.5 after:bg-primary">Join Our Newsletter</h3>
@@ -91,20 +100,6 @@ export function Footer() {
              </div>
           </div>
           
-        </div>
-
-        <div className="mt-12 pt-8 border-t">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="lg:col-span-1"></div>
-              <div className="text-left">
-                <h3 className="font-semibold font-headline mb-4 relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-10 after:h-0.5 after:bg-primary">USER POLICY</h3>
-                <ul className="space-y-2">
-                  {userPolicyLinks.map(link => (
-                    <li key={link.label}><Link href={link.href} className="text-sm text-muted-foreground hover:text-primary">{link.label}</Link></li>
-                  ))}
-                </ul>
-              </div>
-          </div>
         </div>
 
         <div className="mt-12 pt-8 border-t text-center">
