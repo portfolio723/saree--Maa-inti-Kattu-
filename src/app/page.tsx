@@ -170,9 +170,9 @@ export default function Home() {
       <section className="py-12 md:py-16 w-full">
           <div className="container mx-auto px-4">
               <div className="grid md:grid-cols-2 gap-8 items-center bg-card p-8 rounded-lg">
-                  <div className="grid grid-cols-2 gap-4">
-                      <Image src="https://picsum.photos/seed/legacy-1/400/500" alt="Woman in a white saree" width={400} height={500} className="rounded-lg object-cover w-full h-full aspect-[4/5]" data-ai-hint="woman saree"/>
-                      <div className="grid gap-4">
+                  <div className="grid grid-cols-5 gap-4">
+                      <Image src="https://picsum.photos/seed/legacy-1/400/500" alt="Woman in a white saree" width={400} height={500} className="col-span-3 rounded-lg object-cover w-full h-full" data-ai-hint="woman saree"/>
+                      <div className="col-span-2 grid gap-4">
                            <Image src="https://picsum.photos/seed/legacy-2/200/245" alt="Close up of a floral saree" width={200} height={245} className="rounded-lg object-cover w-full h-full" data-ai-hint="floral saree"/>
                            <Image src="https://picsum.photos/seed/legacy-3/200/245" alt="Woman smiling in a saree" width={200} height={245} className="rounded-lg object-cover w-full h-full" data-ai-hint="woman smiling"/>
                       </div>
