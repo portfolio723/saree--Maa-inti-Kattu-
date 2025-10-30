@@ -74,9 +74,6 @@ export function Footer() {
                 <div>
                    <h3 className="font-semibold font-headline mb-2 relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-10 after:h-0.5 after:bg-primary">We Accept</h3>
                    <div className="flex items-center gap-2 mt-4">
-                     <Image src="https://img.icons8.com/color/48/visa.png" alt="Visa" width={48} height={30} className="object-contain" />
-                     <Image src="https://img.icons8.com/color/48/mastercard-logo.png" alt="Mastercard" width={48} height={30} className="object-contain" />
-                     <Image src="https://img.icons8.com/color/48/bhim-upi.png" alt="UPI" width={48} height={30} className="object-contain" />
                      <Image src="https://kalamandir.com/pub/media/porto/paypal.png" alt="Paypal" width={48} height={30} className="object-contain" />
                    </div>
                 </div>
