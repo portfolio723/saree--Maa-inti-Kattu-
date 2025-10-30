@@ -103,7 +103,7 @@ export default function Home() {
       {/* Features Section */}
       <section className="py-12 bg-background w-full">
         <div className="container mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <div key={index} className="flex flex-col items-center text-center">
                 {feature.icon}
