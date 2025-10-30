@@ -45,8 +45,6 @@ export function Footer() {
               <span className="font-semibold text-lg">9852 9852 99</span>
             </div>
             <a href="mailto:hello@kalamandir.com" className="text-sm text-muted-foreground hover:text-primary">hello@kalamandir.com</a>
-            <Link href="/orders/track" className="text-sm text-muted-foreground hover:text-primary">Track Your Order</Link>
-            <Link href="/stores" className="text-sm text-muted-foreground hover:text-primary">Stores</Link>
             <div className="flex space-x-4 pt-2">
               <Link href="#" className="text-muted-foreground hover:text-primary"><Facebook className="h-5 w-5" /></Link>
               <Link href="#" className="text-muted-foreground hover:text-primary"><Instagram className="h-5 w-5" /></Link>
@@ -84,7 +82,7 @@ export function Footer() {
           <div className="text-left">
              <div className="space-y-6">
                 <div>
-                   <h3 className="font-semibold font-headline mb-4 relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-10 after:h-0.5 after:bg-primary">Join Our Newsletter</h3>
+                   <h3 className="font-semibold font-headline mb-4 relative after:content-[''] after:absolute after_left-0 after:bottom-[-4px] after:w-10 after:h-0.5 after:bg-primary">Join Our Newsletter</h3>
                    <p className="text-sm text-muted-foreground mb-3">Sign up for our e-mail to get latest news.</p>
                    <div className="flex w-full max-w-sm items-center space-x-2">
                       <Input type="email" placeholder="Your email letter" className="bg-white" />
