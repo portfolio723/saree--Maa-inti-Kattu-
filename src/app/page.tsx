@@ -82,11 +82,7 @@ export default function Home() {
       text: 'Free shipping within India' 
     },
     { 
-      icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
-          <path d="M2,2v20h20V2H2z M12,12H4V4h8V12z M20,12h-6V4h6V12z M4,14h8v6H4V14z M14,14h6v6h-6V14z"/>
-        </svg>
-      ), 
+      icon: <Image src="/st1.png" alt="Authentic Heritage Looms" width={40} height={40} className="h-10 w-10 text-gray-700" />,
       text: 'Authentic Heritage Looms' 
     },
   ];
