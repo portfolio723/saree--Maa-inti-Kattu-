@@ -1,4 +1,5 @@
 
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -31,8 +32,8 @@ const PriceCard = ({ bgColor, title, price, href }: { bgColor: string; title: st
       {/* Arch shape */}
       <div className={`absolute bottom-0 left-0 right-0 h-[90%] rounded-t-full ${bgColor} flex items-center justify-center`}>
         <div className="text-center text-white">
-          <p className="text-xl md:text-2xl lg:text-3xl font-headline">{title}</p>
-          <p className="text-2xl md:text-3xl lg:text-4xl font-bold font-headline">{price}</p>
+          <p className="font-headline text-xl md:text-2xl lg:text-3xl">{title}</p>
+          <p className="font-headline font-bold text-2xl md:text-3xl lg:text-4xl">{price}</p>
         </div>
       </div>
     </div>
@@ -196,7 +197,7 @@ export default function Home() {
                       <h3 className="text-2xl font-bold mt-2 font-headline">Kalamandir Over 20 Years Of Legacy Redefined</h3>
                       <p className="mt-4 text-muted-foreground max-w-lg mx-auto md:mx-0">A journey of artistic excellence and cultural preservation. For two decades, Kalamandir has been a platform for traditional and contemporary arts, fostering talent and inspiring creativity. Here's to two decades of dedication, innovation, and artistic pride!</p>
                       <Button variant="link" asChild className="mt-4 text-primary px-0">
-                          <Link href="/about">Know More</Link>
+                          <Link href="/about">KNOW MORE &gt;</Link>
                       </Button>
                   </div>
               </div>
