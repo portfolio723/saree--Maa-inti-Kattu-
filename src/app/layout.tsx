@@ -22,7 +22,7 @@ export default function RootLayout({
     <html lang="en" className="h-full">
       <body className={cn("font-body antialiased flex flex-col min-h-screen bg-white", inter.variable)}>
         <Header />
-        <main className="flex-grow pt-16">{children}</main>
+        <main className="flex-grow">{children}</main>
         <Footer />
         <Toaster />
       </body>

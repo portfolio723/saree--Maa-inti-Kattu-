@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Search, Heart, User, ShoppingCart, Menu, X } from "lucide-react";
@@ -11,12 +11,22 @@ import { MiniCart } from "@/components/mini-cart";
 import { useWishlist } from "@/hooks/use-wishlist";
 import { useCart } from "@/hooks/use-cart";
 import { SearchOverlay } from "@/components/search-overlay";
+import { cn } from "@/lib/utils";
 
 export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { wishlist } = useWishlist();
   const { cart } = useCart();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navLinks = [
     { href: "/products", label: "Sarees" },
@@ -28,10 +38,13 @@ export function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-6 bg-white text-black shadow-md">
+      <header className={cn(
+          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-6 transition-all duration-300",
+          isScrolled ? "bg-white text-black shadow-md" : "bg-transparent text-white"
+      )}>
         <div className="flex items-center flex-1 md:flex-initial">
           <Link href="/" className="flex items-center">
-            <Image src="https://miro.medium.com/v2/resize:fit:246/format:webp/1*pHF5KzQmHRkpZQ7-ntgZ8w.png" alt="Lazywear India - online store for comfortable and affordable casual wear" width={100} height={40} className="object-contain" />
+            <Image src="https://miro.medium.com/v2/resize:fit:246/format:webp/1*pHF5KzQmHRkpZQ7-ntgZ8w.png" alt="Lazywear India - online store for comfortable and affordable casual wear" width={100} height={40} className={cn("object-contain", !isScrolled && "brightness-0 invert")} />
           </Link>
         </div>
 
@@ -44,17 +57,20 @@ export function Header() {
         </nav>
 
         <div className="flex items-center justify-end gap-2 md:gap-4 flex-1 md:flex-initial">
-          <Button variant="ghost" size="icon" onClick={() => setSearchOpen(true)} aria-label="Search products">
+          <Button variant="ghost" size="icon" onClick={() => setSearchOpen(true)} aria-label="Search products" className="hover:bg-white/20">
             <Search className="h-5 w-5" />
             <span className="sr-only">Search</span>
           </Button>
 
-          <Button variant="ghost" size="icon" asChild>
+          <Button variant="ghost" size="icon" asChild className="hover:bg-white/20">
             <Link href="/favorites">
               <div className="relative">
                 <Heart className="h-5 w-5" />
                 {wishlist.length > 0 && (
-                  <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-xs">
+                  <span className={cn(
+                    "absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full text-xs",
+                    isScrolled ? "bg-destructive text-destructive-foreground" : "bg-white text-black"
+                  )}>
                     {wishlist.length}
                   </span>
                 )}
@@ -63,7 +79,7 @@ export function Header() {
             </Link>
           </Button>
           
-          <Button variant="ghost" size="icon" asChild>
+          <Button variant="ghost" size="icon" asChild className="hover:bg-white/20">
             <Link href="/login">
               <User className="h-5 w-5" />
               <span className="sr-only">Account</span>
@@ -72,10 +88,13 @@ export function Header() {
 
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
+              <Button variant="ghost" size="icon" className="relative hover:bg-white/20">
                   <ShoppingCart className="h-5 w-5" />
                   {cart.length > 0 && (
-                    <span className="absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-black text-white text-xs">
+                     <span className={cn(
+                        "absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full text-xs",
+                        isScrolled ? "bg-black text-white" : "bg-white text-black"
+                      )}>
                       {cart.reduce((acc, item) => acc + item.quantity, 0)}
                     </span>
                   )}
@@ -90,7 +109,7 @@ export function Header() {
           <div className="md:hidden">
             <Sheet open={isMenuOpen} onOpenChange={setMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="hover:bg-white/20">
                   <Menu className="h-6 w-6" />
                   <span className="sr-only">Open menu</span>
                 </Button>
