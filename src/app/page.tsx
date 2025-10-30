@@ -69,14 +69,7 @@ export default function Home() {
     },
     { 
       icon: (
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="24" cy="24" r="19.8"/>
-          <circle cx="24" cy="24" r="8"/>
-          <path d="m29.8,18.2 2-2c0.2-0.2 0.2-0.5 0-0.7l-1.4-1.4c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.2,0.5,0,0.7l1.4,1.4c0.2,0.2 0.5,0.2 0.7,0z"/>
-          <path d="m18.2,29.8-2,2c-0.2-0.2-0.2-0.5,0,0.7l1.4,1.4c0.2,0.2,0.5,0.2,0.7,0l2-2c0.2-0.2,0.2-0.5,0-0.7l-1.4-1.4c-0.2-0.2-0.5-0.2-0.7,0z"/>
-          <path d="m18.2,18.2-2-2c-0.2-0.2-0.5-0.2-0.7,0l-1.4,1.4c-0.2,0.2-0.2,0.5,0,0.7l2,2c0.2,0.2,0.5,0.2,0.7,0l1.4-1.4c0.2-0.2 0.2-0.5,0-0.7z"/>
-          <path d="m29.8,29.8 2-2c0.2-0.2,0.5-0.2,0.7,0l1.4,1.4c0.2,0.2,0.2,0.5,0,0.7l-2,2c-0.2,0.2-0.5,0.2-0.7,0l-1.4-1.4c-0.2-0.2-0.2-0.5,0-0.7z"/>
-        </svg>
+        <Image src="/st2.png" alt="Certified with Silk Mark" width={40} height={40} className="h-10 w-10 text-gray-700" />
       ),
       text: 'Certified with Silk Mark' 
     },
