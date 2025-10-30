@@ -28,7 +28,7 @@ export function ProductCard({ product }: ProductCardProps) {
           />
         </Link>
       </CardHeader>
-      <CardContent className="p-3 flex-grow flex flex-col items-center text-center">
+      <CardContent className="p-3 flex-grow flex flex-col items-start text-left">
         <CardTitle className="text-xs font-medium leading-tight flex-grow uppercase text-muted-foreground">
           <Link href={`/products/${product.id}`} className="hover:text-primary transition-colors">{product.name}</Link>
         </CardTitle>
