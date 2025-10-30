@@ -46,6 +46,30 @@ const nextConfig: NextConfig = {
         hostname: 'kalamandir.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.zilikaa.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'vjvnow.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'orgenza.in',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'indiansilkhouseagencies.com',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
