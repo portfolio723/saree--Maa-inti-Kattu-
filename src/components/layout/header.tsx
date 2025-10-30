@@ -68,18 +68,6 @@ export function Header() {
               </div>
             </form>
           </div>
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/cart">
-              <ShoppingCart className="h-5 w-5 text-accent" />
-              <span className="sr-only">Shopping Cart</span>
-            </Link>
-          </Button>
-          <Button variant="ghost" size="icon" asChild>
-            <Link href="/login">
-              <User className="h-5 w-5 text-accent" />
-              <span className="sr-only">User Profile</span>
-            </Link>
-          </Button>
         </div>
       </div>
     </header>
