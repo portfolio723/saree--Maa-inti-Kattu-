@@ -37,7 +37,7 @@ export function Header() {
 
         <nav className="hidden md:flex items-center justify-center gap-6 flex-1">
           {navLinks.map(link => (
-             <Link key={link.href} href={link.href} className="text-sm font-semibold tracking-wider uppercase hover:text-primary/70 transition-colors">
+             <Link key={link.label} href={link.href} className="text-sm font-semibold tracking-wider uppercase hover:text-primary/70 transition-colors">
               {link.label}
             </Link>
           ))}
@@ -110,7 +110,7 @@ export function Header() {
                 </SheetHeader>
                 <nav className="flex flex-col items-start gap-6 p-4">
                   {navLinks.map(link => (
-                    <Link key={link.href} href={link.href} className="text-lg font-semibold tracking-wider uppercase hover:text-primary/70 transition-colors" onClick={() => setMenuOpen(false)}>
+                    <Link key={link.label} href={link.href} className="text-lg font-semibold tracking-wider uppercase hover:text-primary/70 transition-colors" onClick={() => setMenuOpen(false)}>
                       {link.label}
                     </Link>
                   ))}
