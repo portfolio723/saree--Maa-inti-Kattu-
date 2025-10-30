@@ -9,37 +9,37 @@
     {
       "id": "product-1",
       "description": "A beautiful handcrafted saree",
-      "imageUrl": "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzaWxrJTIwc2FyZWV8ZW58MHx8fHwxNzYxNzc3NzQwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/na1.jpg",
       "imageHint": "silk saree"
     },
     {
       "id": "product-2",
       "description": "Elegant gold earrings",
-      "imageUrl": "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxnb2xkJTIwamV3ZWxyeXxlbnwwfHx8fDE3NjE3MjU4MDV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/na2.jpg",
       "imageHint": "gold jewelry"
     },
     {
       "id": "product-3",
       "description": "Handmade pottery",
-      "imageUrl": "https://images.unsplash.com/photo-1715049953874-8fe5ccab9cfb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxoYW5kbWFkZSUyMHBvdHRlcnl8ZW58MHx8fHwxNzYxNzc3MzYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/na3.jpg",
       "imageHint": "handmade pottery"
     },
     {
       "id": "product-4",
       "description": "Spices from India",
-      "imageUrl": "https://images.unsplash.com/photo-1606914469725-e398d2f1d7ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxpbmRpYW4lMjBzcGljZXN8ZW58MHx8fHwxNzYxODA2MDE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/na4.jpg",
       "imageHint": "indian spices"
     },
     {
       "id": "product-5",
       "description": "Traditional painting",
-      "imageUrl": "https://images.unsplash.com/photo-1719498481691-d78f24dcff1b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxpbmRpYW4lMjBhcnR8ZW58MHx8fHwxNzYxODExNDM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "/na5.jpg",
       "imageHint": "indian art"
     },
     {
       "id": "product-6",
       "description": "Embroidered cushion cover",
-      "imageUrl": "https://images.unsplash.com/photo-1655149555289-f3ec4fff6ab3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjdXNoaW9uJTIwY292ZXJ8ZW58MHx8fHwxNzYxODExNDM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1654764746225-e63f5e90facd?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687",
       "imageHint": "cushion cover"
     },
     {
