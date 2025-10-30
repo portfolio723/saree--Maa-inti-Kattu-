@@ -68,7 +68,7 @@ export function Footer() {
                    <p className="text-sm text-muted-foreground mb-3">Sign up for our e-mail to get latest news.</p>
                    <div className="flex w-full max-w-sm items-center space-x-2">
                       <Input type="email" placeholder="Your email letter" className="bg-white" />
-                      <Button type="submit" className="bg-gray-800 text-white hover:bg-gray-700">Subscribe</Button>
+                      <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/90">Subscribe</Button>
                     </div>
                 </div>
                 <div>
