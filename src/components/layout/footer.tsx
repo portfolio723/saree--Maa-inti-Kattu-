@@ -74,7 +74,7 @@ export function Footer() {
                 <div>
                    <h3 className="font-semibold font-headline mb-2 relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-10 after:h-0.5 after:bg-primary">We Accept</h3>
                    <div className="flex items-center gap-2 mt-4">
-                     <Image src="https://kalamandir.com/pub/media/porto/paypal.png" alt="Paypal" width={96} height={60} className="object-contain" />
+                     <Image src="https://kalamandir.com/pub/media/porto/paypal.png" alt="Paypal" width={120} height={60} className="object-contain" />
                    </div>
                 </div>
              </div>
@@ -84,7 +84,6 @@ export function Footer() {
 
         <div className="mt-12 pt-8 border-t text-center">
            <div className="flex items-center justify-center gap-4">
-               <Image src="https://img.icons8.com/?size=100&id=aR9x0jE45v2C&format=png&color=000000" alt="SSKL Logo" width={60} height={20} className="object-contain" />
                <p className="text-sm text-muted-foreground">
                   © Copyright {new Date().getFullYear()} Maa Inti Kattu. All Rights Reserved
                </p>
