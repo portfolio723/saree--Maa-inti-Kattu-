@@ -20,7 +20,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col items-center">
       {/* Hero Section */}
       <section className="relative w-full h-[50vh] md:h-[60vh] bg-gray-200">
         {heroImage && (
@@ -48,8 +48,8 @@ export default function Home() {
       </section>
 
       {/* New Arrivals Section */}
-      <section className="py-12 md:py-16">
-        <div className="container">
+      <section className="py-12 md:py-16 w-full">
+        <div className="container mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-8">
             New Arrivals
           </h2>
@@ -62,8 +62,8 @@ export default function Home() {
       </section>
 
       {/* Shop By Collection Section */}
-      <section className="py-12 md:py-16 bg-secondary">
-        <div className="container">
+      <section className="py-12 md:py-16 bg-secondary w-full">
+        <div className="container mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-8">
             Shop By Collection
           </h2>
@@ -86,8 +86,8 @@ export default function Home() {
       </section>
       
       {/* Legacy Section */}
-      <section className="py-12 md:py-16">
-          <div className="container">
+      <section className="py-12 md:py-16 w-full">
+          <div className="container mx-auto">
               <div className="grid md:grid-cols-2 gap-8 items-center bg-card p-8 rounded-lg">
                   <div className="grid grid-cols-2 gap-4">
                       <Image src="https://picsum.photos/seed/legacy-1/400/500" alt="Woman in a white saree" width={400} height={500} className="rounded-lg object-cover w-full h-full aspect-[4/5]" data-ai-hint="woman saree"/>
@@ -109,8 +109,8 @@ export default function Home() {
       </section>
 
       {/* Best Selling Products Section */}
-      <section className="py-12 md:py-16">
-        <div className="container">
+      <section className="py-12 md:py-16 w-full">
+        <div className="container mx-auto">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-8">
             Best Selling Products
           </h2>
