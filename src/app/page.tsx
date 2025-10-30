@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { ProductCard } from '@/components/product-card';
 import { products } from '@/lib/mock-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Headset, Truck, Award, ShieldCheck } from 'lucide-react';
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find(img => img.id === 'hero-background');
@@ -19,8 +20,42 @@ export default function Home() {
     { id: 'collection-kancheepuram-2', name: 'Kancheepuram', href: '/products?category=Apparel' },
   ];
 
+  const features = [
+    { 
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.2,2.2c-0.1-0.2-0.3-0.2-0.4,0l-1,1.9c-2.3,0.9-4.1,2.4-5.5,4.4C5.1,8.8,5,9.1,5,9.3c0.2,1.9,1.1,3.7,2.5,5.1 c1.4,1.4,3.2,2.3,5.1,2.5c0.2,0,0.5-0.1,0.7-0.2c2-1.3,3.5-3.2,4.4-5.5l1.9-1C19,9.8,19.1,9.3,19,9c-0.5-2.1-1.6-4-3.2-5.5 C14.3,2,12.2,2.2,12.2,2.2z M12,14c-1.1,0-2-0.9-2-2s0.9-2,2-2s2,0.9,2,2S13.1,14,12,14z" />
+        </svg>
+      ), 
+      text: 'Weavers from across India' 
+    },
+    { 
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 48 48" fill="none">
+          <path d="M24,4.2C13.1,4.2,4.2,13.1,4.2,24S13.1,43.8,24,43.8,43.8,34.9,43.8,24S34.9,4.2,24,4.2z M24,40.2 c-9,0-16.2-7.3-16.2-16.2S15,7.8,24,7.8s16.2,7.3,16.2,16.2S33,40.2,24,40.2z" fill="currentColor"/>
+          <path d="M24,11.2c-4.4,0-8,3.6-8,8s3.6,8,8,8s8-3.6,8-8S28.4,11.2,24,11.2z M24,24.2c-2.8,0-5-2.2-5-5s2.2-5,5-5s5,2.2,5,5 S26.8,24.2,24,24.2z" fill="currentColor"/>
+          <path d="M29.8,18.2l2-2c0.2-0.2,0.2-0.5,0-0.7l-1.4-1.4c-0.2-0.2-0.5-0.2-0.7,0l-2,2c-0.2,0.2-0.2,0.5,0,0.7l1.4,1.4 C29.3,18.4,29.6,18.4,29.8,18.2z" fill="currentColor"/>
+          <path d="M18.2,29.8l-2,2c-0.2,0.2-0.2,0.5,0,0.7l1.4,1.4c0.2,0.2,0.5,0.2,0.7,0l2-2c0.2-0.2,0.2-0.5,0-0.7l-1.4-1.4 C18.7,29.6,18.4,29.6,18.2,29.8z" fill="currentColor"/>
+          <path d="M18.2,18.2l-2-2c-0.2-0.2-0.5-0.2-0.7,0l-1.4,1.4c-0.2,0.2-0.2,0.5,0,0.7l2,2c0.2,0.2,0.5,0.2,0.7,0l1.4-1.4 C18.4,18.7,18.4,18.4,18.2,18.2z" fill="currentColor"/>
+          <path d="M29.8,29.8l2-2c0.2-0.2,0.5-0.2,0.7,0l1.4,1.4c0.2,0.2,0.2,0.5,0,0.7l-2,2c-0.2,0.2-0.5,0.2-0.7,0l-1.4-1.4 C29.6,30.3,29.6,30,29.8,29.8z" fill="currentColor"/>
+        </svg>
+      ),
+      text: 'Certified with Silk Mark' 
+    },
+    { icon: <Headset className="h-10 w-10 text-gray-700" />, text: 'Expert customer support' },
+    { icon: <Truck className="h-10 w-10 text-gray-700" />, text: 'Free shipping within India' },
+    { 
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M2,2v20h20V2H2z M12,12H4V4h8V12z M20,12h-6V4h6V12z M4,14h8v6H4V14z M14,14h6v6h-6V14z"/>
+        </svg>
+      ), 
+      text: 'Authentic Heritage Looms' 
+    },
+  ];
+
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center bg-white">
       {/* Hero Section */}
       <section className="relative w-full h-[50vh] md:h-[60vh] bg-gray-200">
         {heroImage && (
@@ -47,9 +82,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* New Arrivals Section */}
-      <section className="py-12 md:py-16 w-full">
+      {/* Features Section */}
+      <section className="py-12 bg-white w-full">
         <div className="container mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
+            {features.map((feature, index) => (
+              <div key={index} className="flex flex-col items-center text-center">
+                {feature.icon}
+                <p className="mt-4 text-xs font-semibold uppercase tracking-wider text-gray-600">{feature.text}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* New Arrivals Section */}
+      <section className="py-12 md:py-16 w-full bg-secondary">
+        <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-8">
             New Arrivals
           </h2>
@@ -62,8 +111,8 @@ export default function Home() {
       </section>
 
       {/* Shop By Collection Section */}
-      <section className="py-12 md:py-16 bg-secondary w-full">
-        <div className="container mx-auto">
+      <section className="py-12 md:py-16 bg-white w-full">
+        <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-8">
             Shop By Collection
           </h2>
@@ -87,7 +136,7 @@ export default function Home() {
       
       {/* Legacy Section */}
       <section className="py-12 md:py-16 w-full">
-          <div className="container mx-auto">
+          <div className="container mx-auto px-4">
               <div className="grid md:grid-cols-2 gap-8 items-center bg-card p-8 rounded-lg">
                   <div className="grid grid-cols-2 gap-4">
                       <Image src="https://picsum.photos/seed/legacy-1/400/500" alt="Woman in a white saree" width={400} height={500} className="rounded-lg object-cover w-full h-full aspect-[4/5]" data-ai-hint="woman saree"/>
@@ -110,7 +159,7 @@ export default function Home() {
 
       {/* Best Selling Products Section */}
       <section className="py-12 md:py-16 w-full bg-secondary">
-        <div className="container mx-auto">
+        <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-8">
             Best Selling Products
           </h2>
