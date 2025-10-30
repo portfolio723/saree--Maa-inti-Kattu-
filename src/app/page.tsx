@@ -1,4 +1,5 @@
 
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -151,7 +152,7 @@ export default function Home() {
             {collections.map((collection) => {
               const image = PlaceHolderImages.find(img => img.id === collection.id);
               return (
-              <Link href={collection.href} key={collection.name} className="group relative block h-64 md:h-96 overflow-hidden">
+              <Link href={collection.href} key={collection.id} className="group relative block h-64 md:h-96 overflow-hidden">
                 {image && 
                     <Image src={image.imageUrl} alt={collection.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={image.imageHint} />
                 }
