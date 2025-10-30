@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ShoppingCart } from 'lucide-react';
+import Link from 'next/link';
 
 export default function CartPage() {
   return (
@@ -15,7 +16,9 @@ export default function CartPage() {
                     <ShoppingCart className="h-16 w-16 text-muted-foreground" />
                     <h3 className="mt-4 text-xl font-semibold">Your cart is empty</h3>
                     <p className="mt-2 text-muted-foreground">Add items to your cart to see them here.</p>
-                    <Button className="mt-4">Continue Shopping</Button>
+                    <Button asChild className="mt-4">
+                      <Link href="/products">Continue Shopping</Link>
+                    </Button>
                 </div>
             </CardContent>
           </Card>
@@ -28,7 +31,7 @@ export default function CartPage() {
             <CardContent className="space-y-4">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span>$0.00</span>
+                <span>₹0.00</span>
               </div>
               <div className="flex justify-between">
                 <span>Shipping</span>
@@ -37,7 +40,7 @@ export default function CartPage() {
               <Separator />
               <div className="flex justify-between font-bold text-lg">
                 <span>Total</span>
-                <span>$0.00</span>
+                <span>₹0.00</span>
               </div>
             </CardContent>
             <CardFooter>

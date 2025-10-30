@@ -10,10 +10,10 @@ export default function AdminPage() {
         <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
-                <span className="text-muted-foreground">$</span>
+                <span className="text-muted-foreground">₹</span>
             </CardHeader>
             <CardContent>
-                <div className="text-2xl font-bold">$45,231.89</div>
+                <div className="text-2xl font-bold">₹4,523,189</div>
                 <p className="text-xs text-muted-foreground">+20.1% from last month</p>
             </CardContent>
         </Card>
@@ -48,13 +48,13 @@ export default function AdminPage() {
                         <TableCell>#12345</TableCell>
                         <TableCell>John Doe</TableCell>
                         <TableCell><Badge>Shipped</Badge></TableCell>
-                        <TableCell className="text-right">$250.00</TableCell>
+                        <TableCell className="text-right">₹25,000</TableCell>
                     </TableRow>
                     <TableRow>
                         <TableCell>#12346</TableCell>
                         <TableCell>Jane Smith</TableCell>
                         <TableCell><Badge variant="secondary">Processing</Badge></TableCell>
-                        <TableCell className="text-right">$85.50</TableCell>
+                        <TableCell className="text-right">₹8,550</TableCell>
                     </TableRow>
                 </TableBody>
             </Table>

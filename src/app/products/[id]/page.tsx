@@ -62,7 +62,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
             </div>
           </div>
           <p className="text-foreground/80">{product.longDescription}</p>
-          <p className="text-3xl font-semibold text-primary">${product.price.toFixed(2)}</p>
+          <p className="text-3xl font-semibold text-primary">₹{product.price.toFixed(2)}</p>
 
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">

@@ -34,7 +34,7 @@ export function MiniCart() {
                   <div className="flex-1">
                     <p className="font-semibold">{item.name}</p>
                     <p className="text-sm text-muted-foreground">Qty: {item.quantity}</p>
-                    <p className="text-sm font-medium">${(item.price * item.quantity).toFixed(2)}</p>
+                    <p className="text-sm font-medium">₹{(item.price * item.quantity).toFixed(2)}</p>
                   </div>
                   <Button variant="ghost" size="sm" onClick={() => removeFromCart(item.id)}>Remove</Button>
                 </div>
@@ -45,7 +45,7 @@ export function MiniCart() {
           <div className="p-4 space-y-4">
             <div className="flex justify-between font-semibold">
               <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>₹{subtotal.toFixed(2)}</span>
             </div>
             <div className="flex gap-2">
                 <Button asChild className="w-full">
