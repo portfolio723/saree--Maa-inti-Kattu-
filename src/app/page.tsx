@@ -10,45 +10,22 @@ import { Headset, Truck, Award, ShieldCheck } from 'lucide-react';
 
 const PriceCard = ({ bgColor, title, price, href }: { bgColor: string; title: string; price: string, href: string }) => (
   <Link href={href} className="block group">
-    <div className="relative overflow-hidden rounded-lg bg-white p-4 aspect-[3/4] transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
-      {/* Confetti and Fireworks */}
+    <div className="relative overflow-hidden rounded-lg bg-gray-100/50 p-4 aspect-[3/4] transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+      {/* Sprinkles and Stars */}
       <div className="absolute inset-0">
-        {/* Top-left firework */}
-        <div className="absolute top-4 left-4 w-12 h-12">
-          <div className="absolute inset-0 bg-yellow-400 rounded-full opacity-50 blur-sm"></div>
-          <svg viewBox="0 0 100 100" className="absolute inset-0">
-            {[...Array(12)].map((_, i) => (
-              <line key={i} x1="50" y1="50" x2={50 + 45 * Math.cos(i * 30 * Math.PI / 180)} y2={50 + 45 * Math.sin(i * 30 * Math.PI / 180)} stroke="url(#grad1)" strokeWidth="2" />
-            ))}
-            <defs>
-              <linearGradient id="grad1">
-                <stop offset="0%" stopColor="rgba(252, 211, 77, 1)" />
-                <stop offset="100%" stopColor="rgba(252, 211, 77, 0)" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        {/* Bottom-right firework */}
-         <div className="absolute bottom-4 right-4 w-16 h-16">
-           <div className="absolute inset-0 bg-red-400 rounded-full opacity-50 blur-sm"></div>
-          <svg viewBox="0 0 100 100" className="absolute inset-0">
-            {[...Array(12)].map((_, i) => (
-              <line key={i} x1="50" y1="50" x2={50 + 45 * Math.cos(i * 30 * Math.PI / 180)} y2={50 + 45 * Math.sin(i * 30 * Math.PI / 180)} stroke="url(#grad2)" strokeWidth="2" />
-            ))}
-             <defs>
-              <linearGradient id="grad2">
-                <stop offset="0%" stopColor="rgba(248, 113, 113, 1)" />
-                <stop offset="100%" stopColor="rgba(248, 113, 113, 0)" />
-              </linearGradient>
-            </defs>
-          </svg>
-        </div>
-        {/* Sprinkles */}
-        <div className="absolute top-2 right-8 w-1 h-1 bg-red-400 rounded-full"></div>
-        <div className="absolute top-12 right-4 w-1 h-1 bg-green-400 rounded-full"></div>
-        <div className="absolute top-20 left-10 w-1.5 h-1.5 bg-blue-400 rounded-full"></div>
-        <div className="absolute bottom-10 left-4 w-1 h-1 bg-yellow-400 rounded-full"></div>
-         <div className="absolute bottom-24 right-12 w-1 h-1 bg-purple-400 rounded-full"></div>
+        {/* Stars */}
+        <svg className="absolute w-4 h-4 top-5 left-5 text-teal-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <svg className="absolute w-3 h-3 top-20 right-8 text-green-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        <svg className="absolute w-4 h-4 bottom-16 left-8 text-blue-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+         <svg className="absolute w-3 h-3 bottom-8 right-5 text-yellow-400" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+
+        {/* Dots */}
+        <div className="absolute top-10 left-12 w-1.5 h-1.5 bg-red-400 rounded-full"></div>
+        <div className="absolute top-4 right-10 w-1 h-1 bg-purple-400 rounded-full"></div>
+        <div className="absolute top-16 left-6 w-1 h-1 bg-yellow-400 rounded-full"></div>
+        <div className="absolute bottom-6 left-10 w-1.5 h-1.5 bg-teal-400 rounded-full"></div>
+        <div className="absolute bottom-20 right-4 w-1 h-1 bg-red-400 rounded-full"></div>
+        <div className="absolute bottom-12 left-20 w-1 h-1 bg-green-400 rounded-full"></div>
       </div>
       
       {/* Arch shape */}
@@ -117,7 +94,7 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col items-center bg-white">
+    <div className="flex flex-col items-center bg-background">
       {/* Hero Section */}
       <section className="relative w-full h-[50vh] md:h-[60vh] bg-gray-200">
         {heroImage && (
@@ -145,7 +122,7 @@ export default function Home() {
       </section>
 
       {/* Features Section */}
-      <section className="py-12 bg-white w-full">
+      <section className="py-12 bg-background w-full">
         <div className="container mx-auto">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
             {features.map((feature, index) => (
@@ -159,7 +136,7 @@ export default function Home() {
       </section>
       
       {/* Shop by Price Section */}
-      <section className="py-12 md:py-16 bg-white w-full">
+      <section className="py-12 md:py-16 bg-background w-full">
         <div className="container mx-auto px-4">
            <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-8 font-headline">
             Shop by Price
@@ -187,7 +164,7 @@ export default function Home() {
       </section>
 
       {/* Shop By Collection Section */}
-      <section className="py-12 md:py-16 bg-white w-full">
+      <section className="py-12 md:py-16 bg-background w-full">
         <div className="container mx-auto px-4">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-8 font-headline">
             Shop By Collection
@@ -250,5 +227,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
