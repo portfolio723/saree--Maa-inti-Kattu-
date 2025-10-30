@@ -49,15 +49,17 @@ export function Header() {
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            {navLinks.map(({ href, label }) => (
-              <Link key={label} href={href} className="transition-colors hover:text-primary">
-                {label}
-              </Link>
-            ))}
-        </nav>
+        <div className="flex-1 flex justify-center">
+            <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+                {navLinks.map(({ href, label }) => (
+                <Link key={label} href={href} className="transition-colors hover:text-primary">
+                    {label}
+                </Link>
+                ))}
+            </nav>
+        </div>
 
-        <div className="flex flex-1 items-center justify-end space-x-2">
+        <div className="flex flex-1 items-center justify-end space-x-4">
           <div className="hidden sm:block w-full flex-1 md:w-auto md:flex-none max-w-xs">
             <form>
               <div className="relative">
