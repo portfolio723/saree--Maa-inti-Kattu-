@@ -20,8 +20,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['var(--font-inter)', 'sans-serif'],
-        headline: ['var(--font-inter)', 'sans-serif'],
+        body: ['var(--font-open-sans)', 'sans-serif'],
+        headline: ['var(--font-open-sans)', 'sans-serif'],
         handwriting: ['var(--font-corinthia)', 'cursive'],
         code: ['monospace'],
       },
