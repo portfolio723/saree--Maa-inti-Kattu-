@@ -106,7 +106,7 @@ export function Footer() {
            <div className="flex items-center justify-center gap-4">
                <Image src="https://img.icons8.com/?size=100&id=aR9x0jE45v2C&format=png&color=000000" alt="SSKL Logo" width={60} height={20} className="object-contain" />
                <p className="text-sm text-muted-foreground">
-                  © Copyright {new Date().getFullYear()} Kalamandir. All Rights Reserved
+                  © Copyright {new Date().getFullYear()} Maa Inti Kattu. All Rights Reserved
                </p>
            </div>
         </div>
