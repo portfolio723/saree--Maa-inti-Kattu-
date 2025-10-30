@@ -1,3 +1,64 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "A festive background for the hero section",
+      "imageUrl": "https://images.unsplash.com/photo-1519750783826-e2420f4d687f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxjZWxlYnJhdGlvbiUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzYxNzMwNzg3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "celebration background"
+    },
+    {
+      "id": "product-1",
+      "description": "A beautiful handcrafted saree",
+      "imageUrl": "https://images.unsplash.com/photo-1641699862936-be9f49b1c38d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzaWxrJTIwc2FyZWV8ZW58MHx8fHwxNzYxNzc3NzQwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "silk saree"
+    },
+    {
+      "id": "product-2",
+      "description": "Elegant gold earrings",
+      "imageUrl": "https://images.unsplash.com/photo-1633934542430-0905ccb5f050?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnb2xkJTIwamV3ZWxyeXxlbnwwfHx8fDE3NjE3MjU4MDV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gold jewelry"
+    },
+    {
+      "id": "product-3",
+      "description": "Handmade pottery",
+      "imageUrl": "https://images.unsplash.com/photo-1661004286870-53a33a2ad3df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxoYW5kbWFkZSUyMHBvdHRlcnl8ZW58MHx8fHwxNzYxNzc3MzYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "handmade pottery"
+    },
+    {
+      "id": "product-4",
+      "description": "Spices from India",
+      "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBzcGljZXN8ZW58MHx8fHwxNzYxODA2MDE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "indian spices"
+    },
+    {
+      "id": "product-5",
+      "description": "Traditional painting",
+      "imageUrl": "https://images.unsplash.com/photo-1714248375969-a48cdc603a3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8aW5kaWFuJTIwYXJ0fGVufDB8fHx8MTc2MTgxMTQzN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "indian art"
+    },
+    {
+      "id": "product-6",
+      "description": "Embroidered cushion cover",
+      "imageUrl": "https://images.unsplash.com/photo-1586758828968-6434d3dd4dfd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjdXNoaW9uJTIwY292ZXJ8ZW58MHx8fHwxNzYxODExNDM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cushion cover"
+    },
+    {
+      "id": "avatar-1",
+      "description": "User avatar",
+      "imageUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjE4MDM0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "avatar-2",
+      "description": "User avatar",
+      "imageUrl": "https://images.unsplash.com/photo-1594672830234-ba4cfe1202dc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bWFuJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzYxNzU2MzYxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "avatar-3",
+      "description": "User avatar",
+      "imageUrl": "https://images.unsplash.com/photo-1607529378676-a20456ee2f6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwZXJzb24lMjBzbWlsaW5nfGVufDB8fHx8MTc2MTc2MDc2MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person smiling"
+    }
+  ]
 }
