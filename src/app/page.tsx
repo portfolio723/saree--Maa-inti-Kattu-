@@ -1,5 +1,4 @@
 
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -84,7 +83,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center bg-background">
       {/* Hero Section */}
-      <section className="relative w-full h-[60vh] md:h-screen bg-gray-200">
+      <section className="relative w-full h-screen bg-gray-200">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
@@ -103,7 +102,7 @@ export default function Home() {
       {/* Features Section */}
       <section className="py-12 bg-background w-full">
         <div className="container mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-center">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 justify-items-center">
             {features.map((feature, index) => (
               <div key={index} className="flex flex-col items-center text-center">
                 {feature.icon}
@@ -158,7 +157,7 @@ export default function Home() {
                 }
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-end p-4 text-center">
                     <h3 className="text-xl font-bold text-white font-headline">{collection.name}</h3>
-                    <span className="mt-2 text-sm font-semibold text-white underline">SHOP NOW</span>
+                    <span className="mt-2 text-sm font-semibold text-black bg-white px-4 py-2 rounded">SHOP NOW</span>
                 </div>
               </Link>
             )})}
@@ -206,7 +205,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
-
-    
