@@ -2,44 +2,44 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "A festive background for the hero section",
-      "imageUrl": "https://images.unsplash.com/photo-1519750783826-e2420f4d687f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxjZWxlYnJhdGlvbiUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzYxNzMwNzg3fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "celebration background"
+      "description": "Pay day sale on sarees",
+      "imageUrl": "https://picsum.photos/seed/hero-sale/1920/600",
+      "imageHint": "saree sale"
     },
     {
       "id": "product-1",
       "description": "A beautiful handcrafted saree",
-      "imageUrl": "https://images.unsplash.com/photo-1641699862936-be9f49b1c38d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzaWxrJTIwc2FyZWV8ZW58MHx8fHwxNzYxNzc3NzQwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzaWxrJTIwc2FyZWV8ZW58MHx8fHwxNzYxNzc3NzQwfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "silk saree"
     },
     {
       "id": "product-2",
       "description": "Elegant gold earrings",
-      "imageUrl": "https://images.unsplash.com/photo-1633934542430-0905ccb5f050?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnb2xkJTIwamV3ZWxyeXxlbnwwfHx8fDE3NjE3MjU4MDV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxnb2xkJTIwamV3ZWxyeXxlbnwwfHx8fDE3NjE3MjU4MDV8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "gold jewelry"
     },
     {
       "id": "product-3",
       "description": "Handmade pottery",
-      "imageUrl": "https://images.unsplash.com/photo-1661004286870-53a33a2ad3df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxoYW5kbWFkZSUyMHBvdHRlcnl8ZW58MHx8fHwxNzYxNzc3MzYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1715049953874-8fe5ccab9cfb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxoYW5kbWFkZSUyMHBvdHRlcnl8ZW58MHx8fHwxNzYxNzc3MzYwfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "handmade pottery"
     },
     {
       "id": "product-4",
       "description": "Spices from India",
-      "imageUrl": "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjBzcGljZXN8ZW58MHx8fHwxNzYxODA2MDE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1606914469725-e398d2f1d7ee?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxpbmRpYW4lMjBzcGljZXN8ZW58MHx8fHwxNzYxODA2MDE1fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "indian spices"
     },
     {
       "id": "product-5",
       "description": "Traditional painting",
-      "imageUrl": "https://images.unsplash.com/photo-1714248375969-a48cdc603a3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8aW5kaWFuJTIwYXJ0fGVufDB8fHx8MTc2MTgxMTQzN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1719498481691-d78f24dcff1b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxpbmRpYW4lMjBhcnR8ZW58MHx8fHwxNzYxODExNDM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "indian art"
     },
     {
       "id": "product-6",
       "description": "Embroidered cushion cover",
-      "imageUrl": "https://images.unsplash.com/photo-1586758828968-6434d3dd4dfd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjdXNoaW9uJTIwY292ZXJ8ZW58MHx8fHwxNzYxODExNDM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1655149555289-f3ec4fff6ab3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjdXNoaW9uJTIwY292ZXJ8ZW58MHx8fHwxNzYxODExNDM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "cushion cover"
     },
     {
@@ -59,6 +59,30 @@
       "description": "User avatar",
       "imageUrl": "https://images.unsplash.com/photo-1607529378676-a20456ee2f6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwZXJzb24lMjBzbWlsaW5nfGVufDB8fHx8MTc2MTc2MDc2MXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "person smiling"
+    },
+    {
+      "id": "collection-banarasi",
+      "description": "Banarasi Saree collection",
+      "imageUrl": "https://images.unsplash.com/photo-1732381917488-39f31539cd4f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8YmFuYXJhc2klMjBzYXJlZXxlbnwwfHx8fDE3NjE4MTI1NTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "banarasi saree"
+    },
+    {
+      "id": "collection-work",
+      "description": "Work Sarees collection",
+      "imageUrl": "https://images.unsplash.com/photo-1637176594894-13e5da4866e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3b3JrJTIwc2FyZWV8ZW58MHx8fHwxNzYxODEyNTUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "work saree"
+    },
+    {
+      "id": "collection-georgette",
+      "description": "Georgette Saree collection",
+      "imageUrl": "https://images.unsplash.com/photo-1712239010193-62eff6fb13f3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Z2VvcmdldHRlJTIwc2FyZWV8ZW58MHx8fHwxNzYxODEyNTUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "georgette saree"
+    },
+    {
+      "id": "collection-kancheepuram-2",
+      "description": "Kancheepuram Saree collection",
+      "imageUrl": "https://images.unsplash.com/photo-1740727263526-106ea10a355a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxrYW5jaGVlcHVyYW0lMjBzYXJlZXxlbnwwfHx8fDE3NjE4MTI1NTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "kancheepuram saree"
     }
   ]
 }
