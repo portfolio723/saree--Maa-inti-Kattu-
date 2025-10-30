@@ -73,8 +73,14 @@ export default function Home() {
       ),
       text: 'Certified with Silk Mark' 
     },
-    { icon: <Headset className="h-10 w-10 text-gray-700" />, text: 'Expert customer support' },
-    { icon: <Truck className="h-10 w-10 text-gray-700" />, text: 'Free shipping within India' },
+    { 
+      icon: <Image src="/st3.png" alt="Expert customer support" width={40} height={40} className="h-10 w-10 text-gray-700" />, 
+      text: 'Expert customer support' 
+    },
+    { 
+      icon: <Image src="/st4.png" alt="Free shipping within India" width={40} height={40} className="h-10 w-10 text-gray-700" />, 
+      text: 'Free shipping within India' 
+    },
     { 
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
@@ -88,7 +94,7 @@ export default function Home() {
   return (
     <div className="flex flex-col items-center bg-background">
       {/* Hero Section */}
-      <section className="relative w-full h-[70vh] md:h-screen bg-gray-200">
+      <section className="relative w-full h-screen bg-gray-200">
         {heroImage && (
           <Image
             src={heroImage.imageUrl}
