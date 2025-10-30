@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Search, ShoppingCart, User, Menu } from 'lucide-react';
+import { Menu, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -60,14 +60,6 @@ export function Header() {
         </div>
 
         <div className="flex flex-1 items-center justify-end space-x-4">
-          <div className="hidden sm:block w-full flex-1 md:w-auto md:flex-none max-w-xs">
-            <form>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input type="search" placeholder="Search products..." className="pl-9" />
-              </div>
-            </form>
-          </div>
         </div>
       </div>
     </header>
