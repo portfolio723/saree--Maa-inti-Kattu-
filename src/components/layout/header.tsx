@@ -42,14 +42,14 @@ export function Header() {
           </Sheet>
         </div>
         
-        <div className="hidden md:flex items-center justify-start flex-1">
+        <div className="flex items-center justify-start flex-1">
           <Link href="/" className="flex items-center space-x-2">
             <Logo className="h-8 w-8 text-primary" />
             <span className="hidden font-bold sm:inline-block font-headline text-lg">Maa Inti Kattu</span>
           </Link>
         </div>
 
-        <div className="flex-1 flex justify-center">
+        <div className="flex flex-1 items-center justify-end space-x-4">
             <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
                 {navLinks.map(({ href, label }) => (
                 <Link key={label} href={href} className="transition-colors hover:text-primary">
@@ -57,9 +57,6 @@ export function Header() {
                 </Link>
                 ))}
             </nav>
-        </div>
-
-        <div className="flex flex-1 items-center justify-end space-x-4">
         </div>
       </div>
     </header>
