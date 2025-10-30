@@ -44,11 +44,11 @@ export function Footer() {
               <Phone className="h-6 w-6 text-primary"/>
               <span className="font-semibold text-lg">9852 9852 99</span>
             </div>
-            <a href="mailto:hello@kalamandir.com" className="text-sm text-muted-foreground hover:text-primary">hello@kalamandir.com</a>
+            <a href="mailto:visit@maaintikattu.com" className="text-sm text-muted-foreground hover:text-primary">visit@maaintikattu.com</a>
             <div className="flex space-x-4 pt-2">
               <Link href="#" className="text-muted-foreground hover:text-primary"><Facebook className="h-5 w-5" /></Link>
               <Link href="#" className="text-muted-foreground hover:text-primary"><Instagram className="h-5 w-5" /></Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary"><Youtube className="h-5 w-5" /></Link>
+              <Link href="#" className="text-muted-foreground hovertext-primary"><Youtube className="h-5 w-5" /></Link>
             </div>
           </div>
           
