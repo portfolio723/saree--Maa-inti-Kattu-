@@ -111,15 +111,6 @@ export default function Home() {
         )}
         <div className="absolute inset-0 bg-black/40" />
         <div className="relative h-full flex flex-col items-center justify-center text-center p-8">
-          <div className="max-w-md space-y-4">
-             <h1 className="text-4xl md:text-6xl font-bold font-headline leading-tight text-white drop-shadow-lg">
-                Pay Day Sale
-              </h1>
-              <p className="text-lg md:text-xl text-white">From 31st Oct to 2nd Nov</p>
-              <Button asChild size="lg" className="bg-white text-black hover:bg-gray-200">
-                <Link href="/products">Shop Now</Link>
-              </Button>
-          </div>
         </div>
       </section>
 
@@ -175,7 +166,7 @@ export default function Home() {
             {collections.map((collection) => {
               const image = PlaceHolderImages.find(img => img.id === collection.id);
               return (
-              <Link href={collection.href} key={collection.name} className="group relative block h-64 md:h-96 overflow-hidden rounded-none">
+              <Link href={collection.href} key={collection.name} className="group relative block h-64 md:h-96 overflow-hidden">
                 {image && 
                     <Image src={image.imageUrl} alt={collection.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={image.imageHint} />
                 }
