@@ -71,8 +71,8 @@ export function Header() {
           isHeaderOpaque ? "bg-white text-black shadow-md" : "bg-transparent text-white"
       )}>
         <div className="flex items-center flex-1 md:flex-initial">
-          <Link href="/" className="flex items-center">
-            <Image src="https://miro.medium.com/v2/resize:fit:246/format:webp/1*pHF5KzQmHRkpZQ7-ntgZ8w.png" alt="Lazywear India - online store for comfortable and affordable casual wear" width={100} height={40} className={cn("object-contain", !isHeaderOpaque && "brightness-0 invert")} />
+          <Link href="/" className="flex items-center text-lg md:text-xl font-bold font-headline">
+            Maa Inti Kattu
           </Link>
         </div>
 
@@ -113,7 +113,7 @@ export function Header() {
                 <Button variant="ghost" size="icon" className="hover:bg-white/20 rounded-full">
                   <Avatar className="h-8 w-8">
                      <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? 'User'} />
-                     <AvatarFallback className={cn("bg-transparent", isHeaderOpaque ? "text-black": "text-white")}>
+                     <AvatarFallback className={cn("bg-transparent border", isHeaderOpaque ? "border-black text-black": "border-white text-white")}>
                        {user.displayName ? user.displayName.charAt(0).toUpperCase() : <User className="h-5 w-5" />}
                      </AvatarFallback>
                   </Avatar>
@@ -181,8 +181,8 @@ export function Header() {
               </SheetTrigger>
               <SheetContent side="right" className="w-full bg-white p-0">
                 <SheetHeader className="flex flex-row justify-between items-center p-4 border-b">
-                   <Link href="/" className="flex items-center" onClick={() => setMenuOpen(false)}>
-                      <Image src="https://miro.medium.com/v2/resize:fit:246/format:webp/1*pHF5KzQmHRkpZQ7-ntgZ8w.png" alt="Lazywear India - Comfortable Clothing Store Logo" width={100} height={40} className="object-contain" />
+                   <Link href="/" className="flex items-center text-lg md:text-xl font-bold font-headline" onClick={() => setMenuOpen(false)}>
+                      Maa Inti Kattu
                   </Link>
                   <SheetTitle className="sr-only">Menu</SheetTitle>
                   <SheetClose asChild>

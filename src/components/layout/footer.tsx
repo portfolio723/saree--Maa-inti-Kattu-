@@ -28,8 +28,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           
           <div className="lg:col-span-1 flex flex-col items-start space-y-4 text-left">
-            <Link href="/" className="flex items-center space-x-2">
-              <Image src="https://miro.medium.com/v2/resize:fit:246/format:webp/1*pHF5KzQmHRkpZQ7-ntgZ8w.png" alt="Kalamandir Logo" width={120} height={48} className="object-contain"/>
+            <Link href="/" className="flex items-center space-x-2 text-xl md:text-2xl font-bold font-headline">
+              Maa Inti Kattu
             </Link>
             <div className="flex items-center gap-3 pt-4">
               <Phone className="h-6 w-6 text-primary"/>
