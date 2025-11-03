@@ -1,10 +1,81 @@
+'use client';
+
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useForm, FormProvider } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { z } from 'zod';
+import { useAuth, initiateEmailSignUp, setDocumentNonBlocking, doc, useFirestore } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useToast } from '@/hooks/use-toast';
+import { Auth, onAuthStateChanged } from 'firebase/auth';
+
+const signupSchema = z.object({
+  name: z.string().min(1, { message: 'Name is required' }),
+  email: z.string().email({ message: 'Invalid email address.' }),
+  password: z.string().min(6, { message: 'Password must be at least 6 characters.' }),
+});
+
+type SignupFormValues = z.infer<typeof signupSchema>;
+
+async function createUserProfile(auth: Auth, firestore: any, name: string) {
+    return new Promise((resolve, reject) => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                unsubscribe();
+                const userProfile = {
+                    id: user.uid,
+                    email: user.email,
+                    name: name,
+                    address: '',
+                    phoneNumber: '',
+                    profileImageUrl: '',
+                };
+                const userDocRef = doc(firestore, 'users', user.uid);
+                setDocumentNonBlocking(userDocRef, userProfile, { merge: true });
+                resolve(user);
+            }
+        }, reject);
+    });
+}
+
 
 export default function SignupPage() {
+  const auth = useAuth();
+  const firestore = useFirestore();
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const form = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
+  });
+
+  const onSubmit = async (data: SignupFormValues) => {
+    try {
+      initiateEmailSignUp(auth, data.email, data.password);
+      await createUserProfile(auth, firestore, data.name);
+      toast({
+        title: 'Account Created!',
+        description: 'You have been successfully signed up.',
+      });
+      router.push('/account');
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Uh oh! Something went wrong.',
+        description: error.message || 'There was a problem with your request.',
+      });
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-14rem)] py-12">
       <Card className="w-full max-w-sm">
@@ -12,29 +83,62 @@ export default function SignupPage() {
           <CardTitle className="text-2xl font-headline">Create an Account</CardTitle>
           <CardDescription>Join our community to start shopping.</CardDescription>
         </CardHeader>
-        <CardContent className="grid gap-4">
-          <div className="grid gap-2">
-            <Label htmlFor="name">Name</Label>
-            <Input id="name" placeholder="Your Name" required />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="you@example.com" required />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" required />
-          </div>
-        </CardContent>
-        <CardFooter className="flex flex-col gap-4">
-          <Button className="w-full">Sign Up</Button>
-          <div className="text-center text-sm">
-            Already have an account?{' '}
-            <Link href="/login" className="underline hover:text-primary">
-              Sign in
-            </Link>
-          </div>
-        </CardFooter>
+        <FormProvider {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <CardContent className="grid gap-4">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Your Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="you@example.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </CardContent>
+            <CardFooter className="flex flex-col gap-4">
+              <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                Sign Up
+              </Button>
+              <div className="text-center text-sm">
+                Already have an account?{' '}
+                <Link href="/login" className="underline hover:text-primary">
+                  Sign in
+                </Link>
+              </div>
+            </CardFooter>
+          </form>
+        </FormProvider>
       </Card>
     </div>
   );
