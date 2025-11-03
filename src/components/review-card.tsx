@@ -42,7 +42,7 @@ export function ReviewCard({ review }: ReviewCardProps) {
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-sm text-foreground/80">{review.text}</p>
+        <p className="text-sm md:text-base text-foreground/80">{review.text}</p>
       </CardContent>
       <Separator className="my-2" />
       <CardFooter className="flex items-center justify-between p-4">

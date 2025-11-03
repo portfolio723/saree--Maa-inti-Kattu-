@@ -3,7 +3,7 @@
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useFirestore, updateDocumentNonBlocking } from '@/firebase';
+import { useFirestore, updateDocumentNonBlocking, useAuth } from '@/firebase';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
@@ -12,11 +12,10 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { User, updateProfile } from 'firebase/auth';
+import { User as FirebaseUser, updateProfile } from 'firebase/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Camera } from 'lucide-react';
+import { Camera, User } from 'lucide-react';
 import React, { useRef, useState } from 'react';
-import { useAuth } from '@/firebase';
 
 const profileSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -112,7 +111,7 @@ export function ProfileForm({ userProfile }: ProfileFormProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="font-headline">Personal Information</CardTitle>
+        <CardTitle className="font-headline text-xl md:text-2xl">Personal Information</CardTitle>
         <CardDescription>Update your profile details here.</CardDescription>
       </CardHeader>
       <CardContent>
@@ -121,10 +120,10 @@ export function ProfileForm({ userProfile }: ProfileFormProps) {
 
             <div className="flex items-center gap-4">
               <div className="relative">
-                <Avatar className="h-24 w-24 cursor-pointer" onClick={handleAvatarClick}>
+                <Avatar className="h-20 w-20 md:h-24 md:w-24 cursor-pointer" onClick={handleAvatarClick}>
                     <AvatarImage src={avatarUrl} alt={userProfile.name} />
                     <AvatarFallback className="text-3xl bg-primary text-primary-foreground">
-                    {userProfile.name?.charAt(0).toUpperCase() || 'U'}
+                    {userProfile.name?.charAt(0).toUpperCase() || <User className="h-8 w-8" />}
                     </AvatarFallback>
                 </Avatar>
                 <div 
@@ -143,8 +142,8 @@ export function ProfileForm({ userProfile }: ProfileFormProps) {
                 />
               </div>
               <div className="space-y-1">
-                 <h3 className="text-xl font-bold">{userProfile.name}</h3>
-                 <p className="text-muted-foreground">{userProfile.email}</p>
+                 <h3 className="text-lg md:text-xl font-bold">{userProfile.name}</h3>
+                 <p className="text-sm md:text-base text-muted-foreground">{userProfile.email}</p>
                  <Button type="button" variant="outline" size="sm" onClick={handleAvatarClick} disabled={isUploading}>
                     {isUploading ? 'Uploading...' : 'Change Picture'}
                  </Button>

@@ -23,6 +23,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -49,7 +50,7 @@ export function Header() {
     } else {
       setHeaderOpaque(true);
     }
-  }, [isHomePage]);
+  }, [pathname, isHomePage]);
   
   const handleLogout = () => {
     auth.signOut();
@@ -66,7 +67,7 @@ export function Header() {
   return (
     <>
       <header className={cn(
-          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-6 transition-all duration-300",
+          "fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-4 md:px-6 transition-all duration-300",
           isHeaderOpaque ? "bg-white text-black shadow-md" : "bg-transparent text-white"
       )}>
         <div className="flex items-center flex-1 md:flex-initial">
@@ -75,7 +76,7 @@ export function Header() {
           </Link>
         </div>
 
-        <nav className="hidden md:flex items-center justify-center gap-6 flex-1">
+        <nav className="hidden md:flex items-center justify-center gap-4 lg:gap-6 flex-1">
           {navLinks.map(link => (
              <Link key={link.label} href={link.href} className="text-sm font-semibold tracking-wider uppercase hover:text-primary/70 transition-colors">
               {link.label}
@@ -109,8 +110,13 @@ export function Header() {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="hover:bg-white/20">
-                  <User className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="hover:bg-white/20 rounded-full">
+                  <Avatar className="h-8 w-8">
+                     <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? 'User'} />
+                     <AvatarFallback className={cn("bg-primary text-primary-foreground", isHeaderOpaque ? "bg-primary text-primary-foreground": "bg-white text-black")}>
+                       {user.displayName ? user.displayName.charAt(0).toUpperCase() : <User className="h-5 w-5" />}
+                     </AvatarFallback>
+                  </Avatar>
                   <span className="sr-only">Account</span>
                 </Button>
               </DropdownMenuTrigger>
@@ -188,7 +194,7 @@ export function Header() {
                 </SheetHeader>
                 <nav className="flex flex-col items-start gap-6 p-4">
                   {navLinks.map(link => (
-                    <Link key={link.label} href={link.href} className="text-lg font-semibold tracking-wider uppercase hover:text-primary/70 transition-colors" onClick={() => setMenuOpen(false)}>
+                    <Link key={link.label} href={link.href} className="text-base font-semibold tracking-wider uppercase hover:text-primary/70 transition-colors" onClick={() => setMenuOpen(false)}>
                       {link.label}
                     </Link>
                   ))}

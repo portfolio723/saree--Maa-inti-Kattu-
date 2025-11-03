@@ -61,15 +61,15 @@ export default function ProductsPage() {
   return (
     <div className="container py-8">
       <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold font-headline text-primary">Our Collection</h1>
-        <p className="mt-2 text-lg text-muted-foreground">Browse our handcrafted and authentic products.</p>
+        <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Our Collection</h1>
+        <p className="mt-2 text-base md:text-lg text-muted-foreground">Browse our handcrafted and authentic products.</p>
       </div>
 
       <div className="flex flex-col md:flex-row gap-8">
         <aside className="w-full md:w-1/4 lg:w-1/5">
           <Card>
             <CardHeader>
-              <CardTitle className="font-headline text-xl">Filters</CardTitle>
+              <CardTitle className="font-headline text-lg md:text-xl">Filters</CardTitle>
             </CardHeader>
             <CardContent className="space-y-6">
               <div>
@@ -82,7 +82,7 @@ export default function ProductsPage() {
                         checked={selectedCategories.includes(category)}
                         onCheckedChange={() => handleCategoryChange(category)}
                       />
-                      <Label htmlFor={category} className="font-normal">{category}</Label>
+                      <Label htmlFor={category} className="font-normal text-sm md:text-base">{category}</Label>
                     </div>
                   ))}
                 </div>
@@ -138,7 +138,7 @@ export default function ProductsPage() {
           </div>
           {filteredProducts.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-lg text-muted-foreground">No products found matching your criteria.</p>
+              <p className="text-base md:text-lg text-muted-foreground">No products found matching your criteria.</p>
             </div>
           )}
         </main>

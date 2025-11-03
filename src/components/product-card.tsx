@@ -79,7 +79,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </Link>
       </CardHeader>
       <CardContent className="p-3 flex-grow flex flex-col items-start text-left">
-        <CardTitle className="text-xs font-medium leading-tight flex-grow uppercase text-muted-foreground">
+        <CardTitle className="text-xs md:text-sm font-medium leading-tight flex-grow uppercase text-muted-foreground">
           <Link href={`/products/${product.id}`} className="hover:text-primary transition-colors">{product.name}</Link>
         </CardTitle>
         <div className="flex items-baseline gap-2 mt-2">

@@ -78,7 +78,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         </div>
         <div className="flex flex-col gap-6">
           <div className="space-y-2">
-            <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">{product.name}</h1>
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold font-headline text-primary">{product.name}</h1>
             <div className="flex items-center gap-2 text-sm">
               <div className="flex items-center gap-0.5">
                 {[...Array(5)].map((_, i) => (
@@ -94,8 +94,8 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               <span className="text-muted-foreground">({product.reviewCount} reviews)</span>
             </div>
           </div>
-          <p className="text-foreground/80">{product.longDescription}</p>
-          <p className="text-3xl font-semibold text-primary">₹{product.price.toFixed(2)}</p>
+          <p className="text-base md:text-lg text-foreground/80">{product.longDescription}</p>
+          <p className="text-2xl md:text-3xl font-semibold text-primary">₹{product.price.toFixed(2)}</p>
 
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
@@ -128,7 +128,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         <div>
           <Card>
             <CardHeader>
-              <CardTitle className="font-headline">Write a Review</CardTitle>
+              <CardTitle className="font-headline text-xl md:text-2xl">Write a Review</CardTitle>
               <CardDescription>Share your thoughts about this product.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
