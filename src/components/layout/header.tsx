@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { useUser } from "@/firebase";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from "@/components/ui/sheet";
@@ -26,19 +27,33 @@ import {
 export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeaderOpaque, setHeaderOpaque] = useState(false);
   const { wishlist } = useWishlist();
   const { cart } = useCart();
   const { user } = useUser();
   const auth = useAuth();
+  const pathname = usePathname();
+
+  const isHomePage = pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+      setHeaderOpaque(window.scrollY > 10);
     };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+
+    if (isHomePage) {
+      window.addEventListener("scroll", handleScroll);
+      // Set initial state
+      handleScroll();
+      return () => window.removeEventListener("scroll", handleScroll);
+    } else {
+      setHeaderOpaque(true);
+    }
+  }, [isHomePage]);
+  
+  const handleLogout = () => {
+    auth.signOut();
+  };
 
   const navLinks = [
     { href: "/products", label: "Sarees" },
@@ -47,25 +62,16 @@ export function Header() {
     { href: "/blouses", label: "Blouses" },
     { href: "/exclusive", label: "Exclusive collections" },
   ];
-  
-  const handleLogout = () => {
-    auth.signOut();
-  };
-  
-  const getInitials = (name: string | null | undefined) => {
-    if (!name) return "U";
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
-  }
 
   return (
     <>
       <header className={cn(
           "fixed top-0 left-0 right-0 z-50 flex items-center justify-between h-16 px-6 transition-all duration-300",
-          isScrolled ? "bg-white text-black shadow-md" : "bg-transparent text-white"
+          isHeaderOpaque ? "bg-white text-black shadow-md" : "bg-transparent text-white"
       )}>
         <div className="flex items-center flex-1 md:flex-initial">
           <Link href="/" className="flex items-center">
-            <Image src="https://miro.medium.com/v2/resize:fit:246/format:webp/1*pHF5KzQmHRkpZQ7-ntgZ8w.png" alt="Lazywear India - online store for comfortable and affordable casual wear" width={100} height={40} className={cn("object-contain", !isScrolled && "brightness-0 invert")} />
+            <Image src="https://miro.medium.com/v2/resize:fit:246/format:webp/1*pHF5KzQmHRkpZQ7-ntgZ8w.png" alt="Lazywear India - online store for comfortable and affordable casual wear" width={100} height={40} className={cn("object-contain", !isHeaderOpaque && "brightness-0 invert")} />
           </Link>
         </div>
 
@@ -90,7 +96,7 @@ export function Header() {
                 {wishlist.length > 0 && (
                   <span className={cn(
                     "absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full text-xs",
-                    isScrolled ? "bg-destructive text-destructive-foreground" : "bg-white text-black"
+                    isHeaderOpaque ? "bg-destructive text-destructive-foreground" : "bg-white text-black"
                   )}>
                     {wishlist.length}
                   </span>
@@ -146,7 +152,7 @@ export function Header() {
                   {cart.length > 0 && (
                      <span className={cn(
                         "absolute -top-2 -right-2 flex h-4 w-4 items-center justify-center rounded-full text-xs",
-                        isScrolled ? "bg-black text-white" : "bg-white text-black"
+                        isHeaderOpaque ? "bg-black text-white" : "bg-white text-black"
                       )}>
                       {cart.reduce((acc, item) => acc + item.quantity, 0)}
                     </span>
