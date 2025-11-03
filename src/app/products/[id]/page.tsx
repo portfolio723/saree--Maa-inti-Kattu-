@@ -13,13 +13,11 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { useWishlist } from '@/hooks/use-wishlist';
-import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
   const product = products.find(p => p.id === params.id);
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
-  const { toast } = useToast();
   const [quantity, setQuantity] = useState(1);
 
   if (!product) {
@@ -31,7 +29,6 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
   const handleWishlistClick = () => {
     if (isInWishlist) {
       removeFromWishlist(product.id);
-      toast({ title: 'Removed from Wishlist', description: `${product.name} has been removed from your wishlist.` });
     } else {
       addToWishlist({
         id: product.id,
@@ -39,7 +36,6 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         price: product.price,
         image: product.images[0].imageUrl,
       });
-      toast({ title: 'Added to Wishlist', description: `${product.name} has been added to your wishlist.` });
     }
   };
 

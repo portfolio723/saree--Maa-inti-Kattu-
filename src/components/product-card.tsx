@@ -10,7 +10,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/hooks/use-wishlist';
 import { cn } from '@/lib/utils';
-import { useToast } from '@/hooks/use-toast';
 
 interface ProductCardProps {
   product: Product;
@@ -18,7 +17,6 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
-  const { toast } = useToast();
   const isInWishlist = wishlist.some((item) => item.id === product.id);
 
   const handleWishlistClick = (e: React.MouseEvent) => {
@@ -26,7 +24,6 @@ export function ProductCard({ product }: ProductCardProps) {
     e.stopPropagation();
     if (isInWishlist) {
       removeFromWishlist(product.id);
-      toast({ title: 'Removed from Wishlist', description: `${product.name} has been removed from your wishlist.` });
     } else {
       addToWishlist({
         id: product.id,
@@ -34,7 +31,6 @@ export function ProductCard({ product }: ProductCardProps) {
         price: product.price,
         image: product.images[0].imageUrl,
       });
-      toast({ title: 'Added to Wishlist', description: `${product.name} has been added to your wishlist.` });
     }
   };
 
