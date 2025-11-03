@@ -13,11 +13,15 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { useWishlist } from '@/hooks/use-wishlist';
+import { useCart } from '@/hooks/use-cart';
+import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
   const product = products.find(p => p.id === params.id);
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart();
+  const { toast } = useToast();
   const [quantity, setQuantity] = useState(1);
 
   if (!product) {
@@ -37,6 +41,19 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         image: product.images[0].imageUrl,
       });
     }
+  };
+
+  const handleAddToCart = () => {
+    addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0].imageUrl,
+    }, quantity);
+    toast({
+        title: "Added to cart",
+        description: `${quantity} x ${product.name} has been added to your cart.`,
+    });
   };
 
   return (
@@ -91,7 +108,7 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
               <span className="w-10 text-center text-lg font-semibold">{quantity}</span>
               <Button variant="outline" size="icon" onClick={() => setQuantity(q => q+1)}><Plus className="h-4 w-4" /></Button>
             </div>
-            <Button size="lg" className="flex-1 bg-accent text-accent-foreground hover:bg-accent/90">Add to Cart</Button>
+            <Button size="lg" className="flex-1" onClick={handleAddToCart}>Add to Cart</Button>
             <Button variant="outline" size="icon" onClick={handleWishlistClick}>
                 <Heart className={cn("h-5 w-5", isInWishlist ? 'text-red-500 fill-red-500' : 'text-gray-500')} />
                 <span className="sr-only">{isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}</span>

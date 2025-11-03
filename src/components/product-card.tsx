@@ -2,13 +2,15 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart } from 'lucide-react';
+import { Heart, ShoppingCart } from 'lucide-react';
 
 import type { Product } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/hooks/use-wishlist';
+import { useCart } from '@/hooks/use-cart';
+import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
 interface ProductCardProps {
@@ -17,6 +19,8 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const { addToCart } = useCart();
+  const { toast } = useToast();
   const isInWishlist = wishlist.some((item) => item.id === product.id);
 
   const handleWishlistClick = (e: React.MouseEvent) => {
@@ -33,6 +37,21 @@ export function ProductCard({ product }: ProductCardProps) {
       });
     }
   };
+  
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0].imageUrl,
+    });
+    toast({
+        title: "Added to cart",
+        description: `${product.name} has been added to your cart.`,
+    });
+  }
 
   const discountPercentage = 49;
   const discountedPrice = product.price * (1 - discountPercentage / 100);
@@ -57,6 +76,11 @@ export function ProductCard({ product }: ProductCardProps) {
           >
             <Heart className={cn("h-4 w-4", isInWishlist ? 'text-red-500 fill-red-500' : 'text-gray-500')} />
           </Button>
+          <div className="absolute bottom-0 left-0 right-0 p-2 flex justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <Button className="w-full" onClick={handleAddToCart}>
+                <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+            </Button>
+          </div>
         </Link>
       </CardHeader>
       <CardContent className="p-3 flex-grow flex flex-col items-start text-left">
