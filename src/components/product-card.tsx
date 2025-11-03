@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -10,7 +11,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/hooks/use-wishlist';
 import { useCart } from '@/hooks/use-cart';
-import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
 interface ProductCardProps {
@@ -20,7 +20,6 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
-  const { toast } = useToast();
   const isInWishlist = wishlist.some((item) => item.id === product.id);
 
   const handleWishlistClick = (e: React.MouseEvent) => {
@@ -46,10 +45,6 @@ export function ProductCard({ product }: ProductCardProps) {
         name: product.name,
         price: product.price,
         image: product.images[0].imageUrl,
-    });
-    toast({
-        title: "Added to cart",
-        description: `${product.name} has been added to your cart.`,
     });
   }
 

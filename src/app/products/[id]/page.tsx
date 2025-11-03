@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -14,14 +15,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { useWishlist } from '@/hooks/use-wishlist';
 import { useCart } from '@/hooks/use-cart';
-import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 
 export default function ProductDetailPage({ params }: { params: { id: string } }) {
   const product = products.find(p => p.id === params.id);
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
-  const { toast } = useToast();
   const [quantity, setQuantity] = useState(1);
 
   if (!product) {
@@ -50,10 +49,6 @@ export default function ProductDetailPage({ params }: { params: { id: string } }
         price: product.price,
         image: product.images[0].imageUrl,
     }, quantity);
-    toast({
-        title: "Added to cart",
-        description: `${quantity} x ${product.name} has been added to your cart.`,
-    });
   };
 
   return (
