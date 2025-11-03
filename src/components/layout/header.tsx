@@ -113,7 +113,7 @@ export function Header() {
                 <Button variant="ghost" size="icon" className="hover:bg-white/20 rounded-full">
                   <Avatar className="h-8 w-8">
                      <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? 'User'} />
-                     <AvatarFallback className={cn("bg-primary text-primary-foreground", isHeaderOpaque ? "bg-primary text-primary-foreground": "bg-white text-black")}>
+                     <AvatarFallback className={cn("bg-transparent", isHeaderOpaque ? "text-black": "text-white")}>
                        {user.displayName ? user.displayName.charAt(0).toUpperCase() : <User className="h-5 w-5" />}
                      </AvatarFallback>
                   </Avatar>
