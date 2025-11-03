@@ -12,6 +12,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
+import { FirebaseError } from 'firebase/auth';
+import { useEffect } from 'react';
+import { useUser } from '@/firebase';
+
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Invalid email address." }),
@@ -24,6 +28,7 @@ export default function LoginPage() {
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+  const { user } = useUser();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -33,17 +38,29 @@ export default function LoginPage() {
     },
   });
 
+  useEffect(() => {
+    if (user) {
+      router.push('/account');
+    }
+  }, [user, router]);
+
+
   const onSubmit = (data: LoginFormValues) => {
-    initiateEmailSignIn(auth, data.email, data.password);
-    toast({
-      title: "Signing in...",
-      description: "You will be redirected shortly.",
+    form.clearErrors();
+    initiateEmailSignIn(auth, data.email, data.password, (error: FirebaseError) => {
+        let title = 'An unknown error occurred.';
+        let description = 'Please try again.';
+        if (error.code === 'auth/invalid-credential' || error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+            title = 'Invalid Credentials';
+            description = 'The email or password you entered is incorrect. Please try again.';
+        }
+        toast({
+            variant: 'destructive',
+            title: title,
+            description: description,
+        });
+        form.reset();
     });
-    // The useUser hook will redirect to /account on successful login
-    // We can add a fallback redirect here after a timeout
-    setTimeout(() => {
-        router.push('/account');
-    }, 2000);
   };
 
   return (

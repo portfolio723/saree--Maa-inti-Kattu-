@@ -5,13 +5,14 @@ import { useRouter } from 'next/navigation';
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useAuth, initiateEmailSignUp, setDocumentNonBlocking, doc, useFirestore } from '@/firebase';
+import { useAuth, initiateEmailSignUp, setDocumentNonBlocking } from '@/firebase';
+import { doc, useFirestore } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Auth, onAuthStateChanged } from 'firebase/auth';
+import { Auth, onAuthStateChanged, FirebaseError } from 'firebase/auth';
 
 const signupSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
@@ -21,10 +22,10 @@ const signupSchema = z.object({
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
-async function createUserProfile(auth: Auth, firestore: any, name: string) {
+async function createUserProfile(auth: Auth, firestore: any, name: string, email: string) {
     return new Promise((resolve, reject) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
+            if (user && user.email === email) { // Ensure it's the correct user
                 unsubscribe();
                 const userProfile = {
                     id: user.uid,
@@ -59,20 +60,36 @@ export default function SignupPage() {
   });
 
   const onSubmit = async (data: SignupFormValues) => {
+    form.clearErrors();
+    const handleSignupError = (error: FirebaseError) => {
+        let title = 'Uh oh! Something went wrong.';
+        let description = error.message || 'There was a problem with your request.';
+
+        if (error.code === 'auth/email-already-in-use') {
+            title = 'Email Already Registered';
+            description = 'This email address is already associated with an account. Please sign in instead.';
+        }
+        
+        toast({
+            variant: 'destructive',
+            title: title,
+            description: description,
+        });
+    };
+
+    initiateEmailSignUp(auth, data.email, data.password, handleSignupError);
+
     try {
-      initiateEmailSignUp(auth, data.email, data.password);
-      await createUserProfile(auth, firestore, data.name);
-      toast({
-        title: 'Account Created!',
-        description: 'You have been successfully signed up.',
-      });
-      router.push('/account');
-    } catch (error: any) {
-      toast({
-        variant: 'destructive',
-        title: 'Uh oh! Something went wrong.',
-        description: error.message || 'There was a problem with your request.',
-      });
+        await createUserProfile(auth, firestore, data.name, data.email);
+        toast({
+            title: 'Account Created!',
+            description: 'You have been successfully signed up.',
+        });
+        router.push('/account');
+    } catch (error) {
+        // Errors from createUserProfile are usually from onAuthStateChanged and are less common
+        // The signup error handler above will catch most user-facing issues.
+        console.error("Error creating user profile:", error);
     }
   };
 
