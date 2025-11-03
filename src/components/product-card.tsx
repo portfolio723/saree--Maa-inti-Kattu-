@@ -1,17 +1,43 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
+import { Heart } from 'lucide-react';
 
 import type { Product } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { useWishlist } from '@/hooks/use-wishlist';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProductCardProps {
   product: Product;
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  // Assuming a discount for demonstration. In a real app, this would come from the product data.
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const { toast } = useToast();
+  const isInWishlist = wishlist.some((item) => item.id === product.id);
+
+  const handleWishlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isInWishlist) {
+      removeFromWishlist(product.id);
+      toast({ title: 'Removed from Wishlist', description: `${product.name} has been removed from your wishlist.` });
+    } else {
+      addToWishlist({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0].imageUrl,
+      });
+      toast({ title: 'Added to Wishlist', description: `${product.name} has been added to your wishlist.` });
+    }
+  };
+
   const discountPercentage = 49;
   const discountedPrice = product.price * (1 - discountPercentage / 100);
 
@@ -26,6 +52,15 @@ export function ProductCard({ product }: ProductCardProps) {
             className="object-cover transition-transform duration-300 group-hover:scale-105"
             data-ai-hint={product.images[0].imageHint}
           />
+           <Button
+            size="icon"
+            variant="secondary"
+            className="absolute top-2 right-2 h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity bg-white/80 hover:bg-white"
+            onClick={handleWishlistClick}
+            aria-label="Add to wishlist"
+          >
+            <Heart className={cn("h-4 w-4", isInWishlist ? 'text-red-500 fill-red-500' : 'text-gray-500')} />
+          </Button>
         </Link>
       </CardHeader>
       <CardContent className="p-3 flex-grow flex flex-col items-start text-left">
