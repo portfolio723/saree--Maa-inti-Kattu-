@@ -1,6 +1,7 @@
 'use client';
 
-import { useFirestore, collection, useCollection, useMemoFirebase } from '@/firebase';
+import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
+import { collection } from 'firebase/firestore';
 import type { Order } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -60,9 +61,9 @@ export function OrdersList({ userId }: OrdersListProps) {
                                     #{order.id.substring(0, 7)}...
                                 </Link>
                             </TableCell>
-                            <TableCell>{new Date(order.date).toLocaleDateString()}</TableCell>
+                            <TableCell>{new Date(order.orderDate).toLocaleDateString()}</TableCell>
                             <TableCell><Badge>{order.status}</Badge></TableCell>
-                            <TableCell className="text-right">₹{order.total.toFixed(2)}</TableCell>
+                            <TableCell className="text-right">₹{order.totalAmount.toFixed(2)}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

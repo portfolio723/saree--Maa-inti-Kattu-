@@ -3,7 +3,8 @@
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useFirestore, doc, updateDocumentNonBlocking } from '@/firebase';
+import { useFirestore, updateDocumentNonBlocking } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -42,6 +43,7 @@ export function ProfileForm({ userProfile }: ProfileFormProps) {
   });
 
   const onSubmit = (data: ProfileFormValues) => {
+    if (!userProfile?.id) return;
     const userDocRef = doc(firestore, 'users', userProfile.id);
     updateDocumentNonBlocking(userDocRef, data);
     toast({
