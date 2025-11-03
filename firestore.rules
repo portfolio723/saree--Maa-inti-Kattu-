@@ -93,7 +93,7 @@ service cloud.firestore {
      * @description Controls access to a single product document.
      * @path /products/{productId}
      * @allow (get) Anyone can read the product details.
-     * @deny (create, update, delete) No public create/update/delete permissions.
+     deny (create, update, delete) No public create/update/delete permissions.
      * @principle Allows public read access with restricted writes for product data.
      */
     match /products/{productId} {
@@ -112,6 +112,13 @@ service cloud.firestore {
     match /categories {
       allow get, list: if true;
       allow create, update, delete: if false;
+    }
+
+    match /profile-images/{userId}/{fileName} {
+      allow read: if true;
+      allow write: if request.auth.uid == userId
+                   && request.resource.size < 5 * 1024 * 1024 // 5MB limit
+                   && request.resource.contentType.matches('image/.*'); // Only allow images
     }
 
     // Helper functions
