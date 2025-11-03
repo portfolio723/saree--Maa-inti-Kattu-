@@ -1,0 +1,134 @@
+/**
+ * @fileoverview Firestore Security Rules for the Maa Inti Kattu application.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a strict user-ownership model for user profiles and orders,
+ * while allowing public read access to products, categories, and reviews.
+ * Administrative privileges for modifying products and categories are not implemented in this prototype.
+ *
+ * Data Structure:
+ * - /users/{userId}: Stores user profile information, accessible only by the user.
+ * - /users/{userId}/orders/{orderId}: Stores orders for a user, accessible only by that user.
+ * - /products: Stores product information, publicly readable.
+ * - /categories: Stores category information, publicly readable.
+ * - /products/{productId}/reviews/{reviewId}: Stores reviews for products, publicly readable,
+ *   but only the author can modify/delete their own review.
+ *
+ * Key Security Decisions:
+ * - User listing is implicitly denied.
+ * - Data validation is minimized in this prototype to allow for rapid schema iteration.
+ * - Admin privileges for product/category management are not yet implemented, requiring future expansion.
+ * - Timestamp validation is skipped in this prototype.
+ *
+ * Denormalization for Authorization: Not applicable, as path-based ownership and public read access
+ * patterns are used, eliminating the need for denormalization in this prototype.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Controls access to user profile documents.
+     * @path /users/{userId}
+     * @allow (create) User with UID 'user_abc' can create their profile document.
+     * @allow (get, update, delete) User with UID 'user_abc' can read, update, and delete their profile.
+     * @deny (create) User with UID 'user_xyz' cannot create a profile document with ID 'user_abc'.
+     * @deny (get, update, delete) User with UID 'user_xyz' cannot read, update, or delete the profile of user 'user_abc'.
+     * @principle Enforces document ownership based on the user ID in the path.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId);
+      allow update: if isExistingOwner(userId);
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to order documents within a user's profile.
+     * @path /users/{userId}/orders/{orderId}
+     * @allow (create) User with UID 'user_abc' can create a new order document under their profile.
+     * @allow (get, update, delete) User with UID 'user_abc' can read, update, and delete their own order.
+     * @deny (create) User with UID 'user_xyz' cannot create an order document under user 'user_abc''s profile.
+     * @deny (get, update, delete) User with UID 'user_xyz' cannot read, update, or delete orders belonging to user 'user_abc'.
+     * @principle Enforces document ownership based on the user ID in the path for nested order documents.
+     */
+    match /users/{userId}/orders/{orderId} {
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId);
+      allow update: if isExistingOwner(userId);
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to product review documents.
+     * @path /products/{productId}/reviews/{reviewId}
+     * @allow (get, list) Anyone can read the reviews.
+     * @allow (create) Any signed-in user can create a review for a product.
+     * @allow (update, delete) Only the user who created the review can modify or delete it.
+     * @deny (update, delete) Another user attempts to modify or delete a review created by someone else.
+     * @principle Allows public read access with owner-only writes for reviews.
+     */
+    match /products/{productId}/reviews/{reviewId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isReviewOwner(resource.data.userId);
+      allow delete: if isReviewOwner(resource.data.userId);
+    }
+
+    /**
+     * @description Controls access to product documents.
+     * @path /products
+     * @allow (get, list) Anyone can read the product details.
+     * @deny (create, update, delete) No public create/update/delete permissions.
+     * @principle Allows public read access with restricted writes for product data.
+     */
+    match /products {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+        /**
+     * @description Controls access to a single product document.
+     * @path /products/{productId}
+     * @allow (get) Anyone can read the product details.
+     * @deny (create, update, delete) No public create/update/delete permissions.
+     * @principle Allows public read access with restricted writes for product data.
+     */
+    match /products/{productId} {
+      allow get: if true;
+      allow list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Controls access to category documents.
+     * @path /categories
+     * @allow (get, list) Anyone can read the category details.
+     * @deny (create, update, delete) No public create/update/delete permissions.
+     * @principle Allows public read access with restricted writes for category data.
+     */
+    match /categories {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+
+    function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+    }
+
+    function isReviewOwner(userId) {
+        return isSignedIn() && request.auth.uid == userId && resource != null;
+    }
+  }
+}
