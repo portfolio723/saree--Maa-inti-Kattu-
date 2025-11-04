@@ -177,9 +177,6 @@
       },
       "required": [
         "id",
-        "firstName",
-        "lastName",
-        "email",
         "phoneNumber"
       ]
     },
@@ -231,7 +228,7 @@
   },
   "auth": {
     "providers": [
-      "password",
+      "phone",
       "anonymous"
     ]
   },

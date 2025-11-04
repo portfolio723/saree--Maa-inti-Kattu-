@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
 import { ConfirmationResult, FirebaseError } from 'firebase/auth';
-import { createUserProfile } from '@/app/signup/page';
+import { createUserProfile } from '@/lib/user-profile';
 import { useRouter } from 'next/navigation';
 import { CardContent } from '../ui/card';
 
@@ -32,6 +32,8 @@ export function PhoneSignIn() {
   const { toast } = useToast();
   const [confirmationResult, setConfirmationResult] = useState<ConfirmationResult | null>(null);
   const [isOtpSent, setIsOtpSent] = useState(false);
+  const [isVerifying, setIsVerifying] = useState(false);
+  const [isSending, setIsSending] = useState(false);
 
   const phoneForm = useForm<PhoneFormValues>({
     resolver: zodResolver(phoneSchema),
@@ -42,27 +44,46 @@ export function PhoneSignIn() {
     resolver: zodResolver(otpSchema),
     defaultValues: { otp: '' },
   });
+  
+  const handleSignInError = (error: FirebaseError) => {
+    console.error('Phone sign-in error:', error);
+    let title = 'An unknown error occurred';
+    let description = 'Please try again later.';
+
+    if (error.code === 'auth/operation-not-allowed') {
+        title = 'Sign-in method disabled';
+        description = 'Phone number sign-in is not enabled for this app.';
+    } else if (error.code === 'auth/invalid-phone-number') {
+        title = 'Invalid Phone Number';
+        description = 'The phone number you entered is not valid.';
+    } else if (error.code === 'auth/too-many-requests') {
+        title = 'Too Many Requests';
+        description = 'You have sent too many requests. Please try again later.';
+    }
+    
+    toast({
+        variant: 'destructive',
+        title: title,
+        description: description,
+    });
+    setIsSending(false);
+    setIsVerifying(false);
+  };
 
   const onPhoneSubmit = async (data: PhoneFormValues) => {
     phoneForm.clearErrors();
-    try {
-      const appVerifier = setupRecaptcha(auth, 'recaptcha-container');
-      const confirmation = await initiatePhoneNumberSignIn(auth, data.phoneNumber, appVerifier);
-      setConfirmationResult(confirmation);
+    setIsSending(true);
+    const appVerifier = setupRecaptcha(auth, 'recaptcha-container');
+
+    initiatePhoneNumberSignIn(auth, data.phoneNumber, appVerifier, (confirmation) => {
+      setConfirmationResult(confirmation as unknown as ConfirmationResult);
       setIsOtpSent(true);
       toast({
         title: 'OTP Sent',
         description: `An OTP has been sent to ${data.phoneNumber}.`,
       });
-    } catch (error) {
-      console.error('Phone sign-in error:', error);
-      const firebaseError = error as FirebaseError;
-      toast({
-        variant: 'destructive',
-        title: 'Error Sending OTP',
-        description: firebaseError.message || 'Please check the phone number and try again.',
-      });
-    }
+      setIsSending(false);
+    }, handleSignInError);
   };
 
   const onOtpSubmit = async (data: OtpFormValues) => {
@@ -71,6 +92,7 @@ export function PhoneSignIn() {
       toast({ variant: 'destructive', title: 'Something went wrong. Please try again.' });
       return;
     }
+    setIsVerifying(true);
     try {
       const result = await confirmationResult.confirm(data.otp);
       const user = result.user;
@@ -99,6 +121,8 @@ export function PhoneSignIn() {
         title: 'Invalid OTP',
         description: firebaseError.message || 'The OTP you entered is incorrect. Please try again.',
       });
+    } finally {
+        setIsVerifying(false);
     }
   };
 
@@ -121,8 +145,8 @@ export function PhoneSignIn() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={phoneForm.formState.isSubmitting}>
-                Send OTP
+              <Button type="submit" className="w-full" disabled={isSending}>
+                {isSending ? 'Sending OTP...' : 'Send OTP'}
               </Button>
             </CardContent>
           </form>
@@ -147,10 +171,10 @@ export function PhoneSignIn() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={otpForm.formState.isSubmitting}>
-                Verify OTP & Sign In
+              <Button type="submit" className="w-full" disabled={isVerifying}>
+                {isVerifying ? 'Verifying...' : 'Verify OTP & Sign In'}
               </Button>
-               <Button variant="link" size="sm" onClick={() => setIsOtpSent(false)}>
+               <Button variant="link" size="sm" onClick={() => {setIsOtpSent(false); setConfirmationResult(null);}}>
                 Change phone number
               </Button>
             </CardContent>

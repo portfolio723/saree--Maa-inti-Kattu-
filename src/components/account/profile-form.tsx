@@ -19,7 +19,7 @@ import React, { useRef, useState } from 'react';
 
 const profileSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  email: z.string().email(),
+  email: z.string().email().optional().or(z.literal('')),
   phoneNumber: z.string().optional(),
   address: z.string().optional(),
 });
@@ -142,8 +142,8 @@ export function ProfileForm({ userProfile }: ProfileFormProps) {
                 />
               </div>
               <div className="space-y-1">
-                 <h3 className="text-lg md:text-xl font-bold">{userProfile.name}</h3>
-                 <p className="text-sm md:text-base text-muted-foreground">{userProfile.email}</p>
+                 <h3 className="text-lg md:text-xl font-bold">{userProfile.name || 'User'}</h3>
+                 <p className="text-sm md:text-base text-muted-foreground">{userProfile.phoneNumber || userProfile.email}</p>
                  <Button type="button" variant="outline" size="sm" onClick={handleAvatarClick} disabled={isUploading}>
                     {isUploading ? 'Uploading...' : 'Change Picture'}
                  </Button>
@@ -157,7 +157,7 @@ export function ProfileForm({ userProfile }: ProfileFormProps) {
                 <FormItem>
                   <FormLabel>Full Name</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} placeholder="Your Name" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -168,9 +168,9 @@ export function ProfileForm({ userProfile }: ProfileFormProps) {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>Email (Optional)</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled />
+                    <Input {...field} placeholder="you@example.com"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -183,7 +183,7 @@ export function ProfileForm({ userProfile }: ProfileFormProps) {
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -196,7 +196,7 @@ export function ProfileForm({ userProfile }: ProfileFormProps) {
                 <FormItem>
                   <FormLabel>Address</FormLabel>
                   <FormControl>
-                    <Textarea {...field} />
+                    <Textarea {...field} placeholder="Your shipping address"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
