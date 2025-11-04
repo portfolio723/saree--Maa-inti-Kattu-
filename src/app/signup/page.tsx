@@ -12,7 +12,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { Auth, onAuthStateChanged, FirebaseError } from 'firebase/auth';
+import { Auth, onAuthStateChanged, FirebaseError, User } from 'firebase/auth';
 
 const signupSchema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
@@ -22,22 +22,33 @@ const signupSchema = z.object({
 
 type SignupFormValues = z.infer<typeof signupSchema>;
 
-async function createUserProfile(auth: Auth, firestore: any, name: string, email: string) {
+async function createUserProfile(auth: Auth, firestore: any, name: string | null, email: string | null, phone: string | null) {
     return new Promise((resolve, reject) => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user && user.email === email) { // Ensure it's the correct user
-                unsubscribe();
-                const userProfile = {
-                    id: user.uid,
-                    email: user.email,
-                    name: name,
-                    address: '',
-                    phoneNumber: '',
-                    profileImageUrl: '',
-                };
-                const userDocRef = doc(firestore, 'users', user.uid);
-                setDocumentNonBlocking(userDocRef, userProfile, { merge: true });
-                resolve(user);
+        const unsubscribe = onAuthStateChanged(auth, (user: User | null) => {
+            if (user) {
+                // Check if the user is the one we are waiting for.
+                // For email, we can match the email. For phone, we might not have it right away,
+                // so we rely on this being the most recent auth change.
+                const isEmailUser = email && user.email === email;
+                const isPhoneUser = phone && user.phoneNumber === phone;
+                
+                // Heuristic: If it's a new user without an email/phone set yet, but we expect one.
+                const isNewUser = !user.email && !user.displayName;
+
+                if (isEmailUser || isPhoneUser || (isNewUser && (email || phone))) {
+                    unsubscribe();
+                    const userProfile = {
+                        id: user.uid,
+                        email: user.email || email,
+                        name: name,
+                        address: '',
+                        phoneNumber: user.phoneNumber || phone,
+                        profileImageUrl: user.photoURL || '',
+                    };
+                    const userDocRef = doc(firestore, 'users', user.uid);
+                    setDocumentNonBlocking(userDocRef, userProfile, { merge: true });
+                    resolve(user);
+                }
             }
         }, reject);
     });
@@ -80,21 +91,19 @@ export default function SignupPage() {
     initiateEmailSignUp(auth, data.email, data.password, handleSignupError);
 
     try {
-        await createUserProfile(auth, firestore, data.name, data.email);
+        await createUserProfile(auth, firestore, data.name, data.email, null);
         toast({
             title: 'Account Created!',
             description: 'You have been successfully signed up.',
         });
         router.push('/account');
     } catch (error) {
-        // Errors from createUserProfile are usually from onAuthStateChanged and are less common
-        // The signup error handler above will catch most user-facing issues.
         console.error("Error creating user profile:", error);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-14rem)] py-12">
+    <div className="container flex items-center justify-center min-h-[calc(100vh-8rem)] py-12">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-headline">Create an Account</CardTitle>
@@ -160,3 +169,4 @@ export default function SignupPage() {
     </div>
   );
 }
+export { createUserProfile };

@@ -5,6 +5,9 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   FirebaseError,
+  RecaptchaVerifier,
+  signInWithPhoneNumber,
+  ConfirmationResult
 } from 'firebase/auth';
 
 /** Initiate anonymous sign-in (non-blocking). */
@@ -32,4 +35,25 @@ export function initiateEmailSignIn(
   onError?: (error: FirebaseError) => void
 ): void {
   signInWithEmailAndPassword(authInstance, email, password).catch(onError);
+}
+
+
+/** Sets up reCAPTCHA for phone authentication */
+export function setupRecaptcha(auth: Auth, elementId: string): RecaptchaVerifier {
+  const recaptchaVerifier = new RecaptchaVerifier(auth, elementId, {
+    'size': 'invisible',
+    'callback': (response: any) => {
+      // reCAPTCHA solved, allow signInWithPhoneNumber.
+    }
+  });
+  return recaptchaVerifier;
+}
+
+/** Initiates phone number sign-in, returns a confirmation result for OTP entry. */
+export async function initiatePhoneNumberSignIn(
+  auth: Auth,
+  phoneNumber: string,
+  appVerifier: RecaptchaVerifier
+): Promise<ConfirmationResult> {
+  return await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
 }
