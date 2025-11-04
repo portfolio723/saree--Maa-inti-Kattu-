@@ -25,13 +25,28 @@ export type Review = {
   downvotes: number;
 };
 
+export type CartItem = {
+  id: string;
+  name: string;
+  price: number;
+  image: string;
+  quantity: number;
+};
+
 export type Order = {
   id: string;
-  date: string;
-  status: 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
-  total: number;
-  items: {
-      product: Product;
-      quantity: number;
-  }[];
+  userId: string;
+  orderDate: string;
+  shippedDate?: string;
+  deliveredDate?: string;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered';
+  totalAmount: number;
+  shippingAddress: {
+    name: string;
+    address: string;
+    city: string;
+    state: string;
+    zip: string;
+  };
+  items: CartItem[];
 };

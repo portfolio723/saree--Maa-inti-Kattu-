@@ -1,13 +1,7 @@
 'use client';
 import { create } from 'zustand';
+import type { CartItem } from '@/lib/types';
 
-interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  quantity: number;
-}
 
 interface CartState {
   cart: CartItem[];

@@ -13,7 +13,7 @@ export default function CartPage() {
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   return (
-    <div className="container py-12">
+    <div className="container py-24 md:py-28">
       <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary mb-8">Shopping Cart</h1>
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2">
@@ -94,8 +94,8 @@ export default function CartPage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button className="w-full" disabled={cart.length === 0}>
-                Proceed to Checkout
+              <Button className="w-full" asChild disabled={cart.length === 0}>
+                <Link href="/checkout">Proceed to Checkout</Link>
               </Button>
             </CardFooter>
           </Card>

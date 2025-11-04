@@ -8,6 +8,7 @@ import {
   CollectionReference,
   DocumentReference,
   SetOptions,
+  WriteBatch,
 } from 'firebase/firestore';
 import { errorEmitter } from '@/firebase/error-emitter';
 import {FirestorePermissionError} from '@/firebase/errors';
@@ -16,18 +17,19 @@ import {FirestorePermissionError} from '@/firebase/errors';
  * Initiates a setDoc operation for a document reference.
  * Does NOT await the write operation internally.
  */
-export function setDocumentNonBlocking(docRef: DocumentReference, data: any, options: SetOptions) {
-  setDoc(docRef, data, options).catch(error => {
+export function setDocumentNonBlocking(docRef: DocumentReference, data: any, options?: SetOptions) {
+  const promise = options ? setDoc(docRef, data, options) : setDoc(docRef, data);
+  promise.catch(error => {
     errorEmitter.emit(
       'permission-error',
       new FirestorePermissionError({
         path: docRef.path,
-        operation: 'write', // or 'create'/'update' based on options
+        operation: options && 'merge' in options ? 'update' : 'create',
         requestResourceData: data,
       })
     )
-  })
-  // Execution continues immediately
+  });
+  return promise;
 }
 
 
@@ -36,14 +38,27 @@ export function setDocumentNonBlocking(docRef: DocumentReference, data: any, opt
  * Does NOT await the write operation internally.
  * Returns the Promise for the new doc ref, but typically not awaited by caller.
  */
-export function addDocumentNonBlocking(colRef: CollectionReference, data: any) {
-  const promise = addDoc(colRef, data)
-    .catch(error => {
+export function addDocumentNonBlocking(colRef: CollectionReference | DocumentReference, data: any) {
+  let promise;
+  let path;
+  let operation;
+
+  if (colRef.type === 'collection') {
+      promise = addDoc(colRef, data);
+      path = colRef.path;
+      operation = 'create' as const;
+  } else {
+      promise = setDoc(colRef, data);
+      path = colRef.path;
+      operation = 'create' as const;
+  }
+  
+  promise.catch(error => {
       errorEmitter.emit(
         'permission-error',
         new FirestorePermissionError({
-          path: colRef.path,
-          operation: 'create',
+          path: path,
+          operation: operation,
           requestResourceData: data,
         })
       )
@@ -85,5 +100,23 @@ export function deleteDocumentNonBlocking(docRef: DocumentReference) {
           operation: 'delete',
         })
       )
+    });
+}
+
+/**
+ * Commits a WriteBatch operation.
+ * Does NOT await the commit operation internally.
+ */
+export function commitBatchNonBlocking(batch: WriteBatch) {
+    batch.commit().catch(error => {
+        // Generic error for batch operations as we don't know the exact failed operation
+        console.error("Batch write failed:", error);
+         errorEmitter.emit(
+            'permission-error',
+            new FirestorePermissionError({
+                path: 'batch operation',
+                operation: 'write',
+            })
+        )
     });
 }
