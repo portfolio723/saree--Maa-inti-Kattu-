@@ -51,8 +51,8 @@ export function PhoneSignIn() {
     let description = 'Please try again later.';
 
     if (error.code === 'auth/operation-not-allowed') {
-        title = 'Sign-in method disabled';
-        description = 'Phone number sign-in is not enabled for this app.';
+        title = 'Sign-in Method Disabled';
+        description = 'Phone Number sign-in is not enabled for this app. Please enable it in your Firebase console under Authentication > Sign-in method.';
     } else if (error.code === 'auth/invalid-phone-number') {
         title = 'Invalid Phone Number';
         description = 'The phone number you entered is not valid.';
@@ -65,6 +65,7 @@ export function PhoneSignIn() {
         variant: 'destructive',
         title: title,
         description: description,
+        duration: 9000,
     });
     setIsSending(false);
     setIsVerifying(false);
@@ -73,6 +74,14 @@ export function PhoneSignIn() {
   const onPhoneSubmit = (data: PhoneFormValues) => {
     phoneForm.clearErrors();
     setIsSending(true);
+    
+    // Ensure reCAPTCHA is rendered and ready.
+    const recaptchaContainer = document.getElementById('recaptcha-container');
+    if (!recaptchaContainer) {
+        handleSignInError(new FirebaseError('auth/internal-error', 'reCAPTCHA container not found'));
+        return;
+    }
+    
     const appVerifier = setupRecaptcha(auth, 'recaptcha-container');
 
     initiatePhoneNumberSignIn(auth, data.phoneNumber, appVerifier, (confirmation) => {
@@ -181,7 +190,7 @@ export function PhoneSignIn() {
           </form>
         </FormProvider>
       )}
-      <div id="recaptcha-container" className="my-4"></div>
+      <div id="recaptcha-container" className="my-4 flex justify-center"></div>
     </>
   );
 }
