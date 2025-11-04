@@ -22,9 +22,12 @@ export function initiatePhoneNumberSignIn(
   auth: Auth,
   phoneNumber: string,
   appVerifier: RecaptchaVerifier,
+  onSuccess: (confirmationResult: ConfirmationResult) => void,
   onError: (error: FirebaseError) => void
 ): void {
-   signInWithPhoneNumber(auth, phoneNumber, appVerifier).catch(onError);
+   signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+    .then(onSuccess)
+    .catch(onError);
 }
 
 
