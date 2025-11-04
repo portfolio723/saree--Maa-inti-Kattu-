@@ -1,59 +1,120 @@
 /**
- * @fileoverview Firestore Security Rules for the Maa Inti Kattu application.
- *
- * Core Philosophy:
- * This ruleset enforces a strict user-ownership model for user profiles and orders,
- * while allowing public read access to products, categories, and reviews.
- * Administrative privileges for modifying products and categories are not implemented in this prototype.
+ * @file Firebase Security Rules for Maa Inti Kattu
+ * @description This ruleset enforces a strict user-ownership model for personal data (profiles, orders) and allows public read access to product and category information. Administrative privileges are granted based on the presence of a document in the `/roles_admin/{userId}` collection.
  *
  * Data Structure:
- * - /users/{userId}: Stores user profile information, accessible only by the user.
- * - /users/{userId}/orders/{orderId}: Stores orders for a user, accessible only by that user.
- * - /products: Stores product information, publicly readable.
- * - /categories: Stores category information, publicly readable.
- * - /products/{productId}/reviews/{reviewId}: Stores reviews for products, publicly readable,
- *   but only the author can modify/delete their own review.
+ * - `/products/{productId}`: Public product catalog.
+ * - `/categories/{categoryId}`: Public category list.
+ * - `/users/{userId}`: User profile (private).
+ * - `/users/{userId}/orders/{orderId}`: User orders (private).
+ * - `/users/{userId}/orders/{orderId}/orderItems/{orderItemId}`: Order items for a specific order (private).
+ * - `/reviews/{reviewId}`: Product reviews (publicly readable, owner-writeable). Contains denormalized `productId` and `userId`.
+ * - `/roles_admin/{userId}`: Indicates administrative privileges.
  *
  * Key Security Decisions:
- * - User listing is implicitly denied.
- * - Data validation is minimized in this prototype to allow for rapid schema iteration.
- * - Admin privileges for product/category management are not yet implemented, requiring future expansion.
- * - Timestamp validation is skipped in this prototype.
+ * - User listing is disallowed.
+ * - Public read access to products and categories.
+ * - Strict ownership enforcement for user profiles and orders.
+ * - Reviews are publicly readable but can only be created, updated, or deleted by the user who created them.
+ * - Admin privileges are determined by the existence of a document in `/roles_admin/{userId}`.
  *
- * Denormalization for Authorization: Not applicable, as path-based ownership and public read access
- * patterns are used, eliminating the need for denormalization in this prototype.
+ * Denormalization for Authorization:
+ * - Reviews include denormalized `productId` and `userId` fields to allow efficient authorization checks without additional reads.
+ *
+ * Structural Segregation:
+ * - User-specific data (profiles, orders) is stored under `/users/{userId}` to ensure privacy and simplify security rules.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Controls access to user profile documents.
-     * @path /users/{userId}
-     * @allow (create) User with UID 'user_abc' can create their profile document.
-     * @allow (get, update, delete) User with UID 'user_abc' can read, update, and delete their profile.
-     * @deny (create) User with UID 'user_xyz' cannot create a profile document with ID 'user_abc'.
-     * @deny (get, update, delete) User with UID 'user_xyz' cannot read, update, or delete the profile of user 'user_abc'.
-     * @principle Enforces document ownership based on the user ID in the path.
+     * @description Checks if the request is authenticated.
      */
-    match /users/{userId} {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * @description Checks if the authenticated user is the owner of the document based on the userId.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * @description Checks if the authenticated user is the owner of the existing document.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
+    /**
+     * @description Checks if the authenticated user has admin privileges.
+     */
+     function isAdmin() {
+        return exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+     }
+
+    /**
+     * @description Rules for the /products collection.
+     * @path /products/{productId}
+     * @allow (get, list): Any user can read product information.
+     * @allow (create): Only admins can create products. The request must come from an authenticated user with admin privileges.
+     * @allow (update, delete): Only admins can update or delete products. The request must come from an authenticated user with admin privileges.
+     * @deny (create): A non-admin user attempts to create a product.
+     * @principle Public read access with admin-only writes.
+     */
+    match /products/{productId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Rules for the /categories collection.
+     * @path /categories/{categoryId}
+     * @allow (get, list): Any user can read category information.
+     * @allow (create): Only admins can create categories. The request must come from an authenticated user with admin privileges.
+     * @allow (update, delete): Only admins can update or delete categories. The request must come from an authenticated user with admin privileges.
+     * @deny (create): A non-admin user attempts to create a category.
+     * @principle Public read access with admin-only writes.
+     */
+    match /categories/{categoryId} {
+      allow get, list: if true;
+      allow create: if isAdmin();
+      allow update: if isAdmin() && resource != null;
+      allow delete: if isAdmin() && resource != null;
+    }
+
+    /**
+     * @description Rules for the /users/{userId}/orders/{orderId} collection.
+     * @path /users/{userId}/orders/{orderId}
+     * @allow (get, list): Only the owner (user) can read their orders.
+     * @allow (create): Only the owner (user) can create orders under their user ID, and the userId field must match.
+     * @allow (update, delete): Only the owner (user) can update or delete their orders.
+     * @deny (create): A user attempts to create an order under another user's ID.
+     * @principle Enforces document ownership for writes.
+     */
+    match /users/{userId}/orders/{orderId} {
       allow get: if isOwner(userId);
-      allow list: if false;
-      allow create: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow create: if isOwner(userId) && request.resource.data.userId == userId;
       allow update: if isExistingOwner(userId);
       allow delete: if isExistingOwner(userId);
     }
 
     /**
-     * @description Controls access to order documents within a user's profile.
-     * @path /users/{userId}/orders/{orderId}
-     * @allow (create) User with UID 'user_abc' can create a new order document under their profile.
-     * @allow (get, update, delete) User with UID 'user_abc' can read, update, and delete their own order.
-     * @deny (create) User with UID 'user_xyz' cannot create an order document under user 'user_abc''s profile.
-     * @deny (get, update, delete) User with UID 'user_xyz' cannot read, update, or delete orders belonging to user 'user_abc'.
-     * @principle Enforces document ownership based on the user ID in the path for nested order documents.
+     * @description Rules for the /users/{userId}/orders/{orderId}/orderItems/{orderItemId} collection.
+     * @path /users/{userId}/orders/{orderId}/orderItems/{orderItemId}
+     * @allow (get, list): Only the owner (user) can read their order items.
+     * @allow (create): Only the owner (user) can create order items under their user ID.
+     * @allow (update, delete): Only the owner (user) can update or delete their order items.
+     * @deny (create): A user attempts to create an order item under another user's ID.
+     * @principle Enforces document ownership for writes.
      */
-    match /users/{userId}/orders/{orderId} {
+    match /users/{userId}/orders/{orderId}/orderItems/{orderItemId} {
       allow get: if isOwner(userId);
       allow list: if isOwner(userId);
       allow create: if isOwner(userId);
@@ -62,80 +123,56 @@ service cloud.firestore {
     }
 
     /**
-     * @description Controls access to product review documents.
-     * @path /products/{productId}/reviews/{reviewId}
-     * @allow (get, list) Anyone can read the reviews.
-     * @allow (create) Any signed-in user can create a review for a product.
-     * @allow (update, delete) Only the user who created the review can modify or delete it.
-     * @deny (update, delete) Another user attempts to modify or delete a review created by someone else.
-     * @principle Allows public read access with owner-only writes for reviews.
+     * @description Rules for the /users/{userId} collection.
+     * @path /users/{userId}
+     * @allow (get): Only the owner (user) can read their profile.
+     * @allow (create): Only the owner (user) can create their profile, and the userId field must match.
+     * @allow (update): Only the owner (user) can update their profile.
+     * @allow (delete): Only the owner (user) can delete their profile.
+     * @deny (create): A user attempts to create a profile for another user.
+     * @principle Enforces document ownership for writes.
      */
-    match /products/{productId}/reviews/{reviewId} {
-      allow get, list: if true;
-      allow create: if isSignedIn();
-      allow update: if isReviewOwner(resource.data.userId);
-      allow delete: if isReviewOwner(resource.data.userId);
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false;
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
     }
 
     /**
-     * @description Controls access to product documents.
-     * @path /products
-     * @allow (get, list) Anyone can read the product details.
-     * @deny (create, update, delete) No public create/update/delete permissions.
-     * @principle Allows public read access with restricted writes for product data.
+     * @description Rules for the /reviews collection.
+     * @path /reviews/{reviewId}
+     * @allow (get, list): Any user can read reviews.
+     * @allow (create): Only authenticated users can create reviews, and the userId field must match their auth.uid.
+     * @allow (update, delete): Only the owner (user) can update or delete their review.
+     * @deny (create): A user attempts to create a review for another user.
+     * @principle Public read access with owner-only writes.
      */
-    match /products {
+    match /reviews/{reviewId} {
       allow get, list: if true;
-      allow create, update, delete: if false;
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update: if isExistingOwner(resource.data.userId);
+      allow delete: if isExistingOwner(resource.data.userId);
     }
 
-        /**
-     * @description Controls access to a single product document.
-     * @path /products/{productId}
-     * @allow (get) Anyone can read the product details.
-     deny (create, update, delete) No public create/update/delete permissions.
-     * @principle Allows public read access with restricted writes for product data.
-     */
-    match /products/{productId} {
-      allow get: if true;
-      allow list: if true;
-      allow create, update, delete: if false;
-    }
-
-    /**
-     * @description Controls access to category documents.
-     * @path /categories
-     * @allow (get, list) Anyone can read the category details.
-     * @deny (create, update, delete) No public create/update/delete permissions.
-     * @principle Allows public read access with restricted writes for category data.
-     */
-    match /categories {
-      allow get, list: if true;
-      allow create, update, delete: if false;
-    }
-
-    match /profile-images/{userId}/{fileName} {
-      allow read: if true;
-      allow write: if request.auth.uid == userId
-                   && request.resource.size < 5 * 1024 * 1024 // 5MB limit
-                   && request.resource.contentType.matches('image/.*'); // Only allow images
-    }
-
-    // Helper functions
-    function isSignedIn() {
-      return request.auth != null;
-    }
-
-    function isOwner(userId) {
-      return request.auth.uid == userId;
-    }
-
-    function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-    }
-
-    function isReviewOwner(userId) {
-        return isSignedIn() && request.auth.uid == userId && resource != null;
-    }
+     /**
+      * @description Rules for the /roles_admin collection.
+      * @path /roles_admin/{userId}
+      * @allow get: if isAdmin();
+      * @allow list: if isAdmin();
+      * @allow create: if false;
+      * @allow update: if false;
+      * @allow delete: if false;
+      * @deny create, update, delete: No one should be able to create, update, or delete documents directly in this collection via the client. Cloud Functions only.
+      * @principle Admin privileges are granted based on the existence of a document in this collection, which should only be managed by Cloud Functions.
+      */
+     match /roles_admin/{userId} {
+          allow get: if isAdmin();
+          allow list: if isAdmin();
+          allow create: if false;
+          allow update: if false;
+          allow delete: if false;
+     }
   }
 }

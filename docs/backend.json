@@ -1,78 +1,5 @@
 {
   "entities": {
-    "UserProfile": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "UserProfile",
-      "type": "object",
-      "description": "Represents a user's profile information.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the user profile."
-        },
-        "email": {
-          "type": "string",
-          "description": "User's email address.",
-          "format": "email"
-        },
-        "name": {
-          "type": "string",
-          "description": "User's full name."
-        },
-        "address": {
-          "type": "string",
-          "description": "User's physical address."
-        },
-        "phoneNumber": {
-          "type": "string",
-          "description": "User's phone number."
-        },
-        "profileImageUrl": {
-          "type": "string",
-          "description": "URL of the user's profile image.",
-          "format": "uri"
-        }
-      },
-      "required": [
-        "id"
-      ]
-    },
-    "Order": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Order",
-      "type": "object",
-      "description": "Represents a customer order.",
-      "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the order."
-        },
-        "userId": {
-          "type": "string",
-          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Order)"
-        },
-        "orderDate": {
-          "type": "string",
-          "description": "Date the order was placed.",
-          "format": "date-time"
-        },
-        "totalAmount": {
-          "type": "number",
-          "description": "Total amount of the order."
-        },
-        "status": {
-          "type": "string",
-          "description": "Current status of the order (e.g., 'Pending', 'Shipped', 'Delivered')."
-        }
-      },
-      "required": [
-        "id",
-        "userId",
-        "orderDate",
-        "totalAmount",
-        "status"
-      ]
-    },
     "Product": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Product",
@@ -89,29 +16,35 @@
         },
         "description": {
           "type": "string",
-          "description": "Description of the product."
+          "description": "Detailed description of the product."
+        },
+        "categoryId": {
+          "type": "string",
+          "description": "Reference to Category. (Relationship: Category 1:N Product)"
         },
         "price": {
           "type": "number",
-          "description": "Price of the product."
+          "description": "Price of the product.",
+          "format": "number"
         },
         "imageUrl": {
           "type": "string",
           "description": "URL of the product image.",
           "format": "uri"
         },
-        "categoryId": {
-          "type": "string",
-          "description": "Reference to Category. (Relationship: Category 1:N Product)"
+        "inventoryCount": {
+          "type": "number",
+          "description": "Number of units currently in stock."
         }
       },
       "required": [
         "id",
         "name",
         "description",
+        "categoryId",
         "price",
         "imageUrl",
-        "categoryId"
+        "inventoryCount"
       ]
     },
     "Category": {
@@ -139,6 +72,42 @@
         "description"
       ]
     },
+    "Order": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Order",
+      "type": "object",
+      "description": "Represents a customer order.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the order."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Order)"
+        },
+        "orderDate": {
+          "type": "string",
+          "description": "Date the order was placed.",
+          "format": "date-time"
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "Total amount of the order."
+        },
+        "status": {
+          "type": "string",
+          "description": "Current status of the order (e.g., 'pending', 'processing', 'shipped', 'delivered')."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "orderDate",
+        "totalAmount",
+        "status"
+      ]
+    },
     "OrderItem": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "OrderItem",
@@ -161,9 +130,9 @@
           "type": "number",
           "description": "Quantity of the product in the order item."
         },
-        "price": {
+        "itemPrice": {
           "type": "number",
-          "description": "Price of each product in the order item."
+          "description": "Price of the item at the time of the order."
         }
       },
       "required": [
@@ -171,76 +140,131 @@
         "orderId",
         "productId",
         "quantity",
-        "price"
+        "itemPrice"
+      ]
+    },
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Represents a user's profile information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user profile."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the user."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the user."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the user.",
+          "format": "email"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "Phone number of the user."
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of the user."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "phoneNumber"
       ]
     },
     "Review": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Review",
       "type": "object",
-      "description": "Represents a user review for a product.",
+      "description": "Represents a product review written by a user.",
       "properties": {
         "id": {
           "type": "string",
           "description": "Unique identifier for the review."
         },
-        "userId": {
-          "type": "string",
-          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Review)"
-        },
         "productId": {
           "type": "string",
           "description": "Reference to Product. (Relationship: Product 1:N Review)"
         },
+        "userId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: UserProfile 1:N Review)"
+        },
         "rating": {
           "type": "number",
-          "description": "Rating given by the user (e.g., 1-5 stars)."
+          "description": "Rating given by the user (e.g., 1 to 5)."
         },
         "comment": {
           "type": "string",
-          "description": "Text comment provided by the user."
+          "description": "Text-based review comment."
         },
-        "upvotes": {
+        "upvoteCount": {
           "type": "number",
-          "description": "Number of upvotes for the review."
+          "description": "Number of upvotes for this review."
         },
-        "downvotes": {
+        "downvoteCount": {
           "type": "number",
-          "description": "Number of downvotes for the review."
+          "description": "Number of downvotes for this review."
         }
       },
       "required": [
         "id",
-        "userId",
         "productId",
+        "userId",
         "rating",
         "comment",
-        "upvotes",
-        "downvotes"
+        "upvoteCount",
+        "downvoteCount"
       ]
     }
   },
   "auth": {
     "providers": [
       "password",
-      "anonymous",
-      "phone"
+      "anonymous"
     ]
   },
   "firestore": {
     "structure": [
       {
-        "path": "/users/{userId}",
+        "path": "/products/{productId}",
         "definition": {
-          "entityName": "UserProfile",
+          "entityName": "Product",
           "schema": {
-            "$ref": "#/backend/entities/UserProfile"
+            "$ref": "#/backend/entities/Product"
           },
-          "description": "Stores user profile information.  Accessible only by the user themselves. Path-based ownership.",
+          "description": "Stores product information.  Accessible to admins for management.",
           "params": [
             {
-              "name": "userId",
-              "description": "The unique ID of the user."
+              "name": "productId",
+              "description": "Unique identifier for the product."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/categories/{categoryId}",
+        "definition": {
+          "entityName": "Category",
+          "schema": {
+            "$ref": "#/backend/entities/Category"
+          },
+          "description": "Stores category information. Accessible to admins for management.",
+          "params": [
+            {
+              "name": "categoryId",
+              "description": "Unique identifier for the category."
             }
           ]
         }
@@ -252,78 +276,92 @@
           "schema": {
             "$ref": "#/backend/entities/Order"
           },
-          "description": "Stores orders associated with a specific user. Accessible only by the user themselves. Path-based ownership.",
+          "description": "Stores order information for a specific user. Path-based ownership ensures only the user can access their orders.",
           "params": [
             {
               "name": "userId",
-              "description": "The unique ID of the user."
+              "description": "Unique identifier for the user."
             },
             {
               "name": "orderId",
-              "description": "The unique ID of the order."
+              "description": "Unique identifier for the order."
             }
           ]
         }
       },
       {
-        "path": "/products/{productId}/reviews/{reviewId}",
+        "path": "/users/{userId}/orders/{orderId}/orderItems/{orderItemId}",
+        "definition": {
+          "entityName": "OrderItem",
+          "schema": {
+            "$ref": "#/backend/entities/OrderItem"
+          },
+          "description": "Stores order item information for a specific order. Path-based ownership ensures only the user can access their order items.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "Unique identifier for the user."
+            },
+            {
+              "name": "orderId",
+              "description": "Unique identifier for the order."
+            },
+            {
+              "name": "orderItemId",
+              "description": "Unique identifier for the order item."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information. Path-based ownership ensures only the user can access their profile.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "Unique identifier for the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/reviews/{reviewId}",
         "definition": {
           "entityName": "Review",
           "schema": {
             "$ref": "#/backend/entities/Review"
           },
-          "description": "Stores reviews for a specific product. The `userId` field allows associating the review with a user for display purposes.  Anyone can read reviews for a product. Only the user who created a review can edit/delete it.",
+          "description": "Stores product reviews. Includes denormalized 'productId' and 'userId' for authorization independence.",
           "params": [
             {
-              "name": "productId",
-              "description": "The unique ID of the product."
-            },
-            {
               "name": "reviewId",
-              "description": "The unique ID of the review."
+              "description": "Unique identifier for the review."
             }
           ]
         }
       },
       {
-        "path": "/products",
+        "path": "/roles_admin/{userId}",
         "definition": {
-          "entityName": "Product",
+          "entityName": "role_admin",
           "schema": {
-            "$ref": "#/backend/entities/Product"
+            "$ref": "#/backend/entities/UserProfile"
           },
-          "description": "Stores product information. Accessible for reading by everyone. Admin roles required for modification.",
-          "params": []
-        }
-      },
-      {
-        "path": "/categories",
-        "definition": {
-          "entityName": "Category",
-          "schema": {
-            "$ref": "#/backend/entities/Category"
-          },
-          "description": "Stores category information. Accessible for reading by everyone. Admin roles required for modification.",
-          "params": []
-        }
-      },
-      {
-        "path": "/products/{productId}",
-        "definition": {
-          "entityName": "Product",
-          "schema": {
-            "$ref": "#/backend/entities/Product"
-          },
-          "description": "Stores product information for reading by everyone. Admin roles required for modification.",
+          "description": "Documents in this collection indicate admin privileges for a user. Existence of a document grants admin access.",
           "params": [
             {
-              "name": "productId",
-              "description": "The unique ID of the product."
+              "name": "userId",
+              "description": "Unique identifier for the user who is an admin."
             }
           ]
         }
       }
     ],
-    "reasoning": "The Firestore data structure is designed to support the Maa Inti Kattu application's features, focusing on user profiles, product catalog, orders, and reviews. It prioritizes security, scalability, and ease of debugging, adhering to the principles of Authorization Independence, Clarity of Intent, DBAC (Database-Based Access Control), and QAPs (Rules are not Filters).\n\n**Authorization Independence:**\n\n*   Path-based ownership is used for user-specific data like profiles and orders, ensuring that access control can be enforced without needing to read parent documents. This makes security rules simpler and allows for atomic operations.\n\n**Structural Segregation:**\n\n*   Homogeneous security postures are maintained by storing data with similar access requirements in separate collections. This prevents mixing public and private data within the same collection, simplifying security rules.\n\n**Access Modeling:**\n\n*   User profiles are stored in `/users/{userId}`, enabling secure access based on the authenticated user's ID.\n*   Orders are stored in `/users/{userId}/orders/{orderId}` using hierarchical paths to represent the `User 1:N Order` relationship. This structure simplifies ownership-based security rules.\n*   Products and categories are stored in top-level collections (`/products` and `/categories`) since they do not require user-specific authorization.  Admin roles would manage these.\n*   Reviews are stored in `/products/{productId}/reviews/{reviewId}` and contain a `userId` field, enabling retrieval of reviews for a specific product and associating them with a user.\n\n**QAPs (Rules are not Filters):**\n\n*   The structure allows secure list operations by ensuring that collections contain documents with uniform security requirements.  For example, listing products does not require filtering based on user roles or permissions, as all products are accessible (though the UI will control the presentation based on authentication).\n\n**Data Clarity and Predictability:**\n\n*   Explicit naming conventions are used for collections and fields (e.g., `userId` for user references, `orderDate` for order timestamps).\n\n\n**Denormalization:** No denormalization is needed since access control can depend solely on `request.auth.uid` or global role collections."
+    "reasoning": "The Firestore data structure is designed to support the Maa Inti Kattu application's features, focusing on product browsing, secure checkout, order tracking, user authentication, product management, and customer reviews. The structure prioritizes authorization independence and facilitates secure list operations.\n\n**Authorization Independence:** Authorization is handled through path-based ownership for user profiles and orders, eliminating the need for `get()` calls in security rules. Product reviews denormalize the `productId` and `userId` to ensure that reviews are associated with the correct user and product without requiring additional database reads during authorization checks.\n\n**Structural Segregation:** Data with different access requirements are stored in separate collections. User profiles and orders are stored under the `/users/{userId}` path, ensuring private data is only accessible to the respective user. Product and category data are stored in top-level collections with appropriate security rules to control access.\n\n**Access Modeling:**\n*   **Private Data:** User profiles and orders are stored using path-based ownership (`/users/{userId}/...`).\n*   **Collaborative Data:** Reviews can be considered collaborative data, but access is controlled via the review document's `userId` and `productId`.\n*   **Global Roles:** Global roles (e.g., admins) are not explicitly defined in the data structure but can be implemented using a dedicated `/roles_admin/{uid}` collection, as suggested in the design principles, to provide admin privileges.\n\n**QAPs (Rules are not Filters):** The structure enables secure `list` operations by segregating data based on access needs. For example, listing products is a secure operation because the `/products` collection only contains product data, and security rules can ensure that only authorized users can create, update, or delete products. Similarly, listing reviews for a specific product is secure because each review document denormalizes the `productId`.\n\n**Invariants:**\n*   Ownership is enforced through path-based ownership for user-related data (profiles, orders).\n*   Timestamps (e.g., orderDate) are stored directly within the documents.\n*   Denormalized data (e.g., `productId` and `userId` in reviews) maintains data integrity and facilitates authorization independence."
   }
 }
