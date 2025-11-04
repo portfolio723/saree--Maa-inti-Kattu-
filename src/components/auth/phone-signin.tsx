@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { ConfirmationResult, FirebaseError } from 'firebase/auth';
+import { ConfirmationResult } from 'firebase/auth';
 import { createUserProfile } from '@/lib/user-profile';
 import { useRouter } from 'next/navigation';
 import { CardContent } from '../ui/card';
@@ -35,24 +35,14 @@ export function PhoneSignIn() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
-  const phoneForm = useForm<PhoneFormValues>({
-    resolver: zodResolver(phoneSchema),
-    defaultValues: { phoneNumber: '+91' },
-  });
-
-  const otpForm = useForm<OtpFormValues>({
-    resolver: zodResolver(otpSchema),
-    defaultValues: { otp: '' },
-  });
-  
-  const handleSignInError = (error: FirebaseError) => {
+  const handleSignInError = (error: any) => {
     console.error('Phone sign-in error:', error);
     let title = 'An unknown error occurred';
     let description = 'Please try again later.';
 
     if (error.code === 'auth/operation-not-allowed') {
         title = 'Sign-in Method Disabled';
-        description = 'Phone Number sign-in is not enabled for this app. Please enable it in your Firebase console under Authentication > Sign-in method.';
+        description = 'Phone Number sign-in is not enabled for this app. Please contact support or enable it in your Firebase console under Authentication > Sign-in method.';
     } else if (error.code === 'auth/invalid-phone-number') {
         title = 'Invalid Phone Number';
         description = 'The phone number you entered is not valid.';
@@ -75,17 +65,16 @@ export function PhoneSignIn() {
     phoneForm.clearErrors();
     setIsSending(true);
     
-    // Ensure reCAPTCHA is rendered and ready.
     const recaptchaContainer = document.getElementById('recaptcha-container');
     if (!recaptchaContainer) {
-        handleSignInError(new FirebaseError('auth/internal-error', 'reCAPTCHA container not found'));
+        handleSignInError({code: 'auth/internal-error', message: 'reCAPTCHA container not found'});
         return;
     }
     
     const appVerifier = setupRecaptcha(auth, 'recaptcha-container');
 
     initiatePhoneNumberSignIn(auth, data.phoneNumber, appVerifier, (confirmation) => {
-      setConfirmationResult(confirmation as unknown as ConfirmationResult);
+      setConfirmationResult(confirmation);
       setIsOtpSent(true);
       toast({
         title: 'OTP Sent',
@@ -107,7 +96,6 @@ export function PhoneSignIn() {
       const user = result.user;
 
       if (user.metadata.creationTime === user.metadata.lastSignInTime) {
-        // This is a new user
         await createUserProfile(auth, firestore, user.displayName, user.email, user.phoneNumber);
          toast({
             title: 'Account Created!',
@@ -122,13 +110,12 @@ export function PhoneSignIn() {
       
       router.push('/account');
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('OTP confirmation error:', error);
-      const firebaseError = error as FirebaseError;
        toast({
         variant: 'destructive',
         title: 'Invalid OTP',
-        description: firebaseError.message || 'The OTP you entered is incorrect. Please try again.',
+        description: error.message || 'The OTP you entered is incorrect. Please try again.',
       });
     } finally {
         setIsVerifying(false);
