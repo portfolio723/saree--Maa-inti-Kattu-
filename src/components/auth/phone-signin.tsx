@@ -37,7 +37,7 @@ export function PhoneSignIn() {
 
   const phoneForm = useForm<PhoneFormValues>({
     resolver: zodResolver(phoneSchema),
-    defaultValues: { phoneNumber: '' },
+    defaultValues: { phoneNumber: '+91' },
   });
 
   const otpForm = useForm<OtpFormValues>({
@@ -70,7 +70,7 @@ export function PhoneSignIn() {
     setIsVerifying(false);
   };
 
-  const onPhoneSubmit = async (data: PhoneFormValues) => {
+  const onPhoneSubmit = (data: PhoneFormValues) => {
     phoneForm.clearErrors();
     setIsSending(true);
     const appVerifier = setupRecaptcha(auth, 'recaptcha-container');
@@ -139,7 +139,7 @@ export function PhoneSignIn() {
                   <FormItem>
                     <FormLabel>Phone Number</FormLabel>
                     <FormControl>
-                      <Input placeholder="+1 123 456 7890" {...field} />
+                      <Input placeholder="+91 123 456 7890" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -181,7 +181,7 @@ export function PhoneSignIn() {
           </form>
         </FormProvider>
       )}
-      <div id="recaptcha-container"></div>
+      <div id="recaptcha-container" className="my-4"></div>
     </>
   );
 }
