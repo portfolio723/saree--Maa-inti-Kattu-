@@ -165,22 +165,6 @@ export function ProductDetailsClient({ product }: { product: Product }) {
              <p className="text-muted-foreground">Email Us: hello@maaintikattu.com</p>
         </div>
         
-        <div className="flex gap-8 mt-4">
-            <div className="flex items-center gap-2 text-sm">
-                <Truck className="h-8 w-8 text-primary" />
-                <div>
-                    <p className="font-semibold">FREE DELIVERY</p>
-                </div>
-            </div>
-             <div className="flex items-center gap-2 text-sm">
-                <CreditCard className="h-8 w-8 text-primary" />
-                <div>
-                    <p className="font-semibold">PAYMENT SECURED</p>
-                    <p className="text-xs text-muted-foreground">Safe with Our Payment</p>
-                </div>
-            </div>
-        </div>
-
       </div>
     </div>
   );
