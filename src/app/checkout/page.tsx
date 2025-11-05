@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useForm, FormProvider } from 'react-hook-form';
@@ -81,19 +82,27 @@ export default function CheckoutPage() {
   const taxes = useMemo(() => (subtotal - discountAmount) * 0.05, [subtotal, discountAmount]); // 5% GST mock
   const total = useMemo(() => subtotal + deliveryFee - discountAmount + taxes, [subtotal, deliveryFee, discountAmount, taxes]);
 
-  const defaultFormValues = selectedAddress || {
-    fullName: mockUser.isLoggedIn ? mockUser.name : '',
-    email: mockUser.isLoggedIn ? mockUser.email : '',
-    mobileNumber: '',
-    pincode: '',
-    addressLine1: '',
-    addressLine2: '',
-    city: '',
-    state: '',
-    addressType: 'home',
-    saveAddress: false,
-    gstin: '',
-  };
+  const defaultFormValues = useMemo(() => {
+    const baseValues = {
+        fullName: mockUser.isLoggedIn ? mockUser.name : '',
+        email: mockUser.isLoggedIn ? mockUser.email : '',
+        mobileNumber: '',
+        pincode: '',
+        addressLine1: '',
+        addressLine2: '',
+        city: '',
+        state: '',
+        addressType: 'home' as const,
+        saveAddress: false,
+        gstin: '',
+    };
+
+    if (selectedAddress && !showNewAddressForm) {
+        return { ...baseValues, ...selectedAddress };
+    }
+    
+    return baseValues;
+  }, [selectedAddress, showNewAddressForm]);
 
   const form = useForm<ShippingFormValues>({
     resolver: zodResolver(shippingSchema),
@@ -101,27 +110,8 @@ export default function CheckoutPage() {
   });
 
   useEffect(() => {
-    if(mockUser.isLoggedIn && showNewAddressForm) {
-      form.reset({
-        fullName: mockUser.name,
-        email: mockUser.email,
-        mobileNumber: '',
-        pincode: '',
-        addressLine1: '',
-        addressLine2: '',
-        city: '',
-        state: '',
-        addressType: 'home',
-        saveAddress: true,
-        gstin: '',
-      });
-      setSelectedAddress(null);
-    } else if (mockUser.isLoggedIn && mockUser.savedAddresses.length > 0 && !showNewAddressForm) {
-      const defaultAddr = mockUser.savedAddresses[0];
-      setSelectedAddress(defaultAddr);
-      form.reset(defaultAddr);
-    }
-  }, [showNewAddressForm, form, mockUser.isLoggedIn, mockUser.name, mockUser.email, mockUser.savedAddresses]);
+    form.reset(defaultFormValues);
+  }, [defaultFormValues, form]);
   
    useEffect(() => {
     if (cart.length === 0 && !isProcessing) {
@@ -319,7 +309,6 @@ export default function CheckoutPage() {
                               isSelected={selectedAddress?.id === address.id && !showNewAddressForm}
                               onSelect={() => {
                                 setSelectedAddress(address);
-                                form.reset(address);
                                 setShowNewAddressForm(false);
                               }}
                             />
