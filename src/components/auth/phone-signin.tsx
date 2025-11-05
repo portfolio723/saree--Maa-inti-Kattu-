@@ -35,6 +35,16 @@ export function PhoneSignIn() {
   const [isVerifying, setIsVerifying] = useState(false);
   const [isSending, setIsSending] = useState(false);
 
+  const phoneForm = useForm<PhoneFormValues>({
+    resolver: zodResolver(phoneSchema),
+    defaultValues: { phoneNumber: '' },
+  });
+
+  const otpForm = useForm<OtpFormValues>({
+    resolver: zodResolver(otpSchema),
+    defaultValues: { otp: '' },
+  });
+
   const handleSignInError = (error: any) => {
     console.error('Phone sign-in error:', error);
     let title = 'An unknown error occurred';
