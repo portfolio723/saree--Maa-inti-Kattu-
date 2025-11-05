@@ -126,9 +126,9 @@ export function ProductDetailsClient({ product }: { product: Product }) {
             <span className="w-10 text-center text-lg font-semibold">{quantity}</span>
             <Button variant="ghost" size="icon" onClick={() => setQuantity(q => q+1)}><Plus className="h-4 w-4" /></Button>
           </div>
-          <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary text-sm" onClick={handleWishlistClick}>
-             <Heart className={cn("h-4 w-4 mr-1", isInWishlist ? 'text-red-500 fill-red-500' : '')} />
-             {isInWishlist ? 'Added to Wishlist' : 'Add to Wishlist'}
+          <Button variant="outline" className="h-10" onClick={handleWishlistClick}>
+             <Heart className={cn("h-4 w-4 mr-2", isInWishlist ? 'text-red-500 fill-red-500' : '')} />
+             <span>{isInWishlist ? 'In Wishlist' : 'Add to Wishlist'}</span>
           </Button>
         </div>
         
