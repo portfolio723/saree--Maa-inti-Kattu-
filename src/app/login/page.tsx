@@ -85,9 +85,6 @@ export default function LoginPage() {
           <Button className="w-full" onClick={step === 'phone' ? handleSendOtp : handleVerifyOtp}>
             {step === 'phone' ? 'Send OTP' : 'Verify & Continue'}
           </Button>
-          <p className="text-center text-sm text-muted-foreground">
-              This is a demo. No real OTP will be sent.
-          </p>
         </CardContent>
       </Card>
     </div>
