@@ -23,49 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
-
-// Mock user data for static site
-const useUser = () => {
-    const [user, setUser] = useState<{
-        displayName: string | null;
-        email: string | null;
-        photoURL: string | null;
-    } | null>(null);
-
-    // On mount, check if a "user" is "logged in" via localStorage
-    useEffect(() => {
-        if (typeof window !== 'undefined' && window.localStorage.getItem('isLoggedIn')) {
-            setUser({
-                displayName: 'Jane Doe',
-                email: 'jane.doe@example.com',
-                photoURL: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjE4MDM0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080',
-            });
-        }
-    }, []);
-
-    // Function to simulate login
-    const login = () => {
-        if (typeof window !== 'undefined') {
-            window.localStorage.setItem('isLoggedIn', 'true');
-            setUser({
-                displayName: 'Jane Doe',
-                email: 'jane.doe@example.com',
-                photoURL: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjE4MDM0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080',
-            });
-        }
-    };
-
-    // Function to simulate logout
-    const logout = () => {
-        if (typeof window !== 'undefined') {
-            window.localStorage.removeItem('isLoggedIn');
-            setUser(null);
-        }
-    };
-    
-    return { user, login, logout };
-};
-
+import { SignedIn, SignedOut, UserButton, SignInButton } from "@clerk/nextjs";
 
 export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -73,7 +31,6 @@ export function Header() {
   const [isHeaderOpaque, setHeaderOpaque] = useState(false);
   const { wishlist } = useWishlist();
   const { cart } = useCart();
-  const { user, logout } = useUser();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -93,10 +50,6 @@ export function Header() {
     }
   }, [pathname, isHomePage]);
   
-  const handleLogout = () => {
-    logout();
-    router.push('/');
-  };
 
   const navLinks = [
     { href: "/products", label: "Sarees" },
@@ -149,49 +102,17 @@ export function Header() {
             </Link>
           </Button>
           
-          {user ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="hover:bg-white/20 rounded-full">
-                  <Avatar className="h-8 w-8">
-                     <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? 'User'} />
-                     <AvatarFallback className={cn("bg-transparent border", isHeaderOpaque ? "border-black text-black": "border-white text-white")}>
-                       {user.displayName ? user.displayName.charAt(0).toUpperCase() : <User className="h-5 w-5" />}
-                     </AvatarFallback>
-                  </Avatar>
-                  <span className="sr-only">Account</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user.displayName}</p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {user.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
-                  <Link href="/account">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleLogout}>
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Log out</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Button variant="ghost" size="icon" asChild className="hover:bg-white/20">
-              <Link href="/login">
+          <SignedIn>
+            <UserButton afterSignOutUrl="/" />
+          </SignedIn>
+          <SignedOut>
+            <SignInButton mode="modal">
+              <Button variant="ghost" size="icon" className="hover:bg-white/20">
                 <User className="h-5 w-5" />
                 <span className="sr-only">Account</span>
-              </Link>
-            </Button>
-          )}
+              </Button>
+            </SignInButton>
+          </SignedOut>
 
           <Popover>
             <PopoverTrigger asChild>
