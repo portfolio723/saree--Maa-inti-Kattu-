@@ -126,6 +126,10 @@ export function ProductDetailsClient({ product }: { product: Product }) {
             <span className="w-10 text-center text-lg font-semibold">{quantity}</span>
             <Button variant="ghost" size="icon" onClick={() => setQuantity(q => q+1)}><Plus className="h-4 w-4" /></Button>
           </div>
+          <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary" onClick={handleShare}>
+              <Share2 className="h-4 w-4 mr-2" />
+              Share
+          </Button>
         </div>
         
         <div className="grid grid-cols-2 gap-4 my-4">
@@ -143,14 +147,6 @@ export function ProductDetailsClient({ product }: { product: Product }) {
              <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary" onClick={handleWishlistClick}>
                 <Heart className={cn("h-4 w-4 mr-2", isInWishlist ? 'text-red-500 fill-red-500' : '')} />
                 {isInWishlist ? 'Added to Wishlist' : 'Add to Wishlist'}
-             </Button>
-             <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary" onClick={handleShare}>
-                <Share2 className="h-4 w-4 mr-2" />
-                Share
-             </Button>
-             <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary">
-                <HelpCircle className="h-4 w-4 mr-2" />
-                FAQ
              </Button>
         </div>
 
