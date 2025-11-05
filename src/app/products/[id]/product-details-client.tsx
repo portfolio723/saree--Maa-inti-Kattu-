@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Star, Plus, Minus, Heart, Truck, CreditCard, Facebook, Twitter, Linkedin, HelpCircle } from 'lucide-react';
+import { Star, Plus, Minus, Heart, Truck, CreditCard, Facebook, Twitter, Linkedin, HelpCircle, Share2 } from 'lucide-react';
 import type { Product } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/hooks/use-wishlist';
@@ -11,6 +11,7 @@ import { useCart } from '@/hooks/use-cart';
 import { cn } from '@/lib/utils';
 import { ProductImageGallery } from './product-image-gallery';
 import { Separator } from '@/components/ui/separator';
+import { useToast } from '@/hooks/use-toast';
 
 const productInfo = {
     "Fabric": "Silk",
@@ -26,6 +27,7 @@ export function ProductDetailsClient({ product }: { product: Product }) {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
+  const { toast } = useToast();
 
   const isInWishlist = wishlist.some((item) => item.id === product.id);
 
@@ -49,6 +51,23 @@ export function ProductDetailsClient({ product }: { product: Product }) {
         price: product.price,
         image: product.images[0].imageUrl,
     }, quantity);
+  };
+  
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: product.name,
+        text: `Check out this amazing product: ${product.name}`,
+        url: window.location.href,
+      }).catch((error) => console.log('Error sharing', error));
+    } else {
+      // Fallback for browsers that don't support the Web Share API
+      navigator.clipboard.writeText(window.location.href);
+      toast({
+        title: 'Link Copied',
+        description: 'Product link copied to clipboard.',
+      });
+    }
   };
   
   const discountPercentage = 40;
@@ -83,7 +102,11 @@ export function ProductDetailsClient({ product }: { product: Product }) {
             <span className="w-10 text-center text-lg font-semibold">{quantity}</span>
             <Button variant="ghost" size="icon" onClick={() => setQuantity(q => q+1)}><Plus className="h-4 w-4" /></Button>
           </div>
-          <Button size="lg" className="flex-1 bg-red-600 hover:bg-red-700 text-white uppercase" onClick={handleAddToCart}>Add to Cart</Button>
+          <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white uppercase" onClick={handleAddToCart}>Add to Cart</Button>
+          <Button size="lg" variant="outline" onClick={handleShare}>
+            <Share2 className="h-5 w-5" />
+            <span className="sr-only">Share</span>
+          </Button>
         </div>
 
         <div className="flex items-center gap-4 text-sm">
