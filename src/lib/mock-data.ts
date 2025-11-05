@@ -1,5 +1,6 @@
 import type { Product, Review } from '@/lib/types';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Package, Zap } from 'lucide-react';
 
 const findImage = (id: string) => PlaceHolderImages.find(img => img.id === id)!;
 
@@ -112,4 +113,9 @@ export const reviews: Review[] = [
     upvotes: 15,
     downvotes: 3,
   },
+];
+
+export const deliveryOptions = [
+  { id: 'standard', name: 'Standard Delivery', date: 'by Fri, 7 Nov', cost: 0, icon: Package },
+  { id: 'express', name: 'Express Delivery', date: 'by Wed, 5 Nov', cost: 150, icon: Zap },
 ];

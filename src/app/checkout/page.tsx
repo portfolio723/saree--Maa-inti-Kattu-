@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { useForm, FormProvider } from 'react-hook-form';
@@ -17,9 +16,10 @@ import Link from 'next/link';
 import { ShippingForm } from '@/components/checkout/shipping-form';
 import type { Address } from '@/lib/types';
 import { AddressCard } from '@/components/checkout/address-card';
-import { DeliveryOptions } from '@/components/checkout/delivery-options';
+import { DeliveryOptions, type DeliveryOption } from '@/components/checkout/delivery-options';
 import { CouponInput } from '@/components/checkout/coupon-input';
 import { PaymentOptions } from '@/components/checkout/payment-options';
+import { deliveryOptions as allDeliveryOptions } from '@/lib/mock-data';
 
 
 const shippingSchema = z.object({
@@ -66,10 +66,11 @@ export default function CheckoutPage() {
   const [showNewAddressForm, setShowNewAddressForm] = useState(!mockUser.isLoggedIn || mockUser.savedAddresses.length === 0);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(mockUser.savedAddresses.length > 0 ? mockUser.savedAddresses[0] : null);
   const [checkoutStep, setCheckoutStep] = useState<'address' | 'delivery' | 'payment'>('address');
-  const [deliveryFee, setDeliveryFee] = useState(0);
+  const [selectedDeliveryOption, setSelectedDeliveryOption] = useState<DeliveryOption>(allDeliveryOptions[0]);
   const [discountAmount, setDiscountAmount] = useState(0);
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const deliveryFee = selectedDeliveryOption?.cost ?? 0;
   const taxes = (subtotal - discountAmount) * 0.05; // 5% GST mock
   const total = subtotal + deliveryFee - discountAmount + taxes;
 
@@ -93,7 +94,6 @@ export default function CheckoutPage() {
   });
 
   useEffect(() => {
-    // If user is logged in, and has addresses, but none are selected (e.g. adding new), clear form
     if(mockUser.isLoggedIn && showNewAddressForm) {
       form.reset({
         fullName: mockUser.name,
@@ -109,12 +109,11 @@ export default function CheckoutPage() {
       });
       setSelectedAddress(null);
     } else if (mockUser.isLoggedIn && mockUser.savedAddresses.length > 0 && !showNewAddressForm) {
-      // If user switches back to saved addresses, select the first one
       const defaultAddr = mockUser.savedAddresses[0];
       setSelectedAddress(defaultAddr);
       form.reset(defaultAddr);
     }
-  }, [showNewAddressForm, form, mockUser.isLoggedIn, mockUser.name, mockUser.email, mockUser.savedAddresses]);
+  }, [showNewAddressForm, form, mockUser]);
   
    useEffect(() => {
     if (cart.length === 0 && !isProcessing) {
@@ -124,6 +123,13 @@ export default function CheckoutPage() {
 
   const handleAddressSubmit = (data: ShippingFormValues) => {
     console.log('Shipping Data:', data);
+    
+    // In a real app, you would save the new address here.
+    // For this mock, we'll just set it as the selected address.
+    if(showNewAddressForm){
+      setSelectedAddress({ ...data, id: `new-${Date.now()}` });
+    }
+
     if (!selectedAddress && !showNewAddressForm && mockUser.savedAddresses.length > 0) {
       toast({
         variant: 'destructive',
@@ -190,15 +196,6 @@ export default function CheckoutPage() {
       return <div className="container flex justify-center items-center h-screen"><p>Loading...</p></div>
   }
   
-  const getStepTitle = () => {
-    switch (checkoutStep) {
-      case 'address': return 'Shipping Address';
-      case 'delivery': return 'Delivery Options';
-      case 'payment': return 'Payment Method';
-      default: return 'Checkout';
-    }
-  }
-  
   const getButtonText = () => {
     switch (checkoutStep) {
       case 'address': return 'Continue to Delivery';
@@ -207,6 +204,18 @@ export default function CheckoutPage() {
       default: return 'Continue';
     }
   }
+  
+  const renderAddressSummary = () => (
+    <p className="text-sm text-muted-foreground">
+      {selectedAddress?.addressLine1}, {selectedAddress?.city} - {selectedAddress?.pincode}
+    </p>
+  );
+
+  const renderDeliverySummary = () => (
+    <p className="text-sm text-muted-foreground">
+      {selectedDeliveryOption.name} - {selectedDeliveryOption.date}
+    </p>
+  );
 
   return (
     <div className="container py-24 md:py-28">
@@ -215,8 +224,8 @@ export default function CheckoutPage() {
         <form onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-2 gap-12">
             <div className="space-y-8">
-              {!mockUser.isLoggedIn && checkoutStep === 'address' && (
-                <Card>
+              {!mockUser.isLoggedIn && (
+                 <Card>
                   <CardHeader>
                     <CardTitle className="font-headline text-xl md:text-2xl">Account</CardTitle>
                   </CardHeader>
@@ -232,10 +241,10 @@ export default function CheckoutPage() {
               <Card>
                 <CardHeader className='flex-row items-center justify-between'>
                   <CardTitle className="font-headline text-xl md:text-2xl">
-                    {getStepTitle()}
+                    Shipping Address
                   </CardTitle>
-                  {checkoutStep !== 'address' && (
-                    <Button variant="link" onClick={() => setCheckoutStep(checkoutStep === 'payment' ? 'delivery' : 'address')}>Edit</Button>
+                   {checkoutStep !== 'address' && (
+                    <Button variant="link" onClick={() => setCheckoutStep('address')}>Edit</Button>
                   )}
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -266,13 +275,44 @@ export default function CheckoutPage() {
                         <ShippingForm />
                       )}
                     </>
-                  ) : checkoutStep === 'delivery' ? (
-                    <DeliveryOptions onDeliveryChange={setDeliveryFee}/>
                   ) : (
-                    <PaymentOptions />
+                    renderAddressSummary()
                   )}
                 </CardContent>
               </Card>
+
+              {checkoutStep !== 'address' && (
+                 <Card>
+                  <CardHeader className='flex-row items-center justify-between'>
+                    <CardTitle className="font-headline text-xl md:text-2xl">
+                      Delivery Options
+                    </CardTitle>
+                     {checkoutStep === 'payment' && (
+                      <Button variant="link" onClick={() => setCheckoutStep('delivery')}>Edit</Button>
+                    )}
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                     {checkoutStep === 'delivery' ? (
+                       <DeliveryOptions onDeliveryChange={setSelectedDeliveryOption}/>
+                     ) : (
+                       renderDeliverySummary()
+                     )}
+                  </CardContent>
+                </Card>
+              )}
+              
+               {checkoutStep === 'payment' && (
+                 <Card>
+                  <CardHeader>
+                    <CardTitle className="font-headline text-xl md:text-2xl">
+                      Payment Method
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <PaymentOptions />
+                  </CardContent>
+                </Card>
+              )}
             </div>
 
             <div className="space-y-8">

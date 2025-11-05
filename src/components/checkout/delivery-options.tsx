@@ -8,33 +8,34 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { Package, Zap, Gift } from 'lucide-react';
+import { deliveryOptions } from '@/lib/mock-data';
+
+export type DeliveryOption = typeof deliveryOptions[number];
 
 interface DeliveryOptionsProps {
-  onDeliveryChange: (fee: number) => void;
+  onDeliveryChange: (option: DeliveryOption) => void;
 }
 
-const deliveryOptions = [
-  { id: 'standard', name: 'Standard Delivery', date: 'by Fri, 7 Nov', cost: 0, icon: Package },
-  { id: 'express', name: 'Express Delivery', date: 'by Wed, 5 Nov', cost: 150, icon: Zap },
-];
 
 export function DeliveryOptions({ onDeliveryChange }: DeliveryOptionsProps) {
-  const [selectedOption, setSelectedOption] = useState(deliveryOptions[0].id);
+  const [selectedOptionId, setSelectedOptionId] = useState(deliveryOptions[0].id);
   const [isGift, setIsGift] = useState(false);
   const [giftMessage, setGiftMessage] = useState('');
 
   useEffect(() => {
-    const selected = deliveryOptions.find(opt => opt.id === selectedOption);
-    onDeliveryChange(selected?.cost ?? 0);
-  }, [selectedOption, onDeliveryChange]);
+    const selected = deliveryOptions.find(opt => opt.id === selectedOptionId);
+    if(selected) {
+      onDeliveryChange(selected);
+    }
+  }, [selectedOptionId, onDeliveryChange]);
 
   return (
     <div className="space-y-6">
       <div>
         <h3 className="mb-4 text-lg font-medium">Choose a delivery speed:</h3>
         <RadioGroup
-          value={selectedOption}
-          onValueChange={setSelectedOption}
+          value={selectedOptionId}
+          onValueChange={setSelectedOptionId}
           className="space-y-4"
         >
           {deliveryOptions.map((option) => (
@@ -43,7 +44,7 @@ export function DeliveryOptions({ onDeliveryChange }: DeliveryOptionsProps) {
               htmlFor={option.id}
               className={cn(
                 "flex items-center gap-4 rounded-lg border p-4 cursor-pointer transition-all",
-                selectedOption === option.id ? "border-primary ring-2 ring-primary" : "border-border hover:bg-muted/50"
+                selectedOptionId === option.id ? "border-primary ring-2 ring-primary" : "border-border hover:bg-muted/50"
               )}
             >
               <RadioGroupItem value={option.id} id={option.id} className="sr-only" />
