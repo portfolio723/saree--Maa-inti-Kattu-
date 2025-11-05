@@ -136,15 +136,6 @@ export function ProductDetailsClient({ product }: { product: Product }) {
             </div>
         </div>
 
-        <div className="flex items-center gap-4 mt-4">
-            <span className="text-sm font-semibold">Share it:</span>
-            <div className="flex gap-2">
-                <Button variant="outline" size="icon" className="rounded-full h-8 w-8"><Facebook className="h-4 w-4" /></Button>
-                <Button variant="outline" size="icon" className="rounded-full h-8 w-8"><Twitter className="h-4 w-4" /></Button>
-                <Button variant="outline" size="icon" className="rounded-full h-8 w-8"><Linkedin className="h-4 w-4" /></Button>
-            </div>
-        </div>
-
       </div>
     </div>
   );
