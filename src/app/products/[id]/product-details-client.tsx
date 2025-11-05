@@ -127,7 +127,7 @@ export function ProductDetailsClient({ product }: { product: Product }) {
             <Button variant="ghost" size="icon" onClick={() => setQuantity(q => q+1)}><Plus className="h-4 w-4" /></Button>
           </div>
           <Button variant="outline" size="icon" onClick={handleShare} aria-label="Share product" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-              <Share2 className="h-5 w-5" />
+             <Image src="https://img.icons8.com/?size=100&id=58564&format=png&color=000000" alt="Share" width={20} height={20} />
           </Button>
         </div>
         
