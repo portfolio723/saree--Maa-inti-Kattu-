@@ -7,69 +7,76 @@ import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { Checkbox } from '@/components/ui/checkbox';
+import Link from 'next/link';
 
 const shippingSchema = z.object({
-  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
-  address: z.string().min(5, { message: 'Please enter a valid address.' }),
+  fullName: z.string().min(2, { message: 'Full name must be at least 2 characters.' }),
+  mobileNumber: z.string().length(10, { message: 'Please enter a valid 10-digit mobile number.' }),
+  email: z.string().email({ message: 'Please enter a valid email address.' }),
+  pincode: z.string().length(6, { message: 'Please enter a valid 6-digit pincode.' }),
+  addressLine1: z.string().min(5, { message: 'Please enter a valid address.' }),
+  addressLine2: z.string().optional(),
   city: z.string().min(2, { message: 'Please enter a valid city.' }),
   state: z.string().min(2, { message: 'Please enter a valid state.' }),
-  zip: z.string().min(5, { message: 'Please enter a valid ZIP code.' }),
+  addressType: z.enum(['home', 'work', 'other']).default('home'),
+  saveAddress: z.boolean().default(false),
+  gstin: z.string().optional(),
 });
 
 type ShippingFormValues = z.infer<typeof shippingSchema>;
 
-const userProfile = {
-    name: 'John Doe',
-    address: '123 Test Street',
+// Mock user data. In a real app, this would come from an auth hook.
+const mockUser = {
+  isLoggedIn: false, // Set to true to simulate a logged-in user
+  name: 'Jane Doe',
+  email: 'jane.doe@example.com',
+  // In a real app, saved addresses would be here
 };
+
 
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
   const router = useRouter();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
+  const [isGuest, setIsGuest] = useState(!mockUser.isLoggedIn); // Default to guest if not logged in
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
   const form = useForm<ShippingFormValues>({
     resolver: zodResolver(shippingSchema),
     defaultValues: {
-      name: '',
-      address: '',
+      fullName: mockUser.isLoggedIn ? mockUser.name : '',
+      email: mockUser.isLoggedIn ? mockUser.email : '',
+      mobileNumber: '',
+      pincode: '',
+      addressLine1: '',
+      addressLine2: '',
       city: '',
       state: '',
-      zip: '',
+      saveAddress: false,
+      gstin: '',
     },
   });
-
-  useEffect(() => {
-    if (userProfile) {
-      form.reset({
-        name: userProfile.name || '',
-        address: userProfile.address || '',
-        city: '',
-        state: '',
-        zip: '',
-      });
-    }
-  }, [form]);
   
    useEffect(() => {
     // Redirect if cart is empty
-    if (cart.length === 0 && !isProcessing) { // Added isProcessing check to prevent redirect during submission
+    if (cart.length === 0 && !isProcessing) {
       router.replace('/cart');
     }
   }, [cart, router, isProcessing]);
 
   const onSubmit = async (data: ShippingFormValues) => {
     setIsProcessing(true);
+    console.log('Shipping Data:', data);
     
     // In a real app, you would integrate with a payment provider here.
     // For this demo, we'll simulate a successful payment.
@@ -99,40 +106,33 @@ export default function CheckoutPage() {
       <FormProvider {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid lg:grid-cols-2 gap-12">
-            <Card>
-              <CardHeader>
-                <CardTitle className="font-headline text-xl md:text-2xl">Shipping Information</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                 <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Full Name</FormLabel>
-                      <FormControl><Input {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                 <FormField
-                  control={form.control}
-                  name="address"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Address</FormLabel>
-                      <FormControl><Input {...field} /></FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="grid md:grid-cols-3 gap-4">
+            <div className="space-y-8">
+              {isGuest && (
+                <Card>
+                  <CardHeader>
+                    <CardTitle className="font-headline text-xl md:text-2xl">Account</CardTitle>
+                  </CardHeader>
+                  <CardContent className="flex flex-col sm:flex-row gap-4">
+                     <Button className="w-full" variant="outline">Continue as Guest</Button>
+                     <Button asChild className="w-full">
+                       <Link href="/login">Sign In or Sign Up</Link>
+                     </Button>
+                  </CardContent>
+                </Card>
+              )}
+              
+              <Card>
+                <CardHeader>
+                  <CardTitle className="font-headline text-xl md:text-2xl">Shipping Address</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                   <div className="grid md:grid-cols-2 gap-4">
                      <FormField
                       control={form.control}
-                      name="city"
+                      name="fullName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>City</FormLabel>
+                          <FormLabel>Full Name</FormLabel>
                           <FormControl><Input {...field} /></FormControl>
                           <FormMessage />
                         </FormItem>
@@ -140,32 +140,123 @@ export default function CheckoutPage() {
                     />
                      <FormField
                       control={form.control}
-                      name="state"
+                      name="mobileNumber"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>State / Province</FormLabel>
-                          <FormControl><Input {...field} /></FormControl>
+                          <FormLabel>Mobile Number</FormLabel>
+                          <FormControl><Input {...field} type="tel" /></FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                     <FormField
+                   </div>
+                   <FormField
                       control={form.control}
-                      name="zip"
+                      name="email"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>ZIP / Postal Code</FormLabel>
+                          <FormLabel>Email Address</FormLabel>
                           <FormControl><Input {...field} /></FormControl>
                           <FormMessage />
                         </FormItem>
                       )}
                     />
-                </div>
-              </CardContent>
-            </Card>
+                   <FormField
+                    control={form.control}
+                    name="addressLine1"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Address Line 1</FormLabel>
+                        <FormControl><Input {...field} placeholder="House No., Building, Street, Area" /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                   <FormField
+                    control={form.control}
+                    name="addressLine2"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Address Line 2 (Optional)</FormLabel>
+                        <FormControl><Input {...field} placeholder="Landmark, Apt. no., etc." /></FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <div className="grid md:grid-cols-3 gap-4">
+                      <FormField
+                        control={form.control}
+                        name="pincode"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Pincode</FormLabel>
+                            <FormControl><Input {...field} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                       <FormField
+                        control={form.control}
+                        name="city"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>City</FormLabel>
+                            <FormControl><Input {...field} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                       <FormField
+                        control={form.control}
+                        name="state"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>State</FormLabel>
+                            <FormControl><Input {...field} /></FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                  </div>
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="gstin"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>GSTIN (Optional)</FormLabel>
+                          <FormControl><Input {...field} /></FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="saveAddress"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                        <FormControl>
+                            <Checkbox
+                                checked={field.value}
+                                onCheckedChange={field.onChange}
+                            />
+                        </FormControl>
+                        <div className="space-y-1 leading-none">
+                            <FormLabel>
+                            Save this address for future use
+                            </FormLabel>
+                        </div>
+                        </FormItem>
+                    )}
+                    />
+
+                </CardContent>
+              </Card>
+            </div>
 
             <div className="space-y-8">
-              <Card>
+              <Card className="sticky top-24">
                 <CardHeader>
                   <CardTitle className="font-headline text-xl md:text-2xl">Order Summary</CardTitle>
                 </CardHeader>
@@ -199,7 +290,7 @@ export default function CheckoutPage() {
                 </CardContent>
               </Card>
                <Button type="submit" size="lg" className="w-full" disabled={isProcessing}>
-                {isProcessing ? 'Processing...' : `Place Order & Pay ₹${subtotal.toFixed(2)}`}
+                {isProcessing ? 'Processing...' : `Continue to Payment`}
               </Button>
             </div>
           </div>
