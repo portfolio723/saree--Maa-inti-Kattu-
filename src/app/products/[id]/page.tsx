@@ -22,7 +22,7 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
   const relatedProducts = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 6);
 
   return (
-    <div className="container py-8 md:py-12">
+    <div className="container pt-24 md:pt-28 pb-8 md:pb-12">
       
       <ProductDetailsClient product={product} />
 
