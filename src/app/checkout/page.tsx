@@ -8,14 +8,15 @@ import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Checkbox } from '@/components/ui/checkbox';
 import Link from 'next/link';
+import { ShippingForm } from '@/components/checkout/shipping-form';
+import type { Address } from '@/lib/types';
+import { AddressCard } from '@/components/checkout/address-card';
+
 
 const shippingSchema = z.object({
   fullName: z.string().min(2, { message: 'Full name must be at least 2 characters.' }),
@@ -33,12 +34,23 @@ const shippingSchema = z.object({
 
 type ShippingFormValues = z.infer<typeof shippingSchema>;
 
-// Mock user data. In a real app, this would come from an auth hook.
 const mockUser = {
-  isLoggedIn: false, // Set to true to simulate a logged-in user
+  isLoggedIn: true,
   name: 'Jane Doe',
   email: 'jane.doe@example.com',
-  // In a real app, saved addresses would be here
+  savedAddresses: [
+    {
+      id: 'addr1',
+      fullName: 'Jane Doe',
+      mobileNumber: '9876543210',
+      pincode: '500081',
+      addressLine1: '123 Tech Park',
+      addressLine2: 'Hitech City',
+      city: 'Hyderabad',
+      state: 'Telangana',
+      addressType: 'work',
+    } as Address,
+  ],
 };
 
 
@@ -47,28 +59,56 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isGuest, setIsGuest] = useState(!mockUser.isLoggedIn); // Default to guest if not logged in
+  const [showNewAddressForm, setShowNewAddressForm] = useState(!mockUser.isLoggedIn || mockUser.savedAddresses.length === 0);
+  const [selectedAddress, setSelectedAddress] = useState<Address | null>(mockUser.savedAddresses.length > 0 ? mockUser.savedAddresses[0] : null);
+
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
+  const defaultFormValues = selectedAddress || {
+    fullName: mockUser.isLoggedIn ? mockUser.name : '',
+    email: mockUser.isLoggedIn ? mockUser.email : '',
+    mobileNumber: '',
+    pincode: '',
+    addressLine1: '',
+    addressLine2: '',
+    city: '',
+    state: '',
+    addressType: 'home',
+    saveAddress: false,
+    gstin: '',
+  };
+
   const form = useForm<ShippingFormValues>({
     resolver: zodResolver(shippingSchema),
-    defaultValues: {
-      fullName: mockUser.isLoggedIn ? mockUser.name : '',
-      email: mockUser.isLoggedIn ? mockUser.email : '',
-      mobileNumber: '',
-      pincode: '',
-      addressLine1: '',
-      addressLine2: '',
-      city: '',
-      state: '',
-      saveAddress: false,
-      gstin: '',
-    },
+    defaultValues: defaultFormValues,
   });
+
+  useEffect(() => {
+    // If user is logged in, and has addresses, but none are selected (e.g. adding new), clear form
+    if(mockUser.isLoggedIn && showNewAddressForm) {
+      form.reset({
+        fullName: mockUser.name,
+        email: mockUser.email,
+        mobileNumber: '',
+        pincode: '',
+        addressLine1: '',
+        addressLine2: '',
+        city: '',
+        state: '',
+        addressType: 'home',
+        saveAddress: true,
+      });
+      setSelectedAddress(null);
+    } else if (mockUser.isLoggedIn && mockUser.savedAddresses.length > 0 && !showNewAddressForm) {
+      // If user switches back to saved addresses, select the first one
+      const defaultAddr = mockUser.savedAddresses[0];
+      setSelectedAddress(defaultAddr);
+      form.reset(defaultAddr);
+    }
+  }, [showNewAddressForm, form]);
   
    useEffect(() => {
-    // Redirect if cart is empty
     if (cart.length === 0 && !isProcessing) {
       router.replace('/cart');
     }
@@ -78,10 +118,6 @@ export default function CheckoutPage() {
     setIsProcessing(true);
     console.log('Shipping Data:', data);
     
-    // In a real app, you would integrate with a payment provider here.
-    // For this demo, we'll simulate a successful payment.
-    
-    // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 1500));
     
     const mockOrderId = `ORD-${Date.now()}`;
@@ -107,7 +143,7 @@ export default function CheckoutPage() {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid lg:grid-cols-2 gap-12">
             <div className="space-y-8">
-              {isGuest && (
+              {!mockUser.isLoggedIn && (
                 <Card>
                   <CardHeader>
                     <CardTitle className="font-headline text-xl md:text-2xl">Account</CardTitle>
@@ -126,131 +162,30 @@ export default function CheckoutPage() {
                   <CardTitle className="font-headline text-xl md:text-2xl">Shipping Address</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                   <div className="grid md:grid-cols-2 gap-4">
-                     <FormField
-                      control={form.control}
-                      name="fullName"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Full Name</FormLabel>
-                          <FormControl><Input {...field} /></FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                     <FormField
-                      control={form.control}
-                      name="mobileNumber"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Mobile Number</FormLabel>
-                          <FormControl><Input {...field} type="tel" /></FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                   </div>
-                   <FormField
-                      control={form.control}
-                      name="email"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Email Address</FormLabel>
-                          <FormControl><Input {...field} /></FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                   <FormField
-                    control={form.control}
-                    name="addressLine1"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Address Line 1</FormLabel>
-                        <FormControl><Input {...field} placeholder="House No., Building, Street, Area" /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                   <FormField
-                    control={form.control}
-                    name="addressLine2"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Address Line 2 (Optional)</FormLabel>
-                        <FormControl><Input {...field} placeholder="Landmark, Apt. no., etc." /></FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <div className="grid md:grid-cols-3 gap-4">
-                      <FormField
-                        control={form.control}
-                        name="pincode"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>Pincode</FormLabel>
-                            <FormControl><Input {...field} /></FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                       <FormField
-                        control={form.control}
-                        name="city"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>City</FormLabel>
-                            <FormControl><Input {...field} /></FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                       <FormField
-                        control={form.control}
-                        name="state"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>State</FormLabel>
-                            <FormControl><Input {...field} /></FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <FormField
-                      control={form.control}
-                      name="gstin"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>GSTIN (Optional)</FormLabel>
-                          <FormControl><Input {...field} /></FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <FormField
-                    control={form.control}
-                    name="saveAddress"
-                    render={({ field }) => (
-                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
-                        <FormControl>
-                            <Checkbox
-                                checked={field.value}
-                                onCheckedChange={field.onChange}
-                            />
-                        </FormControl>
-                        <div className="space-y-1 leading-none">
-                            <FormLabel>
-                            Save this address for future use
-                            </FormLabel>
-                        </div>
-                        </FormItem>
-                    )}
-                    />
+                  {mockUser.isLoggedIn && mockUser.savedAddresses.length > 0 ? (
+                    <div className="space-y-4">
+                      {mockUser.savedAddresses.map(address => (
+                        <AddressCard 
+                          key={address.id} 
+                          address={address} 
+                          isSelected={selectedAddress?.id === address.id && !showNewAddressForm}
+                          onSelect={() => {
+                            setSelectedAddress(address);
+                            form.reset(address);
+                            setShowNewAddressForm(false);
+                          }}
+                        />
+                      ))}
+                      <Button variant="outline" className="w-full" onClick={() => setShowNewAddressForm(!showNewAddressForm)}>
+                        {showNewAddressForm ? 'Cancel' : 'Add a New Address'}
+                      </Button>
+                      {showNewAddressForm && <Separator className="my-4"/>}
+                    </div>
+                  ) : null}
 
+                  {(showNewAddressForm || !mockUser.isLoggedIn) && (
+                    <ShippingForm />
+                  )}
                 </CardContent>
               </Card>
             </div>

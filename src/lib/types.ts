@@ -33,6 +33,19 @@ export type CartItem = {
   quantity: number;
 };
 
+export type Address = {
+    id: string;
+    fullName: string;
+    mobileNumber: string;
+    pincode: string;
+    addressLine1: string;
+    addressLine2?: string;
+    city: string;
+    state: string;
+    addressType: 'home' | 'work' | 'other';
+};
+
+
 export type Order = {
   id: string;
   userId: string;
