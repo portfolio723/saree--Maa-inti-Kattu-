@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ShippingForm } from '@/components/checkout/shipping-form';
@@ -69,10 +69,10 @@ export default function CheckoutPage() {
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState<DeliveryOption>(allDeliveryOptions[0]);
   const [discountAmount, setDiscountAmount] = useState(0);
 
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const subtotal = useMemo(() => cart.reduce((acc, item) => acc + item.price * item.quantity, 0), [cart]);
   const deliveryFee = selectedDeliveryOption?.cost ?? 0;
-  const taxes = (subtotal - discountAmount) * 0.05; // 5% GST mock
-  const total = subtotal + deliveryFee - discountAmount + taxes;
+  const taxes = useMemo(() => (subtotal - discountAmount) * 0.05, [subtotal, discountAmount]); // 5% GST mock
+  const total = useMemo(() => subtotal + deliveryFee - discountAmount + taxes, [subtotal, deliveryFee, discountAmount, taxes]);
 
   const defaultFormValues = selectedAddress || {
     fullName: mockUser.isLoggedIn ? mockUser.name : '',
@@ -113,7 +113,7 @@ export default function CheckoutPage() {
       setSelectedAddress(defaultAddr);
       form.reset(defaultAddr);
     }
-  }, [showNewAddressForm, form, mockUser]);
+  }, [showNewAddressForm, form]);
   
    useEffect(() => {
     if (cart.length === 0 && !isProcessing) {
@@ -151,7 +151,27 @@ export default function CheckoutPage() {
     
     await new Promise(resolve => setTimeout(resolve, 1500));
     
+    // Simulate a random payment failure (e.g., 25% chance)
+    if (Math.random() < 0.25) {
+        toast({
+            variant: "destructive",
+            title: 'Payment Failed',
+            description: 'Your payment could not be processed. Please try again.',
+        });
+        setIsProcessing(false);
+        return;
+    }
+
     const mockOrderId = `ORD-${Date.now()}`;
+    const orderDetails = {
+      orderId: mockOrderId,
+      items: cart,
+      shippingAddress: selectedAddress,
+      total: total.toFixed(2),
+    };
+
+    // Save order details to localStorage to be read by the confirmation page
+    localStorage.setItem('lastOrder', JSON.stringify(orderDetails));
 
     toast({
         title: 'Order Placed!',
@@ -159,7 +179,7 @@ export default function CheckoutPage() {
     });
 
     clearCart();
-    router.push(`/orders/confirmation?orderId=${mockOrderId}`);
+    router.push(`/orders/confirmation`);
     setIsProcessing(false);
   };
   
@@ -205,9 +225,9 @@ export default function CheckoutPage() {
     }
   }
   
-  const renderAddressSummary = () => (
+  const renderAddressSummary = () => selectedAddress && (
     <p className="text-sm text-muted-foreground">
-      {selectedAddress?.addressLine1}, {selectedAddress?.city} - {selectedAddress?.pincode}
+      {selectedAddress.addressLine1}, {selectedAddress.city} - {selectedAddress.pincode}
     </p>
   );
 
