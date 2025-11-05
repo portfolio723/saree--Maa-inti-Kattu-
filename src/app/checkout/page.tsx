@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm, FormProvider } from 'react-hook-form';
@@ -24,6 +25,11 @@ const shippingSchema = z.object({
 
 type ShippingFormValues = z.infer<typeof shippingSchema>;
 
+const userProfile = {
+    name: 'John Doe',
+    address: '123 Test Street',
+};
+
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
   const router = useRouter();
@@ -31,11 +37,6 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-
-  const userProfile = {
-      name: 'John Doe',
-      address: '123 Test Street',
-  };
 
   const form = useForm<ShippingFormValues>({
     resolver: zodResolver(shippingSchema),
@@ -58,14 +59,14 @@ export default function CheckoutPage() {
         zip: '',
       });
     }
-  }, [userProfile, form]);
+  }, [form]);
   
    useEffect(() => {
     // Redirect if cart is empty
-    if (cart.length === 0) {
+    if (cart.length === 0 && !isProcessing) { // Added isProcessing check to prevent redirect during submission
       router.replace('/cart');
     }
-  }, [cart, router]);
+  }, [cart, router, isProcessing]);
 
   const onSubmit = async (data: ShippingFormValues) => {
     setIsProcessing(true);
