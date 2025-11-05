@@ -19,6 +19,7 @@ import type { Address } from '@/lib/types';
 import { AddressCard } from '@/components/checkout/address-card';
 import { DeliveryOptions } from '@/components/checkout/delivery-options';
 import { CouponInput } from '@/components/checkout/coupon-input';
+import { PaymentOptions } from '@/components/checkout/payment-options';
 
 
 const shippingSchema = z.object({
@@ -133,6 +134,10 @@ export default function CheckoutPage() {
     }
     setCheckoutStep('delivery');
   };
+  
+  const handleDeliverySubmit = () => {
+    setCheckoutStep('payment');
+  }
 
   const handlePaymentSubmit = async () => {
     setIsProcessing(true);
@@ -169,16 +174,45 @@ export default function CheckoutPage() {
         });
     }
   }
+  
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if(checkoutStep === 'address') {
+      form.handleSubmit(handleAddressSubmit)();
+    } else if (checkoutStep === 'delivery') {
+      handleDeliverySubmit();
+    } else {
+      handlePaymentSubmit();
+    }
+  }
 
   if (cart.length === 0) {
       return <div className="container flex justify-center items-center h-screen"><p>Loading...</p></div>
+  }
+  
+  const getStepTitle = () => {
+    switch (checkoutStep) {
+      case 'address': return 'Shipping Address';
+      case 'delivery': return 'Delivery Options';
+      case 'payment': return 'Payment Method';
+      default: return 'Checkout';
+    }
+  }
+  
+  const getButtonText = () => {
+    switch (checkoutStep) {
+      case 'address': return 'Continue to Delivery';
+      case 'delivery': return 'Continue to Payment';
+      case 'payment': return isProcessing ? 'Processing...' : 'Place Order';
+      default: return 'Continue';
+    }
   }
 
   return (
     <div className="container py-24 md:py-28">
       <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary mb-8">Checkout</h1>
       <FormProvider {...form}>
-        <form onSubmit={checkoutStep === 'address' ? form.handleSubmit(handleAddressSubmit) : handlePaymentSubmit}>
+        <form onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-2 gap-12">
             <div className="space-y-8">
               {!mockUser.isLoggedIn && checkoutStep === 'address' && (
@@ -198,10 +232,10 @@ export default function CheckoutPage() {
               <Card>
                 <CardHeader className='flex-row items-center justify-between'>
                   <CardTitle className="font-headline text-xl md:text-2xl">
-                    {checkoutStep === 'address' ? 'Shipping Address' : 'Delivery Options'}
+                    {getStepTitle()}
                   </CardTitle>
-                  {checkoutStep === 'delivery' && (
-                    <Button variant="link" onClick={() => setCheckoutStep('address')}>Edit Address</Button>
+                  {checkoutStep !== 'address' && (
+                    <Button variant="link" onClick={() => setCheckoutStep(checkoutStep === 'payment' ? 'delivery' : 'address')}>Edit</Button>
                   )}
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -232,8 +266,10 @@ export default function CheckoutPage() {
                         <ShippingForm />
                       )}
                     </>
-                  ) : (
+                  ) : checkoutStep === 'delivery' ? (
                     <DeliveryOptions onDeliveryChange={setDeliveryFee}/>
+                  ) : (
+                    <PaymentOptions />
                   )}
                 </CardContent>
               </Card>
@@ -288,7 +324,7 @@ export default function CheckoutPage() {
                 </CardContent>
               </Card>
                <Button type="submit" size="lg" className="w-full" disabled={isProcessing || (checkoutStep === 'address' && !selectedAddress && !showNewAddressForm)}>
-                {isProcessing ? 'Processing...' : checkoutStep === 'address' ? 'Continue to Delivery' : `Continue to Payment`}
+                {getButtonText()}
               </Button>
             </div>
           </div>
