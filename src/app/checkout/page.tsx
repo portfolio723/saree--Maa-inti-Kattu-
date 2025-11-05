@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useForm, FormProvider } from 'react-hook-form';
@@ -17,6 +18,7 @@ import { ShippingForm } from '@/components/checkout/shipping-form';
 import type { Address } from '@/lib/types';
 import { AddressCard } from '@/components/checkout/address-card';
 import { DeliveryOptions } from '@/components/checkout/delivery-options';
+import { CouponInput } from '@/components/checkout/coupon-input';
 
 
 const shippingSchema = z.object({
@@ -64,9 +66,11 @@ export default function CheckoutPage() {
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(mockUser.savedAddresses.length > 0 ? mockUser.savedAddresses[0] : null);
   const [checkoutStep, setCheckoutStep] = useState<'address' | 'delivery' | 'payment'>('address');
   const [deliveryFee, setDeliveryFee] = useState(0);
+  const [discountAmount, setDiscountAmount] = useState(0);
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
-  const total = subtotal + deliveryFee;
+  const taxes = (subtotal - discountAmount) * 0.05; // 5% GST mock
+  const total = subtotal + deliveryFee - discountAmount + taxes;
 
   const defaultFormValues = selectedAddress || {
     fullName: mockUser.isLoggedIn ? mockUser.name : '',
@@ -119,6 +123,14 @@ export default function CheckoutPage() {
 
   const handleAddressSubmit = (data: ShippingFormValues) => {
     console.log('Shipping Data:', data);
+    if (!selectedAddress && !showNewAddressForm && mockUser.savedAddresses.length > 0) {
+      toast({
+        variant: 'destructive',
+        title: 'Please select an address',
+        description: 'You must select a shipping address to continue.',
+      });
+      return;
+    }
     setCheckoutStep('delivery');
   };
 
@@ -140,6 +152,24 @@ export default function CheckoutPage() {
     setIsProcessing(false);
   };
   
+  const handleApplyCoupon = (coupon: string) => {
+    if (coupon.toUpperCase() === 'SALE50') {
+        const discount = subtotal * 0.5;
+        setDiscountAmount(discount);
+        toast({
+            title: 'Coupon Applied!',
+            description: '50% discount has been applied to your order.',
+        });
+    } else {
+        setDiscountAmount(0);
+        toast({
+            variant: 'destructive',
+            title: 'Invalid Coupon',
+            description: 'The coupon code you entered is not valid.',
+        });
+    }
+  }
+
   if (cart.length === 0) {
       return <div className="container flex justify-center items-center h-screen"><p>Loading...</p></div>
   }
@@ -148,7 +178,7 @@ export default function CheckoutPage() {
     <div className="container py-24 md:py-28">
       <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary mb-8">Checkout</h1>
       <FormProvider {...form}>
-        <form onSubmit={checkoutStep === 'delivery' ? handlePaymentSubmit : form.handleSubmit(handleAddressSubmit)}>
+        <form onSubmit={checkoutStep === 'address' ? form.handleSubmit(handleAddressSubmit) : handlePaymentSubmit}>
           <div className="grid lg:grid-cols-2 gap-12">
             <div className="space-y-8">
               {!mockUser.isLoggedIn && checkoutStep === 'address' && (
@@ -228,22 +258,36 @@ export default function CheckoutPage() {
                     </div>
                   ))}
                   <Separator />
-                   <div className="flex justify-between text-sm">
-                    <span>Subtotal</span>
-                    <span>₹{subtotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span>Shipping</span>
-                    <span>{deliveryFee === 0 ? 'FREE' : `₹${deliveryFee.toFixed(2)}`}</span>
-                  </div>
+                  <CouponInput onApply={handleApplyCoupon} />
+                  <Separator />
+                   <div className="space-y-2 text-sm">
+                        <div className="flex justify-between">
+                            <span>Subtotal</span>
+                            <span>₹{subtotal.toFixed(2)}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span>Shipping Fee</span>
+                            <span>{deliveryFee === 0 ? 'FREE' : `₹${deliveryFee.toFixed(2)}`}</span>
+                        </div>
+                        {discountAmount > 0 && (
+                            <div className="flex justify-between text-green-600">
+                                <span>Discount</span>
+                                <span>-₹{discountAmount.toFixed(2)}</span>
+                            </div>
+                        )}
+                        <div className="flex justify-between">
+                            <span>Taxes (GST)</span>
+                            <span>₹{taxes.toFixed(2)}</span>
+                        </div>
+                    </div>
                   <Separator />
                   <div className="flex justify-between font-bold text-lg">
-                    <span>Total</span>
+                    <span>Grand Total</span>
                     <span>₹{total.toFixed(2)}</span>
                   </div>
                 </CardContent>
               </Card>
-               <Button type="submit" size="lg" className="w-full" disabled={isProcessing}>
+               <Button type="submit" size="lg" className="w-full" disabled={isProcessing || (checkoutStep === 'address' && !selectedAddress && !showNewAddressForm)}>
                 {isProcessing ? 'Processing...' : checkoutStep === 'address' ? 'Continue to Delivery' : `Continue to Payment`}
               </Button>
             </div>
