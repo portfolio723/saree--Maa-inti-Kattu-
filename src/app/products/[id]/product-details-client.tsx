@@ -145,7 +145,7 @@ export function ProductDetailsClient({ product }: { product: Product }) {
                 {isInWishlist ? 'Added to Wishlist' : 'Add to Wishlist'}
              </Button>
              <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary" onClick={handleShare}>
-                <Image src="https://img.icons8.com/?size=100&id=58564&format=png&color=000000" alt="Share" width={20} height={20} className="mr-2"/>
+                <Image src="https://img.icons8.com/?size=100&id=58564&format=png&color=000000" alt="Share" width={20} height={20} className="mr-1"/>
                 Share
              </Button>
         </div>
