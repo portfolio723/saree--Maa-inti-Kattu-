@@ -30,12 +30,12 @@ const shippingSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address.' }),
   pincode: z.string().length(6, { message: 'Please enter a valid 6-digit pincode.' }),
   addressLine1: z.string().min(5, { message: 'Please enter a valid address.' }),
-  addressLine2: z.string().optional(),
+  addressLine2: z.string().optional().default(''),
   city: z.string().min(2, { message: 'Please enter a valid city.' }),
   state: z.string().min(2, { message: 'Please enter a valid state.' }),
   addressType: z.enum(['home', 'work', 'other']).default('home'),
   saveAddress: z.boolean().default(false),
-  gstin: z.string().optional(),
+  gstin: z.string().optional().default(''),
 });
 
 type ShippingFormValues = z.infer<typeof shippingSchema>;
@@ -113,6 +113,7 @@ export default function CheckoutPage() {
         state: '',
         addressType: 'home',
         saveAddress: true,
+        gstin: '',
       });
       setSelectedAddress(null);
     } else if (mockUser.isLoggedIn && mockUser.savedAddresses.length > 0 && !showNewAddressForm) {
@@ -120,7 +121,7 @@ export default function CheckoutPage() {
       setSelectedAddress(defaultAddr);
       form.reset(defaultAddr);
     }
-  }, [showNewAddressForm, form]);
+  }, [showNewAddressForm, form, mockUser.isLoggedIn, mockUser.name, mockUser.email, mockUser.savedAddresses]);
   
    useEffect(() => {
     if (cart.length === 0 && !isProcessing) {
