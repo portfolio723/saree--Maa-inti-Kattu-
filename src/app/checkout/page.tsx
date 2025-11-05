@@ -20,6 +20,8 @@ import { DeliveryOptions, type DeliveryOption } from '@/components/checkout/deli
 import { CouponInput } from '@/components/checkout/coupon-input';
 import { PaymentOptions } from '@/components/checkout/payment-options';
 import { deliveryOptions as allDeliveryOptions } from '@/lib/mock-data';
+import { cn } from '@/lib/utils';
+import { ShieldCheck } from 'lucide-react';
 
 
 const shippingSchema = z.object({
@@ -57,6 +59,11 @@ const mockUser = {
   ],
 };
 
+const checkoutSteps = [
+  { id: 'address', name: 'Shipping' },
+  { id: 'delivery', name: 'Delivery' },
+  { id: 'payment', name: 'Payment' },
+];
 
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
@@ -65,7 +72,7 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showNewAddressForm, setShowNewAddressForm] = useState(!mockUser.isLoggedIn || mockUser.savedAddresses.length === 0);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(mockUser.savedAddresses.length > 0 ? mockUser.savedAddresses[0] : null);
-  const [checkoutStep, setCheckoutStep] = useState<'address' | 'delivery' | 'payment'>('address');
+  const [currentStep, setCurrentStep] = useState<'address' | 'delivery' | 'payment'>('address');
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState<DeliveryOption>(allDeliveryOptions[0]);
   const [discountAmount, setDiscountAmount] = useState(0);
 
@@ -138,11 +145,11 @@ export default function CheckoutPage() {
       });
       return;
     }
-    setCheckoutStep('delivery');
+    setCurrentStep('delivery');
   };
   
   const handleDeliverySubmit = () => {
-    setCheckoutStep('payment');
+    setCurrentStep('payment');
   }
 
   const handlePaymentSubmit = async () => {
@@ -203,9 +210,9 @@ export default function CheckoutPage() {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if(checkoutStep === 'address') {
+    if(currentStep === 'address') {
       form.handleSubmit(handleAddressSubmit)();
-    } else if (checkoutStep === 'delivery') {
+    } else if (currentStep === 'delivery') {
       handleDeliverySubmit();
     } else {
       handlePaymentSubmit();
@@ -217,7 +224,7 @@ export default function CheckoutPage() {
   }
   
   const getButtonText = () => {
-    switch (checkoutStep) {
+    switch (currentStep) {
       case 'address': return 'Continue to Delivery';
       case 'delivery': return 'Continue to Payment';
       case 'payment': return isProcessing ? 'Processing...' : 'Place Order';
@@ -237,9 +244,41 @@ export default function CheckoutPage() {
     </p>
   );
 
+  const currentStepIndex = checkoutSteps.findIndex(step => step.id === currentStep);
+
   return (
     <div className="container py-24 md:py-28">
-      <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary mb-8">Checkout</h1>
+      <div className="max-w-4xl mx-auto mb-12">
+        <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary mb-2 text-center">Checkout</h1>
+        <p className="text-muted-foreground text-center mb-8">Securely complete your purchase.</p>
+        
+        <div className="flex items-center justify-between relative max-w-xl mx-auto">
+          <div className="absolute top-1/2 left-0 w-full h-0.5 bg-border -translate-y-1/2" />
+          <div 
+            className="absolute top-1/2 left-0 h-0.5 bg-primary -translate-y-1/2 transition-all duration-300" 
+            style={{ width: `${(currentStepIndex / (checkoutSteps.length - 1)) * 100}%`}}
+          />
+          {checkoutSteps.map((step, index) => (
+            <div key={step.id} className="relative flex flex-col items-center">
+              <div 
+                className={cn(
+                  "h-8 w-8 rounded-full flex items-center justify-center transition-colors duration-300",
+                  index <= currentStepIndex ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"
+                )}
+              >
+                {index + 1}
+              </div>
+              <p className={cn(
+                "mt-2 text-xs font-semibold text-center",
+                index <= currentStepIndex ? "text-primary" : "text-muted-foreground"
+              )}>
+                {step.name}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <FormProvider {...form}>
         <form onSubmit={handleSubmit}>
           <div className="grid lg:grid-cols-2 gap-12">
@@ -263,12 +302,12 @@ export default function CheckoutPage() {
                   <CardTitle className="font-headline text-xl md:text-2xl">
                     Shipping Address
                   </CardTitle>
-                   {checkoutStep !== 'address' && (
-                    <Button variant="link" onClick={() => setCheckoutStep('address')}>Edit</Button>
+                   {currentStep !== 'address' && (
+                    <Button variant="link" onClick={() => setCurrentStep('address')}>Edit</Button>
                   )}
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {checkoutStep === 'address' ? (
+                  {currentStep === 'address' ? (
                     <>
                       {mockUser.isLoggedIn && mockUser.savedAddresses.length > 0 ? (
                         <div className="space-y-4">
@@ -301,18 +340,18 @@ export default function CheckoutPage() {
                 </CardContent>
               </Card>
 
-              {checkoutStep !== 'address' && (
+              {currentStep !== 'address' && (
                  <Card>
                   <CardHeader className='flex-row items-center justify-between'>
                     <CardTitle className="font-headline text-xl md:text-2xl">
                       Delivery Options
                     </CardTitle>
-                     {checkoutStep === 'payment' && (
-                      <Button variant="link" onClick={() => setCheckoutStep('delivery')}>Edit</Button>
+                     {currentStep === 'payment' && (
+                      <Button variant="link" onClick={() => setCurrentStep('delivery')}>Edit</Button>
                     )}
                   </CardHeader>
                   <CardContent className="space-y-4">
-                     {checkoutStep === 'delivery' ? (
+                     {currentStep === 'delivery' ? (
                        <DeliveryOptions onDeliveryChange={setSelectedDeliveryOption}/>
                      ) : (
                        renderDeliverySummary()
@@ -321,7 +360,7 @@ export default function CheckoutPage() {
                 </Card>
               )}
               
-               {checkoutStep === 'payment' && (
+               {currentStep === 'payment' && (
                  <Card>
                   <CardHeader>
                     <CardTitle className="font-headline text-xl md:text-2xl">
@@ -383,9 +422,15 @@ export default function CheckoutPage() {
                   </div>
                 </CardContent>
               </Card>
-               <Button type="submit" size="lg" className="w-full" disabled={isProcessing || (checkoutStep === 'address' && !selectedAddress && !showNewAddressForm)}>
-                {getButtonText()}
-              </Button>
+              <div className="space-y-4">
+                <Button type="submit" size="lg" className="w-full" disabled={isProcessing || (currentStep === 'address' && !selectedAddress && !showNewAddressForm)}>
+                  {getButtonText()}
+                </Button>
+                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                    <ShieldCheck className="h-4 w-4 text-green-600" />
+                    <span>Secure payments via Razorpay</span>
+                </div>
+              </div>
             </div>
           </div>
         </form>
