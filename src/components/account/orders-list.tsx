@@ -1,29 +1,63 @@
 'use client';
 
-import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { collection } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
 import type { Order } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { Skeleton } from '../ui/skeleton';
 
 interface OrdersListProps {
   userId: string;
 }
 
+const mockOrders: Order[] = [
+    {
+        id: 'mock-ord-1',
+        userId: '123',
+        orderDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        status: 'delivered',
+        totalAmount: 132.99,
+        items: [],
+        shippingAddress: { name: '', address: '', city: '', state: '', zip: ''}
+    },
+    {
+        id: 'mock-ord-2',
+        userId: '123',
+        orderDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+        status: 'shipped',
+        totalAmount: 250.00,
+        items: [],
+        shippingAddress: { name: '', address: '', city: '', state: '', zip: ''}
+    }
+];
+
 export function OrdersList({ userId }: OrdersListProps) {
-  const firestore = useFirestore();
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   
-  const ordersQuery = useMemoFirebase(() => {
-      if (!firestore || !userId) return null;
-      return collection(firestore, 'users', userId, 'orders');
-  }, [firestore, userId]);
-  
-  const { data: orders, isLoading } = useCollection<Order>(ordersQuery);
+  useEffect(() => {
+    // Simulate fetching data
+    setTimeout(() => {
+        setOrders(mockOrders);
+        setIsLoading(false);
+    }, 1000);
+  }, [userId]);
+
 
   if (isLoading) {
-    return <div>Loading orders...</div>;
+    return (
+        <div className="space-y-4">
+            <Skeleton className="h-10 w-1/2" />
+            <Skeleton className="h-8 w-3/4" />
+            <div className="border rounded-md">
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full" />
+            </div>
+        </div>
+    );
   }
 
   if (!orders || orders.length === 0) {

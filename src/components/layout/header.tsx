@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { useUser } from "@/firebase";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetClose, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Search, Heart, User, ShoppingCart, Menu, X, LogOut } from "lucide-react";
@@ -14,7 +13,6 @@ import { useWishlist } from "@/hooks/use-wishlist";
 import { useCart } from "@/hooks/use-cart";
 import { SearchOverlay } from "@/components/search-overlay";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/firebase";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,6 +22,50 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from "next/navigation";
+
+// Mock user data for static site
+const useUser = () => {
+    const [user, setUser] = useState<{
+        displayName: string | null;
+        email: string | null;
+        photoURL: string | null;
+    } | null>(null);
+
+    // On mount, check if a "user" is "logged in" via localStorage
+    useEffect(() => {
+        if (typeof window !== 'undefined' && window.localStorage.getItem('isLoggedIn')) {
+            setUser({
+                displayName: 'Jane Doe',
+                email: 'jane.doe@example.com',
+                photoURL: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjE4MDM0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080',
+            });
+        }
+    }, []);
+
+    // Function to simulate login
+    const login = () => {
+        if (typeof window !== 'undefined') {
+            window.localStorage.setItem('isLoggedIn', 'true');
+            setUser({
+                displayName: 'Jane Doe',
+                email: 'jane.doe@example.com',
+                photoURL: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjE4MDM0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080',
+            });
+        }
+    };
+
+    // Function to simulate logout
+    const logout = () => {
+        if (typeof window !== 'undefined') {
+            window.localStorage.removeItem('isLoggedIn');
+            setUser(null);
+        }
+    };
+    
+    return { user, login, logout };
+};
+
 
 export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -31,8 +73,8 @@ export function Header() {
   const [isHeaderOpaque, setHeaderOpaque] = useState(false);
   const { wishlist } = useWishlist();
   const { cart } = useCart();
-  const { user } = useUser();
-  const auth = useAuth();
+  const { user, logout } = useUser();
+  const router = useRouter();
   const pathname = usePathname();
 
   const isHomePage = pathname === '/';
@@ -44,7 +86,6 @@ export function Header() {
 
     if (isHomePage) {
       window.addEventListener("scroll", handleScroll);
-      // Set initial state
       handleScroll();
       return () => window.removeEventListener("scroll", handleScroll);
     } else {
@@ -53,7 +94,8 @@ export function Header() {
   }, [pathname, isHomePage]);
   
   const handleLogout = () => {
-    auth.signOut();
+    logout();
+    router.push('/');
   };
 
   const navLinks = [

@@ -5,8 +5,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/hooks/use-cart';
-import { useUser, useFirestore, useDoc, useMemoFirebase, addDocumentNonBlocking } from '@/firebase';
-import { doc, collection, writeBatch, serverTimestamp } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -28,20 +26,16 @@ type ShippingFormValues = z.infer<typeof shippingSchema>;
 
 export default function CheckoutPage() {
   const { cart, clearCart } = useCart();
-  const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
   const [isProcessing, setIsProcessing] = useState(false);
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
-  const userDocRef = useMemoFirebase(() => {
-    if (!user) return null;
-    return doc(firestore, 'users', user.uid);
-  }, [firestore, user]);
-
-  const { data: userProfile, isLoading: isProfileLoading } = useDoc(userDocRef);
+  const userProfile = {
+      name: 'John Doe',
+      address: '123 Test Street',
+  };
 
   const form = useForm<ShippingFormValues>({
     resolver: zodResolver(shippingSchema),
@@ -58,7 +52,6 @@ export default function CheckoutPage() {
     if (userProfile) {
       form.reset({
         name: userProfile.name || '',
-        // A real app would have structured address fields in the user profile
         address: userProfile.address || '',
         city: '',
         state: '',
@@ -69,60 +62,33 @@ export default function CheckoutPage() {
   
    useEffect(() => {
     // Redirect if cart is empty
-    if (!isUserLoading && cart.length === 0) {
+    if (cart.length === 0) {
       router.replace('/cart');
     }
-    // Redirect if user is not logged in
-    if (!isUserLoading && !user) {
-        toast({
-            title: 'Please sign in',
-            description: 'You need to be logged in to proceed to checkout.',
-            variant: 'destructive'
-        })
-        router.push('/login?redirect=/checkout');
-    }
-  }, [user, isUserLoading, cart, router, toast]);
+  }, [cart, router]);
 
   const onSubmit = async (data: ShippingFormValues) => {
-    if (!user || !firestore) return;
     setIsProcessing(true);
-
-    const newOrderRef = doc(collection(firestore, 'orders'));
-    const orderData = {
-        id: newOrderRef.id,
-        userId: user.uid,
-        orderDate: new Date().toISOString(),
-        status: 'pending' as const,
-        totalAmount: subtotal,
-        shippingAddress: data,
-        items: cart,
-    };
     
     // In a real app, you would integrate with a payment provider here.
     // For this demo, we'll simulate a successful payment.
-    try {
-        await addDocumentNonBlocking(newOrderRef, orderData);
+    
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
+    const mockOrderId = `ORD-${Date.now()}`;
 
-        toast({
-            title: 'Order Placed!',
-            description: 'Thank you for your purchase.',
-        });
+    toast({
+        title: 'Order Placed!',
+        description: 'Thank you for your purchase.',
+    });
 
-        clearCart();
-        router.push(`/orders/confirmation?orderId=${newOrderRef.id}`);
-
-    } catch (error) {
-        console.error("Error placing order: ", error);
-        toast({
-            variant: 'destructive',
-            title: 'Order Failed',
-            description: 'There was a problem placing your order. Please try again.',
-        });
-        setIsProcessing(false);
-    }
+    clearCart();
+    router.push(`/orders/confirmation?orderId=${mockOrderId}`);
+    setIsProcessing(false);
   };
   
-  if (isUserLoading || isProfileLoading || cart.length === 0) {
+  if (cart.length === 0) {
       return <div className="container flex justify-center items-center h-screen"><p>Loading...</p></div>
   }
 

@@ -1,7 +1,5 @@
 'use client';
 
-import { useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc, collection } from 'firebase/firestore';
 import { notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -10,6 +8,7 @@ import { PackageCheck, Package, Truck, Home } from 'lucide-react';
 import type { Order } from '@/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 const statusMap = {
   pending: { icon: Package, text: 'Order Placed', dateField: 'orderDate' },
@@ -35,22 +34,37 @@ const TimelineStep = ({ title, date, icon: Icon, isCompleted, isLast = false }: 
 );
   
 export default function OrderTrackingPage({ params }: { params: { id: string } }) {
-    const firestore = useFirestore();
     
-    // This is a simplification. In a real app, you'd get the userId from auth state.
-    // Since this is a server component initially, we'd need a way to pass the userId.
-    // For now, we'll assume a structure where orders are publicly trackable by ID,
-    // or we're fetching this on the client where we can get the user.
-    // To make this work, we'll use a placeholder userID. A real app MUST secure this.
-    const orderDocRef = useMemoFirebase(() => {
-        if (!firestore) return null;
-        // IMPORTANT: This path is insecure. In a real app, you would have
-        // `/users/{userId}/orders/{orderId}` and get the userId from auth.
-        // For this demo, we're using a top-level collection.
-        return doc(firestore, 'orders', params.id);
-    }, [firestore, params.id]);
+    const [order, setOrder] = useState<Order | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    
+    useEffect(() => {
+        // Mock fetching order data
+        const mockOrder: Order = {
+            id: params.id,
+            userId: 'mock-user-123',
+            orderDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
+            shippedDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
+            status: 'shipped',
+            totalAmount: 335.50,
+            shippingAddress: {
+                name: 'John Doe',
+                address: '123 Main St',
+                city: 'Anytown',
+                state: 'CA',
+                zip: '12345',
+            },
+            items: [
+                { id: '1', name: 'Kanjeevaram Silk Saree', price: 250.00, image: '/na1.jpg', quantity: 1 },
+                { id: '2', name: 'Antique Jhumka Earrings', price: 85.50, image: '/na2.jpg', quantity: 1 },
+            ],
+        };
+        setTimeout(() => {
+            setOrder(mockOrder);
+            setIsLoading(false);
+        }, 1000);
+    }, [params.id]);
 
-    const { data: order, isLoading } = useDoc<Order>(orderDocRef);
 
     if (isLoading) {
         return (

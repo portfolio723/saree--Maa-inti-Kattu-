@@ -3,16 +3,12 @@
 import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { useFirestore, updateDocumentNonBlocking, useAuth } from '@/firebase';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { doc } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useToast } from '@/hooks/use-toast';
-import { User as FirebaseUser, updateProfile } from 'firebase/auth';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Camera, User } from 'lucide-react';
 import React, { useRef, useState } from 'react';
@@ -31,8 +27,6 @@ interface ProfileFormProps {
 }
 
 export function ProfileForm({ userProfile }: ProfileFormProps) {
-  const firestore = useFirestore();
-  const auth = useAuth();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -55,53 +49,29 @@ export function ProfileForm({ userProfile }: ProfileFormProps) {
 
   const handleFileChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file || !userProfile?.id || !auth.currentUser) return;
+    if (!file) return;
 
     setIsUploading(true);
 
-    const storage = getStorage();
-    const filePath = `profile-images/${userProfile.id}/${file.name}`;
-    const storageRef = ref(storage, filePath);
-
-    try {
-      const snapshot = await uploadBytes(storageRef, file);
-      const downloadURL = await getDownloadURL(snapshot.ref);
-
-      await updateProfile(auth.currentUser, { photoURL: downloadURL });
-
-      const userDocRef = doc(firestore, 'users', userProfile.id);
-      updateDocumentNonBlocking(userDocRef, { profileImageUrl: downloadURL });
-      
-      setAvatarUrl(downloadURL);
-
-      toast({
-        title: 'Profile Picture Updated',
-        description: 'Your new profile picture has been saved.',
-      });
-    } catch (error) {
-      console.error("Error uploading file:", error);
-      toast({
-        variant: 'destructive',
-        title: 'Upload Failed',
-        description: 'There was a problem uploading your profile picture.',
-      });
-    } finally {
-      setIsUploading(false);
-    }
+    // Mock upload
+    setTimeout(() => {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+            const dataUrl = reader.result as string;
+            setAvatarUrl(dataUrl);
+            setIsUploading(false);
+            toast({
+                title: 'Profile Picture Updated',
+                description: 'Your new profile picture has been saved (locally).',
+            });
+        };
+        reader.readAsDataURL(file);
+    }, 1500);
   };
 
   const onSubmit = (data: ProfileFormValues) => {
-    if (!userProfile?.id || !auth.currentUser) return;
-    const userDocRef = doc(firestore, 'users', userProfile.id);
-    
-    // Update firestore
-    updateDocumentNonBlocking(userDocRef, data);
-
-    // Update auth profile
-    if(auth.currentUser.displayName !== data.name) {
-        updateProfile(auth.currentUser, { displayName: data.name });
-    }
-
+    // In a real app, this would save to a backend.
+    console.log('Profile updated:', data);
     toast({
       title: 'Profile Updated',
       description: 'Your profile information has been saved.',
@@ -183,7 +153,7 @@ export function ProfileForm({ userProfile }: ProfileFormProps) {
                 <FormItem>
                   <FormLabel>Phone Number</FormLabel>
                   <FormControl>
-                    <Input {...field} disabled />
+                    <Input {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

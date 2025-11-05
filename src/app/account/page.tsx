@@ -1,50 +1,18 @@
 'use client';
 
-import { useUser, useFirestore, useDoc, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProfileForm } from '@/components/account/profile-form';
 import { OrdersList } from '@/components/account/orders-list';
-import { Skeleton } from '@/components/ui/skeleton';
 
 export default function AccountPage() {
-  const { user, isUserLoading } = useUser();
-  const firestore = useFirestore();
-  const router = useRouter();
-
-  useEffect(() => {
-    if (!isUserLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, isUserLoading, router]);
-
-  const userDocRef = useMemoFirebase(() => {
-    if (!user) return null;
-    return doc(firestore, 'users', user.uid);
-  }, [firestore, user]);
-
-  const { data: userProfile, isLoading: isProfileLoading } = useDoc(userDocRef);
-
-  if (isUserLoading || isProfileLoading) {
-    return (
-        <div className="container py-12">
-            <Skeleton className="h-10 w-1/4 mb-8" />
-            <Skeleton className="h-12 w-1/3 mb-8" />
-            <div className="space-y-4">
-                <Skeleton className="h-20 w-full" />
-                <Skeleton className="h-20 w-full" />
-                <Skeleton className="h-20 w-full" />
-            </div>
-        </div>
-    );
-  }
-
-  if (!user || !userProfile) {
-    // This state should be brief as the effect will redirect
-    return null;
-  }
+  const userProfile = {
+    id: '123',
+    name: 'Jane Doe',
+    email: 'jane.doe@example.com',
+    phoneNumber: '+1234567890',
+    address: '123 Main St, Anytown, USA',
+    profileImageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjE4MDM0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080'
+  };
 
   return (
     <div className="container py-12">
@@ -59,7 +27,7 @@ export default function AccountPage() {
           <ProfileForm userProfile={userProfile} />
         </TabsContent>
         <TabsContent value="orders">
-          <OrdersList userId={user.uid} />
+          <OrdersList userId="123" />
         </TabsContent>
       </Tabs>
     </div>

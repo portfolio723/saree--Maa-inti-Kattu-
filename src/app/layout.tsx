@@ -5,7 +5,6 @@ import { Footer } from '@/components/layout/footer';
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from '@/lib/utils';
 import { Open_Sans, Corinthia } from 'next/font/google';
-import { FirebaseClientProvider } from '@/firebase';
 
 const openSans = Open_Sans({ subsets: ['latin'], variable: '--font-open-sans' });
 const corinthia = Corinthia({ 
@@ -28,12 +27,10 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full">
       <body className={cn("font-body antialiased flex flex-col min-h-screen bg-white", openSans.variable, corinthia.variable)}>
-        <FirebaseClientProvider>
           <Header />
           <main className="flex-grow">{children}</main>
           <Footer />
           <Toaster />
-        </FirebaseClientProvider>
       </body>
     </html>
   );
