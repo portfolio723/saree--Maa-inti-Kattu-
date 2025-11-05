@@ -126,9 +126,8 @@ export function ProductDetailsClient({ product }: { product: Product }) {
             <span className="w-10 text-center text-lg font-semibold">{quantity}</span>
             <Button variant="ghost" size="icon" onClick={() => setQuantity(q => q+1)}><Plus className="h-4 w-4" /></Button>
           </div>
-          <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary" onClick={handleShare}>
-              <Share2 className="h-4 w-4 mr-2" />
-              Share
+          <Button variant="outline" size="icon" onClick={handleShare} aria-label="Share product" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+              <Share2 className="h-5 w-5" />
           </Button>
         </div>
         
