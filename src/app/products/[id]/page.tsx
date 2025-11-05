@@ -1,4 +1,5 @@
 
+import React from 'react';
 import { notFound } from 'next/navigation';
 import { products, reviews } from '@/lib/mock-data';
 import { Separator } from '@/components/ui/separator';
@@ -9,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import { ProductDetailsClient } from './product-details-client';
+import { ProductCard } from '@/components/product-card';
 
 export default async function ProductDetailPage({ params }: { params: { id: string } }) {
   const product = products.find(p => p.id === params.id);
@@ -17,16 +19,31 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
     notFound();
   }
 
+  const relatedProducts = products.filter(p => p.category === product.category && p.id !== product.id).slice(0, 6);
+
   return (
     <div className="container py-8 md:py-12">
       
       <ProductDetailsClient product={product} />
 
       <Separator className="my-12" />
+      
+      {/* Related Products Section */}
+      <div className="mb-12">
+        <h2 className="text-2xl md:text-3xl font-bold font-headline text-primary mb-6 text-center">Related Products</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
+            {relatedProducts.map(relatedProduct => (
+              <ProductCard key={relatedProduct.id} product={relatedProduct} />
+            ))}
+        </div>
+      </div>
 
-      <div className="space-y-12">
+      <Separator className="my-12" />
+
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold font-headline text-primary mb-6">Customer Reviews</h2>
+          <h2 className="text-2xl md:text-3xl font-bold font-headline text-primary mb-6">Customer Reviews ({product.reviewCount})</h2>
           <div className="space-y-6">
             {reviews.map(review => (
               <ReviewCard key={review.id} review={review} />

@@ -3,14 +3,24 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Star, Plus, Minus, Heart } from 'lucide-react';
+import { Star, Plus, Minus, Heart, Truck, CreditCard, Facebook, Twitter, Linkedin, HelpCircle } from 'lucide-react';
 import type { Product } from '@/lib/types';
 import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { useWishlist } from '@/hooks/use-wishlist';
 import { useCart } from '@/hooks/use-cart';
 import { cn } from '@/lib/utils';
+import { ProductImageGallery } from './product-image-gallery';
+import { Separator } from '@/components/ui/separator';
+
+const productInfo = {
+    "Fabric": "Silk",
+    "Border Type": "Contrast Zari",
+    "Weave": "Banarasi",
+    "Blouse Included": "Yes",
+    "Blouse Fabric": "SILK",
+    "Blouse Type": "ATTACHED WITH SAREE",
+    "Size": "Na"
+};
 
 export function ProductDetailsClient({ product }: { product: Product }) {
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
@@ -40,65 +50,101 @@ export function ProductDetailsClient({ product }: { product: Product }) {
         image: product.images[0].imageUrl,
     }, quantity);
   };
+  
+  const discountPercentage = 40;
+  const discountedPrice = product.price * (1 - discountPercentage / 100);
 
   return (
     <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-      <div>
-        <Carousel className="w-full">
-          <CarouselContent>
-            {product.images.map((image, index) => (
-              <CarouselItem key={index}>
-                <Card className="overflow-hidden">
-                  <Image
-                    src={image.imageUrl}
-                    alt={`${product.name} - view ${index + 1}`}
-                    width={600}
-                    height={750}
-                    className="aspect-[4/5] w-full object-cover"
-                    data-ai-hint={image.imageHint}
-                  />
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="left-4" />
-          <CarouselNext className="right-4" />
-        </Carousel>
-      </div>
-      <div className="flex flex-col gap-6">
-        <div className="space-y-2">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold font-headline text-primary">{product.name}</h1>
-          <div className="flex items-center gap-2 text-sm">
-            <div className="flex items-center gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className={cn(
-                    'h-4 w-4',
-                    i < Math.floor(product.rating) ? 'text-accent fill-accent' : 'text-gray-300'
-                  )}
-                />
-              ))}
+      <ProductImageGallery images={product.images} />
+      
+      <div className="flex flex-col gap-4">
+        <h1 className="text-2xl font-bold font-headline text-primary">{product.name}</h1>
+        
+        <div className='space-y-1'>
+            <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold">Availability:</span>
+                <span className="text-sm font-semibold text-green-600">In Stock</span>
             </div>
-            <span className="text-muted-foreground">({product.reviewCount} reviews)</span>
-          </div>
+            {product.inventory < 10 && <p className="text-sm text-destructive font-semibold">Only {product.inventory} left</p>}
+            <p className="text-sm text-muted-foreground">SKU: SKU-{product.id.padStart(6, '0')}</p>
         </div>
-        <p className="text-base md:text-lg text-foreground/80">{product.longDescription}</p>
-        <p className="text-2xl md:text-3xl font-semibold text-primary">₹{product.price.toFixed(2)}</p>
 
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="icon" onClick={() => setQuantity(q => Math.max(1, q-1))}><Minus className="h-4 w-4" /></Button>
-            <span className="w-10 text-center text-lg font-semibold">{quantity}</span>
-            <Button variant="outline" size="icon" onClick={() => setQuantity(q => q+1)}><Plus className="h-4 w-4" /></Button>
-          </div>
-          <Button size="lg" className="flex-1" onClick={handleAddToCart}>Add to Cart</Button>
-          <Button variant="outline" size="icon" onClick={handleWishlistClick}>
-              <Heart className={cn("h-5 w-5", isInWishlist ? 'text-red-500 fill-red-500' : 'text-gray-500')} />
-              <span className="sr-only">{isInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}</span>
-          </Button>
+             <p className="text-2xl md:text-3xl font-bold text-destructive">₹{discountedPrice.toFixed(2)}</p>
+             <p className="text-xl md:text-2xl font-medium text-muted-foreground line-through">₹{product.price.toFixed(2)}</p>
         </div>
-        <p className="text-sm text-green-600">{product.inventory} in stock</p>
+        
+        <p className="text-sm text-foreground/80">{product.description}</p>
+        
+        <div className="flex items-center gap-2">
+          <div className="flex items-center border rounded-md">
+            <Button variant="ghost" size="icon" onClick={() => setQuantity(q => Math.max(1, q-1))}><Minus className="h-4 w-4" /></Button>
+            <span className="w-10 text-center text-lg font-semibold">{quantity}</span>
+            <Button variant="ghost" size="icon" onClick={() => setQuantity(q => q+1)}><Plus className="h-4 w-4" /></Button>
+          </div>
+          <Button size="lg" className="flex-1 bg-red-600 hover:bg-red-700 text-white uppercase" onClick={handleAddToCart}>Add to Cart</Button>
+        </div>
+
+        <div className="flex items-center gap-4 text-sm">
+             <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary" onClick={handleWishlistClick}>
+                <Heart className={cn("h-4 w-4 mr-2", isInWishlist ? 'text-red-500 fill-red-500' : '')} />
+                {isInWishlist ? 'Added to Wishlist' : 'Add to Wishlist'}
+             </Button>
+             <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary">
+                <HelpCircle className="h-4 w-4 mr-2" />
+                FAQ
+             </Button>
+        </div>
+
+        <Separator className="my-4" />
+
+        <div>
+            <h3 className="font-bold text-lg mb-4 font-headline text-primary">More Information</h3>
+            <div className="space-y-2 text-sm">
+                {Object.entries(productInfo).map(([key, value]) => (
+                    <div key={key} className="grid grid-cols-2">
+                        <span className="font-semibold text-foreground/80">{key}</span>
+                        <span className="text-muted-foreground">{value}</span>
+                    </div>
+                ))}
+            </div>
+        </div>
+        
+         <Separator className="my-4" />
+         
+        <div className="space-y-2 text-sm">
+             <h3 className="font-bold text-lg mb-4 font-headline text-primary">More Info</h3>
+             <p className="text-muted-foreground">Have any Queries? We're here to help!</p>
+             <p className="text-muted-foreground">Contact Us: +91-9852985299</p>
+             <p className="text-muted-foreground">Email Us: hello@maaintikattu.com</p>
+        </div>
+        
+        <div className="flex gap-8 mt-4">
+            <div className="flex items-center gap-2 text-sm">
+                <Truck className="h-8 w-8 text-primary" />
+                <div>
+                    <p className="font-semibold">FREE DELIVERY</p>
+                </div>
+            </div>
+             <div className="flex items-center gap-2 text-sm">
+                <CreditCard className="h-8 w-8 text-primary" />
+                <div>
+                    <p className="font-semibold">PAYMENT SECURED</p>
+                    <p className="text-xs text-muted-foreground">Safe with Our Payment</p>
+                </div>
+            </div>
+        </div>
+
+        <div className="flex items-center gap-4 mt-4">
+            <span className="text-sm font-semibold">Share it:</span>
+            <div className="flex gap-2">
+                <Button variant="outline" size="icon" className="rounded-full h-8 w-8"><Facebook className="h-4 w-4" /></Button>
+                <Button variant="outline" size="icon" className="rounded-full h-8 w-8"><Twitter className="h-4 w-4" /></Button>
+                <Button variant="outline" size="icon" className="rounded-full h-8 w-8"><Linkedin className="h-4 w-4" /></Button>
+            </div>
+        </div>
+
       </div>
     </div>
   );
