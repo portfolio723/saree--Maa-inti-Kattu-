@@ -102,7 +102,6 @@ export function ProductDetailsClient({ product }: { product: Product }) {
             <span className="w-10 text-center text-lg font-semibold">{quantity}</span>
             <Button variant="ghost" size="icon" onClick={() => setQuantity(q => q+1)}><Plus className="h-4 w-4" /></Button>
           </div>
-          <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white uppercase" onClick={handleAddToCart}>Add to Cart</Button>
           <Button size="lg" variant="outline" onClick={handleShare}>
             <Share2 className="h-5 w-5" />
             <span className="sr-only">Share</span>
