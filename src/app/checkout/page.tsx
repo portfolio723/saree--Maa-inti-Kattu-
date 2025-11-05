@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import { useForm, FormProvider } from 'react-hook-form';
@@ -106,7 +107,7 @@ export default function CheckoutPage() {
       setSelectedAddress(defaultAddr);
       form.reset(defaultAddr);
     }
-  }, [showNewAddressForm, form]);
+  }, [showNewAddressForm, form, mockUser.isLoggedIn, mockUser.name, mockUser.email, mockUser.savedAddresses]);
   
    useEffect(() => {
     if (cart.length === 0 && !isProcessing) {

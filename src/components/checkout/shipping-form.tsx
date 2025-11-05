@@ -1,10 +1,12 @@
 
+
 'use client';
 
 import { useFormContext } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Checkbox } from '@/components/ui/checkbox';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 
 export function ShippingForm() {
@@ -42,7 +44,7 @@ export function ShippingForm() {
                 render={({ field }) => (
                     <FormItem>
                         <FormLabel>Email Address</FormLabel>
-                        <FormControl><Input {...field} /></FormControl>
+                        <FormControl><Input {...field} type="email" /></FormControl>
                         <FormMessage />
                     </FormItem>
                 )}
@@ -104,19 +106,53 @@ export function ShippingForm() {
                     )}
                 />
             </div>
-            <div className="grid md:grid-cols-2 gap-4">
-                <FormField
-                    control={form.control}
-                    name="gstin"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>GSTIN (Optional)</FormLabel>
-                            <FormControl><Input {...field} /></FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-            </div>
+            <FormField
+              control={form.control}
+              name="addressType"
+              render={({ field }) => (
+                <FormItem className="space-y-3">
+                  <FormLabel>Address Type</FormLabel>
+                  <FormControl>
+                    <RadioGroup
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                      className="flex space-x-4"
+                    >
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="home" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Home</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="work" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Work</FormLabel>
+                      </FormItem>
+                      <FormItem className="flex items-center space-x-2 space-y-0">
+                        <FormControl>
+                          <RadioGroupItem value="other" />
+                        </FormControl>
+                        <FormLabel className="font-normal">Other</FormLabel>
+                      </FormItem>
+                    </RadioGroup>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+                control={form.control}
+                name="gstin"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>GSTIN (Optional)</FormLabel>
+                        <FormControl><Input {...field} placeholder="Enter your GSTIN for a business invoice"/></FormControl>
+                        <FormMessage />
+                    </FormItem>
+                )}
+            />
             <FormField
                 control={form.control}
                 name="saveAddress"
