@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function TermsAndConditionsPage() {
     return (
-        <div className="container py-12 md:py-20">
+        <div className="container pt-24 md:pt-32 pb-12 md:pb-20">
             <div className="max-w-4xl mx-auto">
                 <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary mb-8">Terms & Conditions</h1>
                 <div className="prose prose-lg max-w-none text-foreground/80 space-y-6">
