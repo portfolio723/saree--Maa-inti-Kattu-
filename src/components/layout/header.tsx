@@ -71,8 +71,8 @@ export function Header() {
           isHeaderOpaque ? "bg-white text-black shadow-md" : "bg-transparent text-white"
       )}>
         <div className="flex items-center flex-1 md:flex-initial">
-          <Link href="/" className="flex items-center text-lg md:text-xl font-bold font-headline">
-            Maa Inti Kattu
+          <Link href="/" className="flex items-center">
+            <Image src="/mik.png" alt="Maa Inti Kattu" width={100} height={40} className="object-contain h-10" />
           </Link>
         </div>
 
@@ -182,7 +182,7 @@ export function Header() {
               <SheetContent side="right" className="w-full bg-white p-0">
                 <SheetHeader className="flex flex-row justify-between items-center p-4 border-b">
                    <Link href="/" className="flex items-center text-lg md:text-xl font-bold font-headline" onClick={() => setMenuOpen(false)}>
-                      Maa Inti Kattu
+                      <Image src="/mik.png" alt="Maa Inti Kattu" width={100} height={40} className="object-contain h-10" />
                   </Link>
                   <SheetTitle className="sr-only">Menu</SheetTitle>
                   <SheetClose asChild>
