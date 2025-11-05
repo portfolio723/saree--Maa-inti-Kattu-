@@ -3,7 +3,8 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { Star, Plus, Minus, Heart, Truck, CreditCard, Facebook, Twitter, Linkedin, HelpCircle, Share2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Star, Plus, Minus, Heart, Truck, CreditCard, Facebook, Twitter, Linkedin, HelpCircle, Share2, ShoppingCart } from 'lucide-react';
 import type { Product } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/hooks/use-wishlist';
@@ -28,18 +29,27 @@ export function ProductDetailsClient({ product }: { product: Product }) {
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const { toast } = useToast();
+  const router = useRouter();
 
   const isInWishlist = wishlist.some((item) => item.id === product.id);
 
   const handleWishlistClick = () => {
     if (isInWishlist) {
       removeFromWishlist(product.id);
+       toast({
+        title: 'Removed from Wishlist',
+        description: `${product.name} has been removed from your wishlist.`,
+      });
     } else {
       addToWishlist({
         id: product.id,
         name: product.name,
         price: product.price,
         image: product.images[0].imageUrl,
+      });
+       toast({
+        title: 'Added to Wishlist!',
+        description: `${product.name} has been added to your wishlist.`,
       });
     }
   };
@@ -51,6 +61,20 @@ export function ProductDetailsClient({ product }: { product: Product }) {
         price: product.price,
         image: product.images[0].imageUrl,
     }, quantity);
+     toast({
+        title: 'Added to Cart!',
+        description: `${quantity} x ${product.name} has been added to your cart.`,
+      });
+  };
+  
+  const handleBuyNow = () => {
+    addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0].imageUrl,
+    }, quantity);
+    router.push('/checkout');
   };
   
   const handleShare = () => {
@@ -96,22 +120,33 @@ export function ProductDetailsClient({ product }: { product: Product }) {
         
         <p className="text-sm text-foreground/80">{product.description}</p>
         
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           <div className="flex items-center border rounded-md">
             <Button variant="ghost" size="icon" onClick={() => setQuantity(q => Math.max(1, q-1))}><Minus className="h-4 w-4" /></Button>
             <span className="w-10 text-center text-lg font-semibold">{quantity}</span>
             <Button variant="ghost" size="icon" onClick={() => setQuantity(q => q+1)}><Plus className="h-4 w-4" /></Button>
           </div>
-          <Button size="lg" variant="outline" onClick={handleShare}>
-            <Share2 className="h-5 w-5" />
-            <span className="sr-only">Share</span>
-          </Button>
         </div>
+        
+        <div className="grid grid-cols-2 gap-4 my-4">
+            <Button size="lg" variant="outline" onClick={handleAddToCart}>
+                <ShoppingCart className="mr-2 h-5 w-5" />
+                Add to Cart
+            </Button>
+            <Button size="lg" onClick={handleBuyNow}>
+                Buy Now
+            </Button>
+        </div>
+
 
         <div className="flex items-center gap-4 text-sm">
              <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary" onClick={handleWishlistClick}>
                 <Heart className={cn("h-4 w-4 mr-2", isInWishlist ? 'text-red-500 fill-red-500' : '')} />
                 {isInWishlist ? 'Added to Wishlist' : 'Add to Wishlist'}
+             </Button>
+             <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary" onClick={handleShare}>
+                <Share2 className="h-4 w-4 mr-2" />
+                Share
              </Button>
              <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary">
                 <HelpCircle className="h-4 w-4 mr-2" />
