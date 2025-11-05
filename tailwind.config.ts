@@ -20,10 +20,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['var(--font-open-sans)', 'sans-serif'],
-        headline: ['var(--font-open-sans)', 'sans-serif'],
-        handwriting: ['var(--font-corinthia)', 'cursive'],
-        code: ['monospace'],
+        body: ['var(--font-geist-sans)', 'sans-serif'],
+        headline: ['var(--font-geist-sans)', 'sans-serif'],
+        handwriting: ['var(--font-geist-sans)', 'cursive'],
+        code: ['var(--font-geist-mono)', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -98,5 +98,3 @@ export default {
   },
   plugins: [require('tailwindcss-animate')],
 } satisfies Config;
-
-    
