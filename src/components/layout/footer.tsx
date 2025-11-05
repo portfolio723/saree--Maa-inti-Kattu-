@@ -64,7 +64,7 @@ export function Footer() {
           <div className="text-left">
              <div className="space-y-6">
                 <div>
-                   <h3 className="font-semibold font-headline mb-4 relative after:content-[''] after:absolute after_left-0 after:bottom-[-4px] after:w-10 after:h-0.5 after:bg-primary">Join Our Newsletter</h3>
+                   <h3 className="font-semibold font-headline mb-4 relative after:content-[''] after:absolute after:left-0 after:bottom-[-4px] after:w-10 after:h-0.5 after:bg-primary">Join Our Newsletter</h3>
                    <p className="text-sm text-muted-foreground mb-3">Sign up for our e-mail to get latest news.</p>
                    <div className="flex w-full max-w-sm items-center space-x-2">
                       <Input type="email" placeholder="Your email letter" className="bg-white" />
