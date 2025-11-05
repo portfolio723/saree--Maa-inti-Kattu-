@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { useForm, FormProvider } from 'react-hook-form';
@@ -17,6 +16,7 @@ import Link from 'next/link';
 import { ShippingForm } from '@/components/checkout/shipping-form';
 import type { Address } from '@/lib/types';
 import { AddressCard } from '@/components/checkout/address-card';
+import { DeliveryOptions } from '@/components/checkout/delivery-options';
 
 
 const shippingSchema = z.object({
@@ -62,9 +62,11 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [showNewAddressForm, setShowNewAddressForm] = useState(!mockUser.isLoggedIn || mockUser.savedAddresses.length === 0);
   const [selectedAddress, setSelectedAddress] = useState<Address | null>(mockUser.savedAddresses.length > 0 ? mockUser.savedAddresses[0] : null);
-
+  const [checkoutStep, setCheckoutStep] = useState<'address' | 'delivery' | 'payment'>('address');
+  const [deliveryFee, setDeliveryFee] = useState(0);
 
   const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  const total = subtotal + deliveryFee;
 
   const defaultFormValues = selectedAddress || {
     fullName: mockUser.isLoggedIn ? mockUser.name : '',
@@ -115,9 +117,14 @@ export default function CheckoutPage() {
     }
   }, [cart, router, isProcessing]);
 
-  const onSubmit = async (data: ShippingFormValues) => {
-    setIsProcessing(true);
+  const handleAddressSubmit = (data: ShippingFormValues) => {
     console.log('Shipping Data:', data);
+    setCheckoutStep('delivery');
+  };
+
+  const handlePaymentSubmit = async () => {
+    setIsProcessing(true);
+    console.log('Finalizing order...');
     
     await new Promise(resolve => setTimeout(resolve, 1500));
     
@@ -141,10 +148,10 @@ export default function CheckoutPage() {
     <div className="container py-24 md:py-28">
       <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary mb-8">Checkout</h1>
       <FormProvider {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
+        <form onSubmit={checkoutStep === 'delivery' ? handlePaymentSubmit : form.handleSubmit(handleAddressSubmit)}>
           <div className="grid lg:grid-cols-2 gap-12">
             <div className="space-y-8">
-              {!mockUser.isLoggedIn && (
+              {!mockUser.isLoggedIn && checkoutStep === 'address' && (
                 <Card>
                   <CardHeader>
                     <CardTitle className="font-headline text-xl md:text-2xl">Account</CardTitle>
@@ -159,33 +166,44 @@ export default function CheckoutPage() {
               )}
               
               <Card>
-                <CardHeader>
-                  <CardTitle className="font-headline text-xl md:text-2xl">Shipping Address</CardTitle>
+                <CardHeader className='flex-row items-center justify-between'>
+                  <CardTitle className="font-headline text-xl md:text-2xl">
+                    {checkoutStep === 'address' ? 'Shipping Address' : 'Delivery Options'}
+                  </CardTitle>
+                  {checkoutStep === 'delivery' && (
+                    <Button variant="link" onClick={() => setCheckoutStep('address')}>Edit Address</Button>
+                  )}
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {mockUser.isLoggedIn && mockUser.savedAddresses.length > 0 ? (
-                    <div className="space-y-4">
-                      {mockUser.savedAddresses.map(address => (
-                        <AddressCard 
-                          key={address.id} 
-                          address={address} 
-                          isSelected={selectedAddress?.id === address.id && !showNewAddressForm}
-                          onSelect={() => {
-                            setSelectedAddress(address);
-                            form.reset(address);
-                            setShowNewAddressForm(false);
-                          }}
-                        />
-                      ))}
-                      <Button variant="outline" className="w-full" onClick={() => setShowNewAddressForm(!showNewAddressForm)}>
-                        {showNewAddressForm ? 'Cancel' : 'Add a New Address'}
-                      </Button>
-                      {showNewAddressForm && <Separator className="my-4"/>}
-                    </div>
-                  ) : null}
+                  {checkoutStep === 'address' ? (
+                    <>
+                      {mockUser.isLoggedIn && mockUser.savedAddresses.length > 0 ? (
+                        <div className="space-y-4">
+                          {mockUser.savedAddresses.map(address => (
+                            <AddressCard 
+                              key={address.id} 
+                              address={address} 
+                              isSelected={selectedAddress?.id === address.id && !showNewAddressForm}
+                              onSelect={() => {
+                                setSelectedAddress(address);
+                                form.reset(address);
+                                setShowNewAddressForm(false);
+                              }}
+                            />
+                          ))}
+                          <Button variant="outline" className="w-full" onClick={() => setShowNewAddressForm(!showNewAddressForm)}>
+                            {showNewAddressForm ? 'Cancel' : 'Add a New Address'}
+                          </Button>
+                          {showNewAddressForm && <Separator className="my-4"/>}
+                        </div>
+                      ) : null}
 
-                  {(showNewAddressForm || !mockUser.isLoggedIn) && (
-                    <ShippingForm />
+                      {(showNewAddressForm || !mockUser.isLoggedIn) && (
+                        <ShippingForm />
+                      )}
+                    </>
+                  ) : (
+                    <DeliveryOptions onDeliveryChange={setDeliveryFee}/>
                   )}
                 </CardContent>
               </Card>
@@ -216,17 +234,17 @@ export default function CheckoutPage() {
                   </div>
                   <div className="flex justify-between text-sm">
                     <span>Shipping</span>
-                    <span className="font-semibold">FREE</span>
+                    <span>{deliveryFee === 0 ? 'FREE' : `₹${deliveryFee.toFixed(2)}`}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between font-bold text-lg">
                     <span>Total</span>
-                    <span>₹{subtotal.toFixed(2)}</span>
+                    <span>₹{total.toFixed(2)}</span>
                   </div>
                 </CardContent>
               </Card>
                <Button type="submit" size="lg" className="w-full" disabled={isProcessing}>
-                {isProcessing ? 'Processing...' : `Continue to Payment`}
+                {isProcessing ? 'Processing...' : checkoutStep === 'address' ? 'Continue to Delivery' : `Continue to Payment`}
               </Button>
             </div>
           </div>
