@@ -1,12 +1,11 @@
 'use client';
 import {
-  Auth, // Import Auth type for type hinting
+  Auth,
   signInAnonymously,
   signInWithPhoneNumber,
   ConfirmationResult,
   RecaptchaVerifier,
   FirebaseError
-  // Assume getAuth and app are initialized elsewhere
 } from 'firebase/auth';
 
 /** Initiate anonymous sign-in (non-blocking). */
@@ -16,7 +15,6 @@ export function initiateAnonymousSignIn(authInstance: Auth, onError: (error: Fir
 
 /**
  * Initiates phone number sign-in (non-blocking).
- * @returns A promise that resolves with the ConfirmationResult on success.
  */
 export function initiatePhoneNumberSignIn(
   auth: Auth,
@@ -32,26 +30,36 @@ export function initiatePhoneNumberSignIn(
 
 
 /**
- * Sets up the reCAPTCHA verifier.
+ * Sets up the reCAPTCHA verifier. This function should only be called on the client side.
+ * It ensures the reCAPTCHA container is ready and initializes the verifier instance,
+ * attaching it to the window object to prevent re-initialization on re-renders.
  */
 export function setupRecaptcha(auth: Auth, containerId: string): RecaptchaVerifier {
-    // Ensure this function is only called on the client side.
     if (typeof window === 'undefined') {
         throw new Error("reCAPTCHA can only be set up in the browser.");
     }
     
-    // To avoid re-rendering issues, we might need to ensure the container is empty
-    // or the verifier is only created once.
-    if (!(window as any).recaptchaVerifier) {
-         (window as any).recaptchaVerifier = new RecaptchaVerifier(auth, containerId, {
-            'size': 'invisible',
-            'callback': (response: any) => {
-                // reCAPTCHA solved, allow signInWithPhoneNumber.
-            },
-            'expired-callback': () => {
-                // Response expired. Ask user to solve reCAPTCHA again.
-            }
-        });
+    // Clean up previous instance if it exists
+    if ((window as any).recaptchaVerifier) {
+      (window as any).recaptchaVerifier.clear();
     }
-    return (window as any).recaptchaVerifier;
+    const recaptchaContainer = document.getElementById(containerId);
+    if (recaptchaContainer) {
+        recaptchaContainer.innerHTML = '';
+    }
+
+    const verifier = new RecaptchaVerifier(auth, containerId, {
+        'size': 'invisible',
+        'callback': (response: any) => {
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+            // This callback is usually for the button's onClick handler.
+        },
+        'expired-callback': () => {
+            // Response expired. Ask user to solve reCAPTCHA again.
+        }
+    });
+
+    (window as any).recaptchaVerifier = verifier;
+    
+    return verifier;
 }

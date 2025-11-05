@@ -37,7 +37,7 @@ export function PhoneSignIn() {
 
   const phoneForm = useForm<PhoneFormValues>({
     resolver: zodResolver(phoneSchema),
-    defaultValues: { phoneNumber: '' },
+    defaultValues: { phoneNumber: '+91' },
   });
 
   const otpForm = useForm<OtpFormValues>({
@@ -55,10 +55,13 @@ export function PhoneSignIn() {
         description = 'Phone Number sign-in is not enabled for this app. Please contact support or enable it in your Firebase console under Authentication > Sign-in method.';
     } else if (error.code === 'auth/invalid-phone-number') {
         title = 'Invalid Phone Number';
-        description = 'The phone number you entered is not valid.';
+        description = 'The phone number you entered is not valid. Please include the country code.';
     } else if (error.code === 'auth/too-many-requests') {
         title = 'Too Many Requests';
         description = 'You have sent too many requests. Please try again later.';
+    } else if (error.code === 'auth/captcha-check-failed') {
+        title = 'reCAPTCHA Check Failed';
+        description = 'The reCAPTCHA response is invalid. Please try again.';
     }
     
     toast({
@@ -105,8 +108,9 @@ export function PhoneSignIn() {
       const result = await confirmationResult.confirm(data.otp);
       const user = result.user;
 
+      // Check if this is a new user
       if (user.metadata.creationTime === user.metadata.lastSignInTime) {
-        await createUserProfile(auth, firestore, user.displayName, user.email, user.phoneNumber);
+        await createUserProfile(user.uid, firestore, user.displayName, user.email, user.phoneNumber);
          toast({
             title: 'Account Created!',
             description: 'You have been successfully signed up.',
@@ -118,14 +122,16 @@ export function PhoneSignIn() {
         });
       }
       
-      router.push('/account');
+      const searchParams = new URLSearchParams(window.location.search);
+      const redirectUrl = searchParams.get('redirect') || '/account';
+      router.push(redirectUrl);
 
     } catch (error: any) {
       console.error('OTP confirmation error:', error);
        toast({
         variant: 'destructive',
         title: 'Invalid OTP',
-        description: error.message || 'The OTP you entered is incorrect. Please try again.',
+        description: 'The OTP you entered is incorrect. Please try again.',
       });
     } finally {
         setIsVerifying(false);

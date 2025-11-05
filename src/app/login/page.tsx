@@ -1,7 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useEffect } from 'react';
 import { useUser } from '@/firebase';
@@ -9,13 +8,15 @@ import { PhoneSignIn } from '@/components/auth/phone-signin';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user } = useUser();
 
   useEffect(() => {
     if (user) {
-      router.push('/account');
+      const redirectUrl = searchParams.get('redirect') || '/account';
+      router.push(redirectUrl);
     }
-  }, [user, router]);
+  }, [user, router, searchParams]);
 
 
   return (
