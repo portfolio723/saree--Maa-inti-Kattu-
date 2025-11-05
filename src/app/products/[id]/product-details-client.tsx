@@ -130,10 +130,6 @@ export function ProductDetailsClient({ product }: { product: Product }) {
              <Heart className={cn("h-4 w-4 mr-1", isInWishlist ? 'text-red-500 fill-red-500' : '')} />
              {isInWishlist ? 'Added to Wishlist' : 'Add to Wishlist'}
           </Button>
-          <Button variant="link" className="p-0 h-auto text-muted-foreground hover:text-primary text-sm" onClick={handleShare}>
-             <Image src="https://img.icons8.com/?size=100&id=58564&format=png&color=000000" alt="Share" width={20} height={20} className="mr-1"/>
-             Share
-          </Button>
         </div>
         
         <div className="grid grid-cols-2 gap-4 my-4">
