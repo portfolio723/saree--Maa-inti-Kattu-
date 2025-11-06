@@ -11,12 +11,19 @@ import { Star } from 'lucide-react';
 import { ProductDetailsClient } from './product-details-client';
 import { ProductCard } from '@/components/product-card';
 
-export default async function ProductDetailPage({ 
+// Required for static export
+export async function generateStaticParams() {
+  return products.map((product) => ({
+    id: product.id,
+  }));
+}
+
+export default function ProductDetailPage({ 
   params 
 }: { 
-  params: Promise<{ id: string }> 
+  params: { id: string } 
 }) {
-  const { id } = await params;
+  const { id } = params;
 
   const product = products.find(p => p.id === id);
 
