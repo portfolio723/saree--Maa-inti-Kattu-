@@ -2,7 +2,9 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  output: 'export',
+  basePath: '/saree--Maa-inti-Kattu-',
+  assetPrefix: '/saree--Maa-inti-Kattu-/',
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -10,6 +12,7 @@ const nextConfig: NextConfig = {
     ignoreDuringBuilds: true,
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
