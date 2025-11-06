@@ -18,6 +18,18 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'Maa Inti Kattu',
   description: 'Premium traditional goods for the modern home.',
+  icons: {
+    icon: '/mik.png',
+  },
+  openGraph: {
+    title: 'Maa Inti Kattu',
+    description: 'Premium traditional goods for the modern home.',
+    images: [
+      {
+        url: '/mik.png',
+      },
+    ],
+  },
 };
 
 export default function RootLayout({
