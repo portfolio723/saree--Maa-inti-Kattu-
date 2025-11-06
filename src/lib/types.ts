@@ -1,3 +1,4 @@
+
 import type { ImagePlaceholder } from './placeholder-images';
 
 export type Product = {
@@ -37,6 +38,7 @@ export type Address = {
     id: string;
     fullName: string;
     mobileNumber: string;
+    email: string;
     pincode: string;
     addressLine1: string;
     addressLine2?: string;

@@ -50,6 +50,7 @@ const mockUser = {
       id: 'addr1',
       fullName: 'Jane Doe',
       mobileNumber: '9876543210',
+      email: 'jane.doe@example.com',
       pincode: '500081',
       addressLine1: '123 Tech Park',
       addressLine2: 'Hitech City',

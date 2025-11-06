@@ -1,49 +1,18 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { Order, Address } from '@/lib/types';
+import type { Order } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Skeleton } from '../ui/skeleton';
+import { orders as mockOrders } from '@/lib/mock-data';
 
 interface OrdersListProps {
   userId: string;
 }
-
-const mockAddress: Address = {
-    id: 'addr1',
-    fullName: 'Jane Doe',
-    mobileNumber: '9876543210',
-    pincode: '500081',
-    addressLine1: '123 Tech Park',
-    addressLine2: 'Hitech City',
-    city: 'Hyderabad',
-    state: 'Telangana',
-    addressType: 'work',
-};
-
-const mockOrders: Order[] = [
-    {
-        id: 'mock-ord-1',
-        userId: '123',
-        orderDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-        status: 'delivered',
-        totalAmount: 132.99,
-        items: [],
-        shippingAddress: mockAddress
-    },
-    {
-        id: 'mock-ord-2',
-        userId: '123',
-        orderDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-        status: 'shipped',
-        totalAmount: 250.00,
-        items: [],
-        shippingAddress: mockAddress
-    }
-];
 
 export function OrdersList({ userId }: OrdersListProps) {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -52,7 +21,8 @@ export function OrdersList({ userId }: OrdersListProps) {
   useEffect(() => {
     // Simulate fetching data
     setTimeout(() => {
-        setOrders(mockOrders);
+        const userOrders = mockOrders.filter(o => o.userId === userId);
+        setOrders(userOrders);
         setIsLoading(false);
     }, 1000);
   }, [userId]);

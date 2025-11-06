@@ -1,4 +1,5 @@
-import type { Product, Review } from '@/lib/types';
+
+import type { Product, Review, Order } from '@/lib/types';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Package, Zap } from 'lucide-react';
 
@@ -118,4 +119,53 @@ export const reviews: Review[] = [
 export const deliveryOptions = [
   { id: 'standard', name: 'Standard Delivery', date: 'by Fri, 7 Nov', cost: 0, icon: Package },
   { id: 'express', name: 'Express Delivery', date: 'by Wed, 5 Nov', cost: 150, icon: Zap },
+];
+
+
+export const orders: Order[] = [
+    {
+        id: 'mock-ord-1',
+        userId: '123',
+        orderDate: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+        status: 'delivered',
+        totalAmount: 132.99,
+        items: [
+            {...products[2], quantity: 1, image: products[2].images[0].imageUrl},
+            {...products[3], quantity: 1, image: products[3].images[0].imageUrl}
+        ],
+        shippingAddress: {
+            id: 'addr1',
+            fullName: 'Jane Doe',
+            mobileNumber: '9876543210',
+            email: 'jane.doe@example.com',
+            pincode: '500081',
+            addressLine1: '123 Tech Park',
+            addressLine2: 'Hitech City',
+            city: 'Hyderabad',
+            state: 'Telangana',
+            addressType: 'work',
+        }
+    },
+    {
+        id: 'mock-ord-2',
+        userId: '123',
+        orderDate: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+        status: 'shipped',
+        totalAmount: 250.00,
+        items: [
+            {...products[0], quantity: 1, image: products[0].images[0].imageUrl}
+        ],
+        shippingAddress: {
+             id: 'addr1',
+            fullName: 'Jane Doe',
+            mobileNumber: '9876543210',
+            email: 'jane.doe@example.com',
+            pincode: '500081',
+            addressLine1: '123 Tech Park',
+            addressLine2: 'Hitech City',
+            city: 'Hyderabad',
+            state: 'Telangana',
+            addressType: 'work',
+        }
+    }
 ];
