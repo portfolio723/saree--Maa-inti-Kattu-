@@ -2,7 +2,6 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  output: 'export',
   basePath: '/saree--Maa-inti-Kattu-',
   assetPrefix: '/saree--Maa-inti-Kattu-/',
   typescript: {
@@ -76,7 +75,6 @@ const nextConfig: NextConfig = {
       }
     ],
   },
-  trailingSlash: true,
 };
 
 export default nextConfig;
