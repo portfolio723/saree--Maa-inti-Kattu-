@@ -11,14 +11,12 @@ import { Star } from 'lucide-react';
 import { ProductDetailsClient } from './product-details-client';
 import { ProductCard } from '@/components/product-card';
 
-// CORRECTED TYPE DEFINITION
 interface ProductDetailPageProps {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }
 
-export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
-  // CORRECTED: Await the params Promise
-  const { id } = await params;
+export default function ProductDetailPage({ params }: ProductDetailPageProps) {
+  const { id } = params;
   
   const product = products.find(p => p.id === id);
 
