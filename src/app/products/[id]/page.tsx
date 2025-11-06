@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { products, reviews } from '@/lib/mock-data';
@@ -10,6 +11,13 @@ import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import { ProductDetailsClient } from './product-details-client';
 import { ProductCard } from '@/components/product-card';
+
+// This function generates the static pages for each product at build time.
+export async function generateStaticParams() {
+  return products.map((product) => ({
+    id: product.id,
+  }));
+}
 
 interface ProductDetailPageProps {
   params: { id: string };
