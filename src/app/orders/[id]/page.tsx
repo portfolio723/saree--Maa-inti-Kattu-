@@ -102,13 +102,12 @@ export default function OrderTrackingPage({ params }: { params: { id: string } }
                     <CardContent className="space-y-4">
                         {statusOrder.map((status, index) => {
                             const step = statusMap[status as keyof typeof statusMap];
-                            // @ts-ignore
-                            const date = order[step.dateField];
+                            const date = order[step.dateField as keyof Order] as string | undefined;
                             return (
                                 <TimelineStep
                                     key={status}
                                     title={step.text}
-                                    date={date}
+                                    date={date || null}
                                     icon={step.icon}
                                     isCompleted={index <= currentStatusIndex}
                                     isLast={index === statusOrder.length - 1}
