@@ -11,12 +11,12 @@ import { Star } from 'lucide-react';
 import { ProductDetailsClient } from './product-details-client';
 import { ProductCard } from '@/components/product-card';
 
-// ✅ ADD THIS: Generate static params for all products
-export async function generateStaticParams() {
+// ✅ REQUIRED: Generate static params for static export
+export const generateStaticParams = async () => {
   return products.map((product) => ({
-    id: product.id,
+    id: product.id.toString(),
   }));
-}
+};
 
 export default async function ProductDetailPage({ 
   params 
@@ -24,7 +24,6 @@ export default async function ProductDetailPage({
   params: Promise<{ id: string }> 
 }) {
   const { id } = await params;
-
   const product = products.find(p => p.id === id);
 
   if (!product) {
@@ -41,7 +40,6 @@ export default async function ProductDetailPage({
 
       <Separator className="my-12" />
 
-      {/* Related Products Section */}
       <div className="mb-12">
         <h2 className="text-2xl md:text-3xl font-bold font-headline text-primary mb-6 text-center">
           Related Products

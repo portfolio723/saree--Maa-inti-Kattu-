@@ -1,18 +1,17 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-// Assuming you have an orders array in your mock data
-// import { orders } from '@/lib/mock-data';
 
-// ✅ ADD THIS: Generate static params for all orders
-export async function generateStaticParams() {
-  // If you have mock orders, do this:
+// ✅ REQUIRED: Generate static params (even if empty for now)
+export const generateStaticParams = async () => {
+  // If you have mock orders data:
+  // import { orders } from '@/lib/mock-data';
   // return orders.map((order) => ({
-  //   id: order.id,
+  //   id: order.id.toString(),
   // }));
-  
-  // If orders are dynamic or not available at build time, use empty array
+
+  // For now, return empty array (no pre-generated pages)
   return [];
-}
+};
 
 export default async function OrderTrackingPage({ 
   params 
@@ -20,12 +19,6 @@ export default async function OrderTrackingPage({
   params: Promise<{ id: string }> 
 }) {
   const { id } = await params;
-
-  // Your order logic here
-  // const order = orders.find(o => o.id === id);
-  // if (!order) {
-  //   notFound();
-  // }
 
   return (
     <div className="container pt-24 md:pt-28 pb-8 md:pb-12">
@@ -38,7 +31,6 @@ export default async function OrderTrackingPage({
         </p>
       </div>
 
-      {/* Your order tracking content here */}
       <div className="bg-slate-50 p-8 rounded-lg">
         <p className="text-center text-muted-foreground">
           Order details for ID: {id}
