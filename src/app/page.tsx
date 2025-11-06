@@ -44,7 +44,6 @@ const PriceCard = ({ bgColor, title, price, href }: { bgColor: string; title: st
 export default function Home() {
   const heroImage = PlaceHolderImages.find(img => img.id === 'hero-background');
   const newArrivals = products.slice(0, 5);
-  const bestSellers = products.slice(1, 6);
 
   const collections = [
     { id: 'collection-banarasi', name: 'Banarasi', href: '/products?category=Banarasi' },
@@ -187,20 +186,6 @@ export default function Home() {
                   </div>
               </div>
           </div>
-      </section>
-
-      {/* Best Selling Products Section */}
-      <section className="py-12 md:py-16 w-full bg-secondary">
-        <div className="container mx-auto px-4">
-          <h2 className="text-2xl md:text-3xl font-bold text-center text-primary mb-8 font-headline">
-            Best Selling Products
-          </h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 md:gap-6">
-            {bestSellers.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-        </div>
       </section>
 
     </div>
