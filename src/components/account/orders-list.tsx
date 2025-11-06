@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import type { Order } from '@/lib/types';
+import type { Order, Address } from '@/lib/types';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +12,18 @@ interface OrdersListProps {
   userId: string;
 }
 
+const mockAddress: Address = {
+    id: 'addr1',
+    fullName: 'Jane Doe',
+    mobileNumber: '9876543210',
+    pincode: '500081',
+    addressLine1: '123 Tech Park',
+    addressLine2: 'Hitech City',
+    city: 'Hyderabad',
+    state: 'Telangana',
+    addressType: 'work',
+};
+
 const mockOrders: Order[] = [
     {
         id: 'mock-ord-1',
@@ -20,7 +32,7 @@ const mockOrders: Order[] = [
         status: 'delivered',
         totalAmount: 132.99,
         items: [],
-        shippingAddress: { name: '', address: '', city: '', state: '', zip: ''}
+        shippingAddress: mockAddress
     },
     {
         id: 'mock-ord-2',
@@ -29,7 +41,7 @@ const mockOrders: Order[] = [
         status: 'shipped',
         totalAmount: 250.00,
         items: [],
-        shippingAddress: { name: '', address: '', city: '', state: '', zip: ''}
+        shippingAddress: mockAddress
     }
 ];
 

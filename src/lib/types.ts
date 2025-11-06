@@ -50,8 +50,8 @@ export type Order = {
   id: string;
   userId: string;
   orderDate: string;
-  shippedDate: string | null;
-  deliveredDate: string | null;
+  shippedDate?: string | null;
+  deliveredDate?: string | null;
   status: 'pending' | 'processing' | 'shipped' | 'delivered';
   totalAmount: number;
   shippingAddress: Address;
