@@ -1,34 +1,19 @@
-// src/app/orders/[id]/page.tsx
+import OrderTrackingClient from './OrderTrackingClient';
+import { products } from '@/lib/mock-data';
 
-import React from 'react';
-import { notFound } from 'next/navigation';
-// Import your order data/components as needed
-// import { orders } from '@/lib/mock-data';
-
-interface PageProps {
-  params: Promise<{ 
-    id: string; 
-  }>;
+// This function generates the static pages for each order at build time.
+// In a real app, you would fetch this from your database.
+export async function generateStaticParams() {
+  // For demonstration, we'll create pages for a few mock order IDs.
+  // In a real application, you might pre-render recent or important orders.
+  return [
+    { id: 'mock-ord-1' },
+    { id: 'mock-ord-2' },
+    // You can add more mock order IDs here if needed
+  ];
 }
 
-export default async function OrderTrackingPage({ params }: PageProps) {
-  // IMPORTANT: Await the params Promise
-  const { id } = await params;
 
-  // Your logic here - example:
-  // const order = orders.find(o => o.id === id);
-  // if (!order) {
-  //   notFound();
-  // }
-
-  return (
-    <div className="container pt-24 md:pt-28 pb-8 md:pb-12">
-      <div className="mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Order Tracking</h1>
-        <p className="mt-2 text-base md:text-lg text-muted-foreground">Track your order #{id}</p>
-      </div>
-      
-      {/* Your order tracking content here */}
-    </div>
-  );
+export default function OrderTrackingPage({ params }: { params: { id: string } }) {
+  return <OrderTrackingClient id={params.id} />;
 }
