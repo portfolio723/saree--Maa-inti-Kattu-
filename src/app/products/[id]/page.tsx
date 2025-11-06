@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { notFound } from 'next/navigation';
 import { products, reviews } from '@/lib/mock-data';
@@ -12,8 +11,16 @@ import { Star } from 'lucide-react';
 import { ProductDetailsClient } from './product-details-client';
 import { ProductCard } from '@/components/product-card';
 
-export default async function ProductDetailPage({ params }: { params: { id: string } }) {
-  const product = products.find(p => p.id === params.id);
+// CORRECTED TYPE DEFINITION
+interface ProductDetailPageProps {
+  params: Promise<{ id: string }>;
+}
+
+export default async function ProductDetailPage({ params }: ProductDetailPageProps) {
+  // CORRECTED: Await the params Promise
+  const { id } = await params;
+  
+  const product = products.find(p => p.id === id);
 
   if (!product) {
     notFound();
@@ -39,7 +46,6 @@ export default async function ProductDetailPage({ params }: { params: { id: stri
       </div>
 
       <Separator className="my-12" />
-
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         <div>

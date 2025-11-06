@@ -1,13 +1,15 @@
-
 'use client';
 
 import { notFound } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from '@/components/ui/skeleton';
 import { PackageCheck, Package, Truck, Home } from 'lucide-react';
 import type { Order } from '@/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { products } from '@/lib/mock-data';
 
 const statusMap = {
   pending: { icon: Package, text: 'Order Placed', dateField: 'orderDate' },
@@ -15,7 +17,7 @@ const statusMap = {
   shipped: { icon: Truck, text: 'Shipped', dateField: 'shippedDate' },
   delivered: { icon: Home, text: 'Delivered', dateField: 'deliveredDate' },
 };
-const statusOrder: Array<keyof typeof statusMap> = ['pending', 'processing', 'shipped', 'delivered'];
+const statusOrder = ['pending', 'processing', 'shipped', 'delivered'];
 
 const TimelineStep = ({ title, date, icon: Icon, isCompleted, isLast = false }: { title: string; date: string | null; icon: React.ElementType; isCompleted: boolean; isLast?: boolean }) => (
     <div className="flex gap-4">
@@ -32,7 +34,56 @@ const TimelineStep = ({ title, date, icon: Icon, isCompleted, isLast = false }: 
     </div>
 );
   
-export default function OrderTrackingClient({ order }: { order: Order | null }) {
+export default function OrderTrackingClient({ id }: { id: string }) {
+    
+    const [order, setOrder] = useState<Order | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+    
+    useEffect(() => {
+        // Mock fetching order data
+        const mockOrder: Order = {
+            id: id,
+            userId: 'mock-user-123',
+            orderDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
+            shippedDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
+            deliveredDate: null,
+            status: 'shipped',
+            totalAmount: 335.50,
+            shippingAddress: {
+                id: 'addr1',
+                fullName: 'John Doe',
+                mobileNumber: '1234567890',
+                pincode: '12345',
+                addressLine1: '123 Main St',
+                city: 'Anytown',
+                state: 'CA',
+                addressType: 'home',
+            },
+            items: [
+                { ...products[0], quantity: 1, image: products[0].images[0].imageUrl },
+                { ...products[1], quantity: 1, image: products[1].images[0].imageUrl },
+            ],
+        };
+        setTimeout(() => {
+            setOrder(mockOrder);
+            setIsLoading(false);
+        }, 1000);
+    }, [id]);
+
+
+    if (isLoading) {
+        return (
+            <div className="container py-24 md:py-28">
+                 <Skeleton className="h-10 w-2/4 mb-2" />
+                 <Skeleton className="h-6 w-1/3 mb-8" />
+                 <div className="grid md:grid-cols-2 gap-8">
+                    <Skeleton className="h-96 w-full" />
+                    <Skeleton className="h-96 w-full" />
+                 </div>
+            </div>
+        );
+    }
+
     if (!order) {
         notFound();
     }
@@ -55,7 +106,7 @@ export default function OrderTrackingClient({ order }: { order: Order | null }) 
                     </CardHeader>
                     <CardContent className="space-y-4">
                         {statusOrder.map((status, index) => {
-                            const step = statusMap[status];
+                            const step = statusMap[status as keyof typeof statusMap];
                             const dateValue = order[step.dateField as keyof Order] as string | null | undefined;
                             return (
                                 <TimelineStep
