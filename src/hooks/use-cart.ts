@@ -24,7 +24,7 @@ export const useCart = create<CartState>((set) => ({
           ),
         };
       }
-      return { cart: [...state.cart, { ...item, image: getImagePath(item.image), quantity }] };
+      return { cart: [...state.cart, { ...item, image: item.image.startsWith('http') ? item.image : getImagePath(item.image), quantity }] };
     }),
   removeFromCart: (id) =>
     set((state) => ({

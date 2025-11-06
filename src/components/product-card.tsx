@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import { useWishlist } from '@/hooks/use-wishlist';
 import { useCart } from '@/hooks/use-cart';
 import { cn } from '@/lib/utils';
+import { getImagePath } from '@/lib/paths';
 
 interface ProductCardProps {
   product: Product;
@@ -56,7 +57,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <CardHeader className="p-0">
         <Link href={`/products/${product.id}`} className="block overflow-hidden aspect-[4/5] relative">
           <Image
-            src={product.images[0].imageUrl}
+            src={getImagePath(product.images[0].imageUrl)}
             alt={product.name}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"

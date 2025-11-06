@@ -6,6 +6,7 @@ import { useState } from 'react';
 import type { ImagePlaceholder } from '@/lib/placeholder-images';
 import { cn } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
+import { getImagePath } from '@/lib/paths';
 
 interface ProductImageGalleryProps {
   images: ImagePlaceholder[];
@@ -35,7 +36,7 @@ export function ProductImageGallery({ images }: ProductImageGalleryProps) {
             onClick={() => setSelectedImage(image)}
           >
             <Image
-              src={image.imageUrl}
+              src={getImagePath(image.imageUrl)}
               alt={`${image.description} - thumbnail ${index + 1}`}
               width={80}
               height={100}
@@ -47,7 +48,7 @@ export function ProductImageGallery({ images }: ProductImageGalleryProps) {
       </div>
       <div className="aspect-[4/5] w-full overflow-hidden rounded-lg">
         <Image
-          src={selectedImage.imageUrl}
+          src={getImagePath(selectedImage.imageUrl)}
           alt={selectedImage.description}
           width={600}
           height={750}

@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import { ProductImageGallery } from './product-image-gallery';
 import { Separator } from '@/components/ui/separator';
 import { useToast } from '@/hooks/use-toast';
+import { getImagePath } from '@/lib/paths';
 
 const productInfo = {
     "Fabric": "Silk",

@@ -23,6 +23,7 @@ import { PaymentOptions } from '@/components/checkout/payment-options';
 import { deliveryOptions as allDeliveryOptions } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
 import { ShieldCheck } from 'lucide-react';
+import { getImagePath } from '@/lib/paths';
 
 
 const shippingSchema = z.object({
@@ -374,7 +375,7 @@ export default function CheckoutPage() {
                   {cart.map(item => (
                     <div key={item.id} className="flex items-center gap-4">
                         <div className="relative h-16 w-16 rounded-md overflow-hidden">
-                             <Image src={item.image} alt={item.name} fill className="object-cover" />
+                             <Image src={getImagePath(item.image)} alt={item.name} fill className="object-cover" />
                         </div>
                         <div className="flex-1">
                             <p className="font-semibold text-sm">{item.name}</p>

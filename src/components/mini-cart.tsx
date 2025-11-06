@@ -8,6 +8,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ShoppingCart, X } from 'lucide-react';
 import { PopoverClose } from '@radix-ui/react-popover';
+import { getImagePath } from '@/lib/paths';
 
 export function MiniCart() {
   const { cart, removeFromCart, updateQuantity } = useCart();
@@ -25,7 +26,7 @@ export function MiniCart() {
               {cart.map((item) => (
                 <div key={item.id} className="flex gap-4">
                   <div className="relative h-20 w-16 rounded-md overflow-hidden">
-                    <Image src={item.image} alt={item.name} fill className="object-cover" />
+                    <Image src={getImagePath(item.image)} alt={item.name} fill className="object-cover" />
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
                     <div>

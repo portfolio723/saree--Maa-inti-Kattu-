@@ -7,6 +7,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/componen
 import { Separator } from '@/components/ui/separator';
 import { useCart } from '@/hooks/use-cart';
 import { ShoppingCart, Plus, Minus, X } from 'lucide-react';
+import { getImagePath } from '@/lib/paths';
 
 export default function CartPage() {
   const { cart, updateQuantity, removeFromCart, clearCart } = useCart();
@@ -24,7 +25,7 @@ export default function CartPage() {
                   {cart.map((item) => (
                     <div key={item.id} className="flex items-center gap-4 p-4">
                       <div className="relative h-24 w-24 rounded-md overflow-hidden">
-                        <Image src={item.image} alt={item.name} fill className="object-cover" />
+                        <Image src={getImagePath(item.image)} alt={item.name} fill className="object-cover" />
                       </div>
                       <div className="flex-1 grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                         <div className="md:col-span-1">
