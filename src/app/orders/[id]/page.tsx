@@ -1,5 +1,6 @@
-import OrderTrackingClient from './OrderTrackingClient';
+// src/app/orders/[id]/page.tsx
+import OrderTrackingPage from './OrderTrackingClient';
 
 export default function Page({ params }: { params: { id: string } }) {
-  return <OrderTrackingClient id={params.id} />;
+  return <OrderTrackingPage id={params.id} />;
 }
