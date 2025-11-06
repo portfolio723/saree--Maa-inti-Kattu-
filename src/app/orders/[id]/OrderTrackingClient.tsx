@@ -53,6 +53,7 @@ export default function OrderTrackingClient({ id }: { id: string }) {
                 id: 'addr1',
                 fullName: 'John Doe',
                 mobileNumber: '1234567890',
+                email: 'john.doe@example.com',
                 pincode: '12345',
                 addressLine1: '123 Main St',
                 city: 'Anytown',
