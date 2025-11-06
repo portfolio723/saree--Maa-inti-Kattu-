@@ -9,6 +9,7 @@ import type { Order } from '@/lib/types';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { products } from '@/lib/mock-data';
 
 const statusMap = {
   pending: { icon: Package, text: 'Order Placed', dateField: 'orderDate' },
@@ -45,18 +46,22 @@ export default function OrderTrackingPage({ params }: { params: { id: string } }
             userId: 'mock-user-123',
             orderDate: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(), // 3 days ago
             shippedDate: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(), // 1 day ago
+            deliveredDate: null,
             status: 'shipped',
             totalAmount: 335.50,
             shippingAddress: {
-                name: 'John Doe',
-                address: '123 Main St',
+                id: 'addr1',
+                fullName: 'John Doe',
+                mobileNumber: '1234567890',
+                pincode: '12345',
+                addressLine1: '123 Main St',
                 city: 'Anytown',
                 state: 'CA',
-                zip: '12345',
+                addressType: 'home',
             },
             items: [
-                { id: '1', name: 'Kanjeevaram Silk Saree', price: 250.00, image: '/na1.jpg', quantity: 1 },
-                { id: '2', name: 'Antique Jhumka Earrings', price: 85.50, image: '/na2.jpg', quantity: 1 },
+                { ...products[0], quantity: 1, image: products[0].images[0].imageUrl },
+                { ...products[1], quantity: 1, image: products[1].images[0].imageUrl },
             ],
         };
         setTimeout(() => {
@@ -102,12 +107,12 @@ export default function OrderTrackingPage({ params }: { params: { id: string } }
                     <CardContent className="space-y-4">
                         {statusOrder.map((status, index) => {
                             const step = statusMap[status as keyof typeof statusMap];
-                            const date = order[step.dateField as keyof Order] as string | undefined;
+                            const dateValue = order[step.dateField as keyof Order] as string | null | undefined;
                             return (
                                 <TimelineStep
                                     key={status}
                                     title={step.text}
-                                    date={date || null}
+                                    date={dateValue || null}
                                     icon={step.icon}
                                     isCompleted={index <= currentStatusIndex}
                                     isLast={index === statusOrder.length - 1}

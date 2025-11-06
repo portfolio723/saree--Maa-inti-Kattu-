@@ -50,16 +50,10 @@ export type Order = {
   id: string;
   userId: string;
   orderDate: string;
-  shippedDate?: string;
-  deliveredDate?: string;
+  shippedDate: string | null;
+  deliveredDate: string | null;
   status: 'pending' | 'processing' | 'shipped' | 'delivered';
   totalAmount: number;
-  shippingAddress: {
-    name: string;
-    address: string;
-    city: string;
-    state: string;
-    zip: string;
-  };
+  shippingAddress: Address;
   items: CartItem[];
 };
