@@ -1,15 +1,4 @@
-import React from 'react';
-import { notFound } from 'next/navigation';
-
-// ✅ REQUIRED: Generate static params (even if empty for now)
 export const generateStaticParams = async () => {
-  // If you have mock orders data:
-  // import { orders } from '@/lib/mock-data';
-  // return orders.map((order) => ({
-  //   id: order.id.toString(),
-  // }));
-
-  // For now, return empty array (no pre-generated pages)
   return [];
 };
 
