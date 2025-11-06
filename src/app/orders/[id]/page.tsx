@@ -1,15 +1,24 @@
 import React from 'react';
 import { notFound } from 'next/navigation';
-// Import your order-related components and data as needed
+// Assuming you have an orders array in your mock data
 // import { orders } from '@/lib/mock-data';
-// import { OrderDetailsClient } from './order-details-client';
+
+// ✅ ADD THIS: Generate static params for all orders
+export async function generateStaticParams() {
+  // If you have mock orders, do this:
+  // return orders.map((order) => ({
+  //   id: order.id,
+  // }));
+  
+  // If orders are dynamic or not available at build time, use empty array
+  return [];
+}
 
 export default async function OrderTrackingPage({ 
   params 
 }: { 
   params: Promise<{ id: string }> 
 }) {
-  // ✅ CORRECT: Await the params
   const { id } = await params;
 
   // Your order logic here

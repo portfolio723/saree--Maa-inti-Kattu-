@@ -11,13 +11,18 @@ import { Star } from 'lucide-react';
 import { ProductDetailsClient } from './product-details-client';
 import { ProductCard } from '@/components/product-card';
 
-// ✅ CORRECT: Use Promise wrapper
+// ✅ ADD THIS: Generate static params for all products
+export async function generateStaticParams() {
+  return products.map((product) => ({
+    id: product.id,
+  }));
+}
+
 export default async function ProductDetailPage({ 
   params 
 }: { 
   params: Promise<{ id: string }> 
 }) {
-  // ✅ CORRECT: Await the params
   const { id } = await params;
 
   const product = products.find(p => p.id === id);
