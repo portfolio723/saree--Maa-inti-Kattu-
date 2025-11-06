@@ -11,15 +11,14 @@ import { Star } from 'lucide-react';
 import { ProductDetailsClient } from './product-details-client';
 import { ProductCard } from '@/components/product-card';
 
-// This function generates the static pages for each product at build time.
-export async function generateStaticParams() {
-  return products.map((product) => ({
-    id: product.id,
-  }));
-}
-
-export default function ProductDetailPage({ params }: { params: { id: string } }) {
-  const { id } = params;
+// ✅ CORRECT: Use Promise wrapper
+export default async function ProductDetailPage({ 
+  params 
+}: { 
+  params: Promise<{ id: string }> 
+}) {
+  // ✅ CORRECT: Await the params
+  const { id } = await params;
 
   const product = products.find(p => p.id === id);
 
