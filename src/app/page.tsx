@@ -8,6 +8,7 @@ import { ProductCard } from '@/components/product-card';
 import { products } from '@/lib/mock-data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Headset, Truck, Award, ShieldCheck } from 'lucide-react';
+import { getImagePath } from '@/lib/paths';
 
 const PriceCard = ({ bgColor, title, price, href }: { bgColor: string; title: string; price: string, href: string }) => (
   <Link href={href} className="block group">
@@ -62,20 +63,20 @@ export default function Home() {
   const features = [
     { 
       icon: (
-        <Image src="/st2.png" alt="Certified with Silk Mark" width={40} height={40} className="h-10 w-10 text-gray-700" />
+        <Image src={getImagePath("/st2.png")} alt="Certified with Silk Mark" width={40} height={40} className="h-10 w-10 text-gray-700" />
       ),
       text: 'Certified with Silk Mark' 
     },
     { 
-      icon: <Image src="/st3.png" alt="Expert customer support" width={40} height={40} className="h-10 w-10 text-gray-700" />, 
+      icon: <Image src={getImagePath("/st3.png")} alt="Expert customer support" width={40} height={40} className="h-10 w-10 text-gray-700" />, 
       text: 'Expert customer support' 
     },
     { 
-      icon: <Image src="/st4.png" alt="Free shipping within India" width={40} height={40} className="h-10 w-10 text-gray-700" />, 
+      icon: <Image src={getImagePath("/st4.png")} alt="Free shipping within India" width={40} height={40} className="h-10 w-10 text-gray-700" />, 
       text: 'Free shipping within India' 
     },
     { 
-      icon: <Image src="/st5.png" alt="Authentic Heritage Looms" width={40} height={40} className="h-10 w-10 text-gray-700" />,
+      icon: <Image src={getImagePath("/st5.png")} alt="Authentic Heritage Looms" width={40} height={40} className="h-10 w-10 text-gray-700" />,
       text: 'Authentic Heritage Looms' 
     },
   ];
@@ -86,7 +87,7 @@ export default function Home() {
       <section className="relative w-full h-screen bg-gray-200">
         {heroImage && (
           <Image
-            src={heroImage.imageUrl}
+            src={getImagePath(heroImage.imageUrl)}
             alt="Pay day sale on sarees"
             fill
             className="object-cover object-center"
@@ -153,7 +154,7 @@ export default function Home() {
               return (
               <Link href={collection.href} key={collection.id} className="group relative block h-64 md:h-96 overflow-hidden">
                 {image && 
-                    <Image src={image.imageUrl} alt={collection.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={image.imageHint} />
+                    <Image src={getImagePath(image.imageUrl)} alt={collection.name} fill className="object-cover transition-transform duration-300 group-hover:scale-105" data-ai-hint={image.imageHint} />
                 }
                 <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-end p-4 text-center">
                     <h3 className="text-lg md:text-xl font-bold text-white font-headline">{collection.name}</h3>

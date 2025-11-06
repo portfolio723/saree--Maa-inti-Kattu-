@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
+import { getImagePath } from "@/lib/paths";
 
 export function Header() {
   const [isMenuOpen, setMenuOpen] = useState(false);
@@ -34,7 +35,7 @@ export function Header() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const isHomePage = pathname === '/';
+  const isHomePage = pathname === '/saree--Maa-inti-Kattu-/' || pathname === '/';
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -80,7 +81,7 @@ export function Header() {
       )}>
         <div className="flex items-center flex-1 md:flex-initial">
           <Link href="/" className="flex items-center">
-            <Image src="/mik.png" alt="Maa Inti Kattu" width={100} height={40} className="object-contain h-10" />
+            <Image src={getImagePath("/mik.png")} alt="Maa Inti Kattu" width={100} height={40} className="object-contain h-10" />
           </Link>
         </div>
 
@@ -186,7 +187,7 @@ export function Header() {
               <SheetContent side="right" className="w-full bg-white p-0">
                 <SheetHeader className="flex flex-row justify-between items-center p-4 border-b">
                    <Link href="/" className="flex items-center text-lg md:text-xl font-bold font-headline" onClick={() => setMenuOpen(false)}>
-                      <Image src="/mik.png" alt="Maa Inti Kattu" width={100} height={40} className="object-contain h-10" />
+                      <Image src={getImagePath("/mik.png")} alt="Maa Inti Kattu" width={100} height={40} className="object-contain h-10" />
                   </Link>
                   <SheetTitle className="sr-only">Menu</SheetTitle>
                   <SheetClose asChild>

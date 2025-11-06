@@ -4,6 +4,7 @@ import './globals.css';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
+import { getImagePath } from '@/lib/paths';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -19,14 +20,14 @@ export const metadata: Metadata = {
   title: 'Maa Inti Kattu',
   description: 'Premium traditional goods for the modern home.',
   icons: {
-    icon: '/mik.png',
+    icon: getImagePath('/mik.png'),
   },
   openGraph: {
     title: 'Maa Inti Kattu',
     description: 'Premium traditional goods for the modern home.',
     images: [
       {
-        url: '/mik.png',
+        url: getImagePath('/mik.png'),
       },
     ],
   },

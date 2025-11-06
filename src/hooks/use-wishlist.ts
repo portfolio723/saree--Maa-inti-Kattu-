@@ -1,5 +1,6 @@
 "use client"
 import { create } from 'zustand';
+import { getImagePath } from '@/lib/paths';
 
 interface WishlistItem {
     id: string;
@@ -17,7 +18,7 @@ interface WishlistState {
 
 export const useWishlist = create<WishlistState>((set, get) => ({
   wishlist: [],
-  addToWishlist: (item) => set((state) => ({ wishlist: [...state.wishlist, item] })),
+  addToWishlist: (item) => set((state) => ({ wishlist: [...state.wishlist, { ...item, image: getImagePath(item.image) }] })),
   removeFromWishlist: (id) => set((state) => ({ wishlist: state.wishlist.filter((item) => item.id !== id) })),
   isInWishlist: (id) => get().wishlist.some((item) => item.id === id),
 }));

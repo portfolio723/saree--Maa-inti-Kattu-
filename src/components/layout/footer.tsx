@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Facebook, Instagram, Youtube, Phone } from "lucide-react";
+import { getImagePath } from "@/lib/paths";
 
 export function Footer() {
   const quickLinks = [
@@ -29,7 +30,7 @@ export function Footer() {
           
           <div className="lg:col-span-1 flex flex-col items-start space-y-4 text-left">
             <Link href="/" className="flex items-center space-x-2">
-               <Image src="/mik.png" alt="Maa Inti Kattu" width={120} height={48} className="object-contain h-12" />
+               <Image src={getImagePath("/mik.png")} alt="Maa Inti Kattu" width={120} height={48} className="object-contain h-12" />
             </Link>
             <div className="flex items-center gap-3 pt-4">
               <Phone className="h-6 w-6 text-primary"/>

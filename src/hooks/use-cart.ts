@@ -1,6 +1,7 @@
 'use client';
 import { create } from 'zustand';
 import type { CartItem } from '@/lib/types';
+import { getImagePath } from '@/lib/paths';
 
 
 interface CartState {
@@ -23,7 +24,7 @@ export const useCart = create<CartState>((set) => ({
           ),
         };
       }
-      return { cart: [...state.cart, { ...item, quantity }] };
+      return { cart: [...state.cart, { ...item, image: getImagePath(item.image), quantity }] };
     }),
   removeFromCart: (id) =>
     set((state) => ({
