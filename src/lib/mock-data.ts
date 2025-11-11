@@ -305,6 +305,30 @@ export const products: Product[] = [
     rating: 4.6,
     reviewCount: 115,
     inventory: 70,
+  },
+  {
+    id: '26',
+    name: 'Ready-to-Wear Saree & Blouse Set',
+    description: 'A modern pre-draped saree with a stylish matching blouse.',
+    longDescription: 'Skip the hassle of draping with our ready-to-wear saree set. This modern interpretation features a pre-draped georgette saree and a stylish, embellished blouse. Perfect for parties and modern festivities.',
+    price: 280.00,
+    images: [findImage('combo-7')],
+    category: 'Combos',
+    rating: 4.8,
+    reviewCount: 30,
+    inventory: 25,
+  },
+  {
+    id: '27',
+    name: 'Silk & Cotton Saree Duo',
+    description: 'One rich silk saree and one comfortable cotton saree.',
+    longDescription: 'Get the best of both worlds with this duo pack. It includes a luxurious silk saree for special occasions and a lightweight handloom cotton saree for comfortable daily wear. A perfect balance of elegance and comfort.',
+    price: 320.00,
+    images: [findImage('combo-8')],
+    category: 'Combos',
+    rating: 4.7,
+    reviewCount: 52,
+    inventory: 18,
   }
 ];
 

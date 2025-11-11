@@ -215,6 +215,18 @@
       "description": "Cotton Saree",
       "imageUrl": "/cat-cotton.jpg",
       "imageHint": "cotton fabric"
+    },
+    {
+      "id": "combo-7",
+      "description": "A modern pre-draped saree with a stylish matching blouse.",
+      "imageUrl": "/combo7.jpg",
+      "imageHint": "modern saree"
+    },
+    {
+      "id": "combo-8",
+      "description": "One rich silk saree and one comfortable cotton saree.",
+      "imageUrl": "/combo8.jpg",
+      "imageHint": "saree set"
     }
   ]
 }
