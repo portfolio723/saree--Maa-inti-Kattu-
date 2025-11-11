@@ -227,6 +227,54 @@
       "description": "One rich silk saree and one comfortable cotton saree.",
       "imageUrl": "/combo8.jpg",
       "imageHint": "saree set"
+    },
+    {
+      "id": "exclusive-1",
+      "description": "Royal Patola Silk Saree",
+      "imageUrl": "/ex1.jpg",
+      "imageHint": "patola silk"
+    },
+    {
+      "id": "exclusive-2",
+      "description": "Hand-Painted Kalamkari Saree",
+      "imageUrl": "/ex2.jpg",
+      "imageHint": "kalamkari art"
+    },
+    {
+      "id": "exclusive-3",
+      "description": "Jamdani Woven Saree",
+      "imageUrl": "/ex3.jpg",
+      "imageHint": "jamdani weave"
+    },
+    {
+      "id": "exclusive-4",
+      "description": "Gota Patti Work Saree",
+      "imageUrl": "/ex4.jpg",
+      "imageHint": "gota patti"
+    },
+    {
+      "id": "exclusive-5",
+      "description": "Tussar Silk Saree with Kantha Stitch",
+      "imageUrl": "/ex5.jpg",
+      "imageHint": "kantha stitch"
+    },
+    {
+      "id": "exclusive-6",
+      "description": "Chikankari on Pure Georgette",
+      "imageUrl": "/ex6.jpg",
+      "imageHint": "chikankari embroidery"
+    },
+    {
+      "id": "exclusive-7",
+      "description": "Paithani Saree with Peacock Pallu",
+      "imageUrl": "/ex7.jpg",
+      "imageHint": "paithani peacock"
+    },
+    {
+      "id": "exclusive-8",
+      "description": "Bandhani on Gajji Silk",
+      "imageUrl": "/ex8.jpg",
+      "imageHint": "bandhani dye"
     }
   ]
 }
