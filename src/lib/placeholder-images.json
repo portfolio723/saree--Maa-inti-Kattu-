@@ -43,6 +43,42 @@
       "imageHint": "cushion cover"
     },
     {
+      "id": "product-7",
+      "description": "Pastel Organza Saree",
+      "imageUrl": "/na6.jpg",
+      "imageHint": "organza saree"
+    },
+    {
+      "id": "product-8",
+      "description": "Floral Chiffon Saree",
+      "imageUrl": "/na7.jpg",
+      "imageHint": "chiffon saree"
+    },
+    {
+      "id": "product-9",
+      "description": "Handloom Cotton Saree",
+      "imageUrl": "/na8.jpg",
+      "imageHint": "cotton saree"
+    },
+    {
+      "id": "product-10",
+      "description": "Emerald Green Banarasi",
+      "imageUrl": "/na9.jpg",
+      "imageHint": "banarasi silk"
+    },
+    {
+      "id": "product-11",
+      "description": "Royal Blue Velvet Blouse",
+      "imageUrl": "/na10.jpg",
+      "imageHint": "velvet blouse"
+    },
+    {
+      "id": "product-12",
+      "description": "Festive Combo Offer",
+      "imageUrl": "/na11.jpg",
+      "imageHint": "saree gift"
+    },
+    {
       "id": "avatar-1",
       "description": "User avatar",
       "imageUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjE4MDM0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
@@ -83,6 +119,24 @@
       "description": "Kancheepuram Saree collection",
       "imageUrl": "https://indiansilkhouseagencies.com/cdn/shop/files/11AP1974N6-1.jpg?v=1756294673",
       "imageHint": "kancheepuram saree"
+    },
+    {
+      "id": "category-organza",
+      "description": "Organza Saree",
+      "imageUrl": "/cat-organza.jpg",
+      "imageHint": "organza fabric"
+    },
+    {
+      "id": "category-chiffon",
+      "description": "Chiffon Saree",
+      "imageUrl": "/cat-chiffon.jpg",
+      "imageHint": "chiffon fabric"
+    },
+    {
+      "id": "category-cotton",
+      "description": "Cotton Saree",
+      "imageUrl": "/cat-cotton.jpg",
+      "imageHint": "cotton fabric"
     }
   ]
 }
