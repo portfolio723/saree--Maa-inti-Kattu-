@@ -17,12 +17,13 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-const categories = [...new Set(allProducts.map(p => p.category))];
-
 export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('rating-desc');
+  
+  const categories = useMemo(() => [...new Set(allProducts.map(p => p.category))].sort(), []);
   const maxPrice = useMemo(() => Math.ceil(Math.max(...allProducts.map(p => p.price))), []);
+
   const [priceRange, setPriceRange] = useState([0, maxPrice]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
