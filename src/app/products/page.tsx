@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -59,7 +60,7 @@ export default function ProductsPage() {
     });
 
   return (
-    <div className="container py-8">
+    <div className="container py-24 md:py-28">
       <div className="mb-8 text-center">
         <h1 className="text-3xl md:text-4xl font-bold font-headline text-primary">Our Collection</h1>
         <p className="mt-2 text-base md:text-lg text-muted-foreground">Browse our handcrafted and authentic products.</p>
