@@ -5,10 +5,11 @@ import { ProfileForm } from '@/components/account/profile-form';
 import { OrdersList } from '@/components/account/orders-list';
 
 export default function AccountPage() {
+  // A more realistic user object after authentication
   const userProfile = {
     id: '123',
-    name: 'Jane Doe',
-    email: 'jane.doe@example.com',
+    name: 'Shankar',
+    email: 'shankar@example.com',
     phoneNumber: '+1234567890',
     address: '123 Main St, Anytown, USA',
     profileImageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjE4MDM0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080'
