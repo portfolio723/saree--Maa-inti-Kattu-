@@ -79,6 +79,30 @@
       "imageHint": "saree gift"
     },
     {
+      "id": "combo-1",
+      "description": "Silk saree and blouse combo",
+      "imageUrl": "/combo1.jpg",
+      "imageHint": "saree combo"
+    },
+    {
+      "id": "combo-2",
+      "description": "Two chiffon sarees combo",
+      "imageUrl": "/combo2.jpg",
+      "imageHint": "sarees combo"
+    },
+    {
+      "id": "combo-3",
+      "description": "Daily wear cotton sarees pack",
+      "imageUrl": "/combo3.jpg",
+      "imageHint": "cotton sarees"
+    },
+    {
+      "id": "combo-4",
+      "description": "Festive Kanjeevaram and Jewelry Set",
+      "imageUrl": "/combo4.jpg",
+      "imageHint": "kanjeevaram jewelry"
+    },
+    {
       "id": "avatar-1",
       "description": "User avatar",
       "imageUrl": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8d29tYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjE4MDM0NjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
