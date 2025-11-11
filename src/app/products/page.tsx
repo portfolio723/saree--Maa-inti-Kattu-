@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { ProductCard } from '@/components/product-card';
 import { products as allProducts } from '@/lib/mock-data';
 import { Input } from '@/components/ui/input';
@@ -18,11 +18,11 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const categories = [...new Set(allProducts.map(p => p.category))];
-const maxPrice = Math.ceil(Math.max(...allProducts.map(p => p.price)));
 
 export default function ProductsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortOrder, setSortOrder] = useState('rating-desc');
+  const maxPrice = useMemo(() => Math.ceil(Math.max(...allProducts.map(p => p.price))), []);
   const [priceRange, setPriceRange] = useState([0, maxPrice]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
