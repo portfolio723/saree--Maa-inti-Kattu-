@@ -81,37 +81,37 @@
     {
       "id": "combo-1",
       "description": "Silk saree and blouse combo",
-      "imageUrl": "/combo1.jpg",
+      "imageUrl": "/c1.jpeg",
       "imageHint": "saree combo"
     },
     {
       "id": "combo-2",
       "description": "Two chiffon sarees combo",
-      "imageUrl": "/combo2.jpg",
+      "imageUrl": "/c2.jpeg",
       "imageHint": "sarees combo"
     },
     {
       "id": "combo-3",
       "description": "Daily wear cotton sarees pack",
-      "imageUrl": "/combo3.jpg",
+      "imageUrl": "/c3.jpeg",
       "imageHint": "cotton sarees"
     },
     {
       "id": "combo-4",
       "description": "Festive Kanjeevaram and Jewelry Set",
-      "imageUrl": "/combo4.jpg",
+      "imageUrl": "/c4.jpeg",
       "imageHint": "kanjeevaram jewelry"
     },
     {
       "id": "combo-5",
       "description": "Jewelry and Organza Saree Set",
-      "imageUrl": "/combo5.jpg",
+      "imageUrl": "/c5.jpeg",
       "imageHint": "organza jewelry"
     },
     {
       "id": "combo-6",
       "description": "Banarasi Saree and Potli Bag Combo",
-      "imageUrl": "/combo6.jpg",
+      "imageUrl": "/c6.jpeg",
       "imageHint": "banarasi potli"
     },
     {
@@ -219,13 +219,13 @@
     {
       "id": "combo-7",
       "description": "A modern pre-draped saree with a stylish matching blouse.",
-      "imageUrl": "/combo7.jpg",
+      "imageUrl": "/c7.jpeg",
       "imageHint": "modern saree"
     },
     {
       "id": "combo-8",
       "description": "One rich silk saree and one comfortable cotton saree.",
-      "imageUrl": "/combo8.jpg",
+      "imageUrl": "/c8.jpeg",
       "imageHint": "saree set"
     },
     {
