@@ -69,7 +69,7 @@
     {
       "id": "product-11",
       "description": "Royal Blue Velvet Blouse",
-      "imageUrl": "/na10.jpg",
+      "imageUrl": "/b1.webp",
       "imageHint": "velvet blouse"
     },
     {
@@ -117,43 +117,43 @@
     {
       "id": "blouse-1",
       "description": "Black Sequin Party Blouse",
-      "imageUrl": "/blouse1.jpg",
+      "imageUrl": "/b2.webp",
       "imageHint": "sequin blouse"
     },
     {
       "id": "blouse-2",
       "description": "Classic Red Brocade Blouse",
-      "imageUrl": "/blouse2.jpg",
+      "imageUrl": "/b3.webp",
       "imageHint": "brocade blouse"
     },
     {
       "id": "blouse-3",
       "description": "Mirror Work Halter Blouse",
-      "imageUrl": "/blouse3.jpg",
+      "imageUrl": "/b4.webp",
       "imageHint": "mirror work"
     },
     {
       "id": "blouse-4",
       "description": "Puff Sleeve Silk Blouse",
-      "imageUrl": "/blouse4.jpg",
+      "imageUrl": "/b5.webp",
       "imageHint": "silk blouse"
     },
     {
       "id": "blouse-5",
       "description": "Golden Shimmer Party Blouse",
-      "imageUrl": "/blouse5.jpg",
+      "imageUrl": "/b6.webp",
       "imageHint": "golden blouse"
     },
     {
       "id": "blouse-6",
       "description": "Kalamkari Print Cotton Blouse",
-      "imageUrl": "/blouse6.jpg",
+      "imageUrl": "/b7.webp",
       "imageHint": "kalamkari blouse"
     },
     {
       "id": "blouse-7",
       "description": "Simple White Readymade Blouse",
-      "imageUrl": "/blouse7.jpg",
+      "imageUrl": "/b8.webp",
       "imageHint": "white blouse"
     },
     {
