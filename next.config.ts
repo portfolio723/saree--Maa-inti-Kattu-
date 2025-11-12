@@ -73,9 +73,16 @@ const nextConfig: NextConfig = {
         hostname: 'indiansilkhouseagencies.com',
         port: '',
         pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.manthree.in',
+        port: '',
+        pathname: '/**',
       }
     ],
   },
+  trailingSlash: true,
 };
 
 export default nextConfig;
