@@ -231,49 +231,49 @@
     {
       "id": "exclusive-1",
       "description": "Royal Patola Silk Saree",
-      "imageUrl": "/ex1.jpg",
+      "imageUrl": "/e1.webp",
       "imageHint": "patola silk"
     },
     {
       "id": "exclusive-2",
       "description": "Hand-Painted Kalamkari Saree",
-      "imageUrl": "/ex2.jpg",
+      "imageUrl": "/e2.webp",
       "imageHint": "kalamkari art"
     },
     {
       "id": "exclusive-3",
       "description": "Jamdani Woven Saree",
-      "imageUrl": "/ex3.jpg",
+      "imageUrl": "/e3.webp",
       "imageHint": "jamdani weave"
     },
     {
       "id": "exclusive-4",
       "description": "Gota Patti Work Saree",
-      "imageUrl": "/ex4.jpg",
+      "imageUrl": "/e4.webp",
       "imageHint": "gota patti"
     },
     {
       "id": "exclusive-5",
       "description": "Tussar Silk Saree with Kantha Stitch",
-      "imageUrl": "/ex5.jpg",
+      "imageUrl": "/e5.webp",
       "imageHint": "kantha stitch"
     },
     {
       "id": "exclusive-6",
       "description": "Chikankari on Pure Georgette",
-      "imageUrl": "/ex6.jpg",
+      "imageUrl": "/e6.webp",
       "imageHint": "chikankari embroidery"
     },
     {
       "id": "exclusive-7",
       "description": "Paithani Saree with Peacock Pallu",
-      "imageUrl": "/ex7.jpg",
+      "imageUrl": "/e7.webp",
       "imageHint": "paithani peacock"
     },
     {
       "id": "exclusive-8",
       "description": "Bandhani on Gajji Silk",
-      "imageUrl": "/ex8.jpg",
+      "imageUrl": "/e8.webp",
       "imageHint": "bandhani dye"
     }
   ]
